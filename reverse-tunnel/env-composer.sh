@@ -14,10 +14,10 @@ REVERSE_TUNNEL_DIR="reverse-tunnel"
 REVERSE_TUNNEL_CONF_FILE="reverse-tunnel.conf"
 
 # Moving host key to deployment directory
-cp -u $HOST_KEY_FILE_PATH ./$REVERSE_TUNNEL_DIR/$HOST_KEY_FILE_NAME
+yes | cp -rf $HOST_KEY_FILE_PATH ./$REVERSE_TUNNEL_DIR/$HOST_KEY_FILE_NAME
 
 # Moving conf file to deployment directory
-cp -u $CONF_FILE_PATH ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
+yes | cp -rf $CONF_FILE_PATH ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
 
 # Replacing keys and values in reverse-tunnel conf file
 
