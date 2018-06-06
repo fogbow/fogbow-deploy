@@ -8,7 +8,8 @@ CONTAINER_NAME="xmpp-server"
 
 C2S_PORT="5222"
 S2S_PORT="5269"
-C2C_PORT="5347"
+# Default: "5347"
+C2C_PORT=$1
 
 sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
