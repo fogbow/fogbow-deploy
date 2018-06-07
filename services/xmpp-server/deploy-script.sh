@@ -1,3 +1,4 @@
+#!/bin/bash
 DIR_PATH=$(pwd)
 CONTAINER_BASE_PATH="/etc/prosody"
 
