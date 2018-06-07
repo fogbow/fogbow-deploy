@@ -10,7 +10,7 @@ HOST_KEY_FILE_NAME=$(basename $HOST_KEY_FILE_PATH)
 echo "Host key file path: $HOST_KEY_FILE_PATH"
 echo "Host key file name: $HOST_KEY_FILE_NAME"
 
-REVERSE_TUNNEL_DIR="reverse-tunnel"
+REVERSE_TUNNEL_DIR="services/reverse-tunnel"
 REVERSE_TUNNEL_CONF_FILE="reverse-tunnel.conf"
 
 # Moving host key to deployment directory

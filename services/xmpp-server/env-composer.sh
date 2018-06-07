@@ -8,7 +8,7 @@ MANAGER_XMPP_ID=$(cat $CONF_FILE_PATH | grep $MANAGER_XMPP_ID_PATTERN | awk -F "
 MANAGER_PASSWORD_PATTERN="xmpp_password"
 MANAGER_PASSWORD=$(cat $CONF_FILE_PATH | grep $MANAGER_PASSWORD_PATTERN | awk -F "=" '{print $2}')
 
-XMPP_SERVER_DIR="xmpp-server"
+XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
 PROSODY_CONF_FILE="prosody.cfg.lua"
 
