@@ -5,8 +5,6 @@ CONF_FILES_DIR="conf-files"
 CONTAINER_BASE_PATH="/root/fogbow-manager-core"
 CONTAINER_CONF_FILES_DIR=".fogbow"
 
-LOG4J_FILE_NAME="log4j.properties"
-
 IMAGE_NAME="fogbow/manager-core:latest"
 CONTAINER_NAME="manager-core"
 
