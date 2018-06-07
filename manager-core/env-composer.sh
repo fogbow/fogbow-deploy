@@ -27,7 +27,7 @@ for conf_file_name in $CONF_FILES_LIST; do
 		if [ -n "$file_path_value" ]; then
 			echo "Moving $file_path_value to manager-core directory"
 			file_name_value=$(basename $file_path_value)
-			yes | cp -f $file_path_value ./$MANAGER_DIR/$file_name_value
+			yes | cp -f $file_path_value ./$MANAGER_DIR/$CONF_FILES_DIR/$file_name_value
 			echo "Replacing files path properties in conf files"
 			sed -i "s#$file_path_value#$file_name_value#" ./$MANAGER_DIR/$CONF_FILES_DIR/$conf_file_name
 		fi	
