@@ -3,6 +3,7 @@
 IFS=$'\n'
 
 REQUIREMENTS_DIR="requirement-files"
+CONF_FILES_DIR="conf-files"
 
 DMZ_HOST_IP=$1
 DMZ_HOST_PUBLIC_IP=$2
@@ -20,6 +21,8 @@ if [ -z "$INTERNAL_HOST_IP" ]; then
 	echo "Please, specify the internal host ip"
 	exit 1
 fi
+
+mkdir -p conf-files
 
 function getBehavioralInfos {
 	BEHAVIOR_DIR=$REQUIREMENTS_DIR/"behavior-plugins"
