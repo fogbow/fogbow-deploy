@@ -2,6 +2,12 @@
 
 REQUIREMENTS_DIR="requirement-files"
 
+DMZ_HOST_IP=$1
+DMZ_HOST_PUBLIC_IP=$2
+INTERNAL_HOST_IP=$3
+
+IFS=$'\n'
+
 function getBehavioralInfos {
 	BEHAVIOR_DIR=$REQUIREMENTS_DIR/"behavior-plugins"
 
@@ -29,9 +35,11 @@ function getBehavioralInfos {
 		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${federationIdentityProperties[name]}-")
 		
 		function getRequirements {
-			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
+			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement: " federationIdentityProperties[$requirement]
+				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+				read -p "$requirement ($isRequired): " federationIdentityProperties[$requirement]
 				echo "$requirement=${federationIdentityProperties[$requirement]}"
 			done
 		}
@@ -73,9 +81,11 @@ function getBehavioralInfos {
 		echo "Requirements file: $requerimentsFile"
 		
 		function getRequirements {
-			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
+			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement: " localUserCredentialsMapperProperties[$requirement]
+				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+				read -p "$requirement ($isRequired): " localUserCredentialsMapperProperties[$requirement]
 				echo "$requirement=${localUserCredentialsMapperProperties[$requirement]}"
 			done
 		}
@@ -116,9 +126,11 @@ function getBehavioralInfos {
 		echo "Requirements file: $requerimentsFile"
 	
 		function getRequirements {
-			requeriments=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
+			requeriments=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement: " authorizationProperties[$requirement]
+				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+				read -p "$requirement ($isRequired): " authorizationProperties[$requirement]
 				echo "$requirement=${authorizationProperties[$requirement]}"
 			done
 		}
@@ -164,9 +176,11 @@ function getCloudInfos {
 		echo "Requirements file: $requerimentsFile"
 
 		function getRequirements {
-			requeriments=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
+			requeriments=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement: " localIdentityProperties[$requirement]
+				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+				read -p "$requirement ($isRequired): " localIdentityProperties[$requirement]
 				echo "$requirement=${localIdentityProperties[$requirement]}"
 			done
 		}
@@ -215,9 +229,11 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement: " computePluginProperties[$requirement]
+					isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+					requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+					read -p "$requirement ($isRequired): " computePluginProperties[$requirement]
 					echo "$requirement=${computePluginProperties[$requirement]}"
 				done
 			}
@@ -248,9 +264,11 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement: " volumePluginProperties[$requirement]
+					isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+					requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+					read -p "$requirement ($isRequired): " volumePluginProperties[$requirement]
 					echo "$requirement=${volumePluginProperties[$requirement]}"
 				done
 			}
@@ -281,9 +299,11 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement: " networkPluginProperties[$requirement]
+					isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+					requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+					read -p "$requirement ($isRequired): " networkPluginProperties[$requirement]
 					echo "$requirement=${networkPluginProperties[$requirement]}"
 				done
 			}
@@ -314,9 +334,11 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement: " attachmentPluginProperties[$requirement]
+					isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+					requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+					read -p "$requirement ($isRequired): " attachmentPluginProperties[$requirement]
 					echo "$requirement=${attachmentPluginProperties[$requirement]}"
 				done
 			}
@@ -347,9 +369,11 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement: " computeQuotaPluginProperties[$requirement]
+					isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+					requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+					read -p "$requirement ($isRequired): " computeQuotaPluginProperties[$requirement]
 					echo "$requirement=${computeQuotaPluginProperties[$requirement]}"
 				done
 			}
@@ -376,5 +400,43 @@ function getCloudInfos {
 	getCloudInfos
 }
 
-getBehavioralInfos
+function getIntercomponentInfos {
+	echo "Getting intercomponent infos"
+			
+	declare -gA intercomponentProperties
+	
+	requirementsFile=$REQUIREMENTS_DIR/"intercomponent.conf"
+	echo "Requirements file: $requirementsFile"
+	
+	if [ -z "$requirementsFile" ]; then
+		echo "Cannot identify the intercomponent requirements file"
+		exit 108
+	fi
+	
+	function getRequirements {
+		requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
+		for requirement in $requeriments; do
+			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+			read -p "$requirement ($isRequired): " computeQuotaPluginProperties[$requirement]
+			echo "$requirement=${computeQuotaPluginProperties[$requirement]}"
+		done
+	}
+
+	function getDefaultValues {
+		echo "Getting default values"
+	}
+	
+	computeQuotaPluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+	echo "Compute quota plugin class name: ${computeQuotaPluginProperties[classname]}"
+	
+	getRequirements
+	getDefaultValues
+}
+
+
+
 getCloudInfos
+getBehavioralInfos
+#getIntercomponentInfos
+
