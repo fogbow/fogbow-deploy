@@ -544,8 +544,31 @@ function getReverseTunnelInfos {
 	getDefaultValues
 }
 
+function getMembershipInfos {
+	echo "Getting membership infos"
+	
+	requirementsFile=$REQUIREMENTS_DIR/"membership.conf"
+	echo "Requirements file: $requirementsFile"
+
+	declare -gA membershipProperties
+	
+	function getRequirements {
+		requeriments=$(cat $requirementsFile | grep ")=" | awk -F ")" '{print $1}')
+		for requirement in $requeriments; do
+			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+			read -p "$requirement ($isRequired): " membershipProperties[$requirement]
+
+			echo "$requirement=${membershipProperties[$requirement]}"
+		done
+	}
+	
+	getRequirements
+}
+
 getCloudInfos
 getBehavioralInfos
 getIntercomponentInfos
 getManagerInfos
 getReverseTunnelInfos
+getMembershipInfos
