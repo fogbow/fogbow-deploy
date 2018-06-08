@@ -458,9 +458,50 @@ function getIntercomponentInfos {
 	getDefaultValues
 }
 
+function getManagerInfos {
+	echo "Getting manager infos"
+	
+	requirementsFile=$REQUIREMENTS_DIR/"manager.conf"
+	echo "Requirements file: $requirementsFile"
+	
+	if [ -z "$requirementsFile" ]; then
+		echo "Cannot identify the manager requirements file"
+		exit 109
+	fi
+
+	declare -gA managerProperties
+	
+	function getRequirements {
+		requeriments=$(cat $requirementsFile | grep ")=" | awk -F ")" '{print $1}')
+		for requirement in $requeriments; do
+			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+			read -p "$requirement ($isRequired): " managerProperties[$requirement]
+			echo "$requirement=${managerProperties[$requirement]}"
+		done
+	}
+
+	function getDefaultValues {
+		echo "Getting default values"
+		if [ -z "${managerProperties[manager_ssh_private_key_file_path]}" ] || [ ! -f "${managerProperties[manager_ssh_private_key_file_path]}" ]; then
+			echo "Cannot identify the manager ssh private key"
+			echo "Generating manager ssh private key"
+
+			managerProperties[manager_ssh_private_key_file_path]=$(pwd)/"manager-id_rsa"
+			managerProperties[manager_ssh_public_key_file_path]=$(pwd)/"manager-id_rsa.pub"
+			ssh-keygen -f ${managerProperties[manager_ssh_private_key_file_path]} -t rsa -b 4096 -C "manager@${intercomponentProperties[xmpp_jid]}}" -N ""
+			
+			echo "manager_ssh_private_key_file_path=${managerProperties[manager_ssh_private_key_file_path]}"
+			echo "manager_ssh_public_key_file_path=${managerProperties[manager_ssh_public_key_file_path]}"
+		fi
+	}
+	
+	getRequirements
+	getDefaultValues
+}
 
 
 getCloudInfos
 getBehavioralInfos
 getIntercomponentInfos
-
+getManagerInfos
