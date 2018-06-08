@@ -14,7 +14,7 @@ function getBehavioralInfos {
 	
 		echo "Federation identity types: $federationIdentityTypes"
 
-		declare -A federationIdentityProperties
+		declare -gA federationIdentityProperties
 		read -p 'Federation identity: ' federationIdentity
 	
 		federationIdentityProperties[name]=$(echo "$federationIdentityTypes" | fgrep -wx "$federationIdentity")
@@ -31,7 +31,7 @@ function getBehavioralInfos {
 		function getRequirements {
 			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement=" federationIdentityProperties[$requirement]
+				read -p "$requirement: " federationIdentityProperties[$requirement]
 				echo "$requirement=${federationIdentityProperties[$requirement]}"
 			done
 		}
@@ -56,7 +56,7 @@ function getBehavioralInfos {
 	
 		echo "Local user credentials mapper types: $localUserCredentialsMapperTypes"
 
-		declare -A localUserCredentialsMapperProperties
+		declare -gA localUserCredentialsMapperProperties
 		read -p 'Local user credentials mapper: ' localUserCredentialsMapper
 	
 		localUserCredentialsMapperProperties[name]=$(echo "$localUserCredentialsMapperTypes" | fgrep -wx "$localUserCredentialsMapper")
@@ -75,7 +75,7 @@ function getBehavioralInfos {
 		function getRequirements {
 			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement=" localUserCredentialsMapperProperties[$requirement]
+				read -p "$requirement: " localUserCredentialsMapperProperties[$requirement]
 				echo "$requirement=${localUserCredentialsMapperProperties[$requirement]}"
 			done
 		}
@@ -87,9 +87,77 @@ function getBehavioralInfos {
 		getRequirements
 		getDefaultValues
 	}
+	
+	function getAuthorizationInfos {
+		AUTHORIZATION_DIR=$BEHAVIOR_DIR/"authorization"
+		DEFAULT_AUTHORIZATION="default"
+	
+		requerimentsFiles=$(ls ./$AUTHORIZATION_DIR)
+		authorizationTypes=$(echo "$requerimentsFiles" | awk -F "-" '{print $1}')
+	
+		echo "Authorization types: $authorizationTypes"
+
+		declare -gA authorizationProperties
+		read -p 'Authorization: ' authorization
+	
+		authorizationProperties[name]=$(echo "$authorizationTypes" | fgrep -wx "$authorization")
+		
+		if [ -z "${authorizationProperties[name]}" ]; then
+			echo "Cannot identify authorization type"
+			echo "Using default type"
+			authorizationProperties[name]=$DEFAULT_AUTHORIZATION
+			echo "Authorization type: ${authorizationProperties[name]}"
+		else
+			echo "Authorization type: ${authorizationProperties[name]}"
+			requerimentsFile=$(echo "$requerimentsFiles" | grep "^${authorizationProperties[name]}-")
+		
+			echo "Requirements file: $requerimentsFile"
+		
+			function getRequirements {
+				requeriments=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
+				for requirement in $requeriments; do
+					read -p "$requirement: " authorizationProperties[$requirement]
+					echo "$requirement=${authorizationProperties[$requirement]}"
+				done
+			}
+		
+			function getDefaultValues {
+				echo "Getting default values"
+			}
+		
+			getRequirements
+			getDefaultValues
+		fi
+	}
+
+	function getBehaviorProperties {
+		declare -gA behaviorProperties
+		
+		echo "Getting behavior properties"
+		
+		if [ "${federationIdentityProperties[name]}" == "ldap" ]; then
+			behaviorProperties[fipclass]="org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin"
+		else
+			behaviorProperties[fipclass]="org.fogbowcloud.manager.core.plugins.behavior.federationidentity.DefaultFederationIdentityPlugin"
+		fi
+		
+		if [ "${localUserCredentialsMapperProperties[name]}" == "default_mapper" ]; then
+			behaviorProperties[lucmpclass]="org.fogbowcloud.manager.core.plugins.behavior.mapper.DefaultLocalUserCredentialsMapper"
+		fi
+	
+		if [ "${authorizationProperties[name]}" == "default" ]; then
+			behaviorProperties[authclass]="org.fogbowcloud.manager.core.plugins.behavior.authorization.DefaultAuthorizationPlugin"
+		fi
+	
+		echo "Federation identity plugin class: ${behaviorProperties[fipclass]}"
+		echo "Local user credentials mapper plugin class: ${behaviorProperties[lucmpclass]}"
+		echo "Authorization plugin class: ${behaviorProperties[authclass]}"
+	}
 
 	getFederationIdentityInfos
 	getLocalUserCredentialsMapperInfos
+	getAuthorizationInfos
+	getBehaviorProperties
 }
 
 function getCloudInfos {
@@ -101,9 +169,9 @@ function getCloudInfos {
 		requerimentsFiles=$(ls ./$LOCAL_PLUGINS_DIR)
 		localIdentityTypes=$(echo "$requerimentsFiles" | awk -F "-" '{print $1}')
 	
-		echo "Federation identity types: $localIdentityTypes"
+		echo "Local identity types: $localIdentityTypes"
 
-		declare -A localIdentityProperties
+		declare -gA localIdentityProperties
 		read -p 'Local identity: ' localIdentity
 	
 		localIdentityProperties[name]=$(echo "$localIdentityTypes" | fgrep -wx "$localIdentity")
@@ -119,7 +187,7 @@ function getCloudInfos {
 		function getRequirements {
 			requeriments=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
-				read -p "$requirement=" localIdentityProperties[$requirement]
+				read -p "$requirement: " localIdentityProperties[$requirement]
 				echo "$requirement=${localIdentityProperties[$requirement]}"
 			done
 		}
@@ -151,11 +219,12 @@ function getCloudInfos {
 		
 		echo "Cloud Type: $cloudType"
 		
+		cloudTypeFiles=$(ls ./$CLOUD_TYPE_DIR/$cloudType)
+		
 		function getComputeInfos {
 			echo "Getting compute infos"
-			cloudTypeFiles=$(ls ./$CLOUD_TYPE_DIR/$cloudType)
 			
-			declare -A computePluginProperties
+			declare -gA computePluginProperties
 			computePluginProperties[name]=$cloudType
 			requirementsFile=$(echo "$cloudTypeFiles" | grep "compute")
 			
@@ -167,7 +236,7 @@ function getCloudInfos {
 			function getRequirements {
 				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
 				for requirement in $requeriments; do
-					read -p "$requirement=" computePluginProperties[$requirement]
+					read -p "$requirement: " computePluginProperties[$requirement]
 					echo "$requirement=${computePluginProperties[$requirement]}"
 				done
 			}
@@ -181,7 +250,67 @@ function getCloudInfos {
 			getDefaultValues
 		}
 		
+		function getVolumeInfos {
+			echo "Getting volume infos"
+			
+			declare -gA volumePluginProperties
+			volumePluginProperties[name]=$cloudType
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "volume")
+			
+			if [ -z "$requirementsFile" ]; then
+				echo "Cannot identify the $cloudType volume plugin"
+				exit 104
+			fi
+			
+			function getRequirements {
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
+				for requirement in $requeriments; do
+					read -p "$requirement: " volumePluginProperties[$requirement]
+					echo "$requirement=${volumePluginProperties[$requirement]}"
+				done
+			}
+		
+			function getDefaultValues {
+				echo "Getting default values"
+			}
+			
+			echo "Requirements file: $requirementsFile"
+			getRequirements
+			getDefaultValues
+		}
+		
+		function getNetworkInfos {
+			echo "Getting network infos"
+			
+			declare -gA networkPluginProperties
+			networkPluginProperties[name]=$cloudType
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "network")
+			
+			if [ -z "$requirementsFile" ]; then
+				echo "Cannot identify the $cloudType network plugin"
+				exit 104
+			fi
+			
+			function getRequirements {
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
+				for requirement in $requeriments; do
+					read -p "$requirement: " networkPluginProperties[$requirement]
+					echo "$requirement=${networkPluginProperties[$requirement]}"
+				done
+			}
+		
+			function getDefaultValues {
+				echo "Getting default values"
+			}
+			
+			echo "Requirements file: $requirementsFile"
+			getRequirements
+			getDefaultValues
+		}
+		
 		getComputeInfos
+		getVolumeInfos
+		getNetworkInfos
 	}
 	
 	getLocalIdentityInfos
