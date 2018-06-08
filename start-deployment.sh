@@ -1,12 +1,25 @@
 #!/bin/bash
 
+IFS=$'\n'
+
 REQUIREMENTS_DIR="requirement-files"
 
 DMZ_HOST_IP=$1
 DMZ_HOST_PUBLIC_IP=$2
 INTERNAL_HOST_IP=$3
 
-IFS=$'\n'
+if [ -z "$DMZ_HOST_IP" ]; then
+	echo "Please, specify the DMZ host internal ip"
+	exit 1
+fi
+if [ -z "$DMZ_HOST_PUBLIC_IP" ]; then
+	echo "Please, specify the DMZ host public ip"
+	exit 1
+fi 
+if [ -z "$INTERNAL_HOST_IP" ]; then
+	echo "Please, specify the internal host ip"
+	exit 1
+fi
 
 function getBehavioralInfos {
 	BEHAVIOR_DIR=$REQUIREMENTS_DIR/"behavior-plugins"
@@ -402,8 +415,6 @@ function getCloudInfos {
 
 function getIntercomponentInfos {
 	echo "Getting intercomponent infos"
-			
-	declare -gA intercomponentProperties
 	
 	requirementsFile=$REQUIREMENTS_DIR/"intercomponent.conf"
 	echo "Requirements file: $requirementsFile"
@@ -412,23 +423,36 @@ function getIntercomponentInfos {
 		echo "Cannot identify the intercomponent requirements file"
 		exit 108
 	fi
+
+	declare -gA intercomponentProperties
 	
 	function getRequirements {
-		requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep ")=" | awk -F ")" '{print $1}')
+		requeriments=$(cat $requirementsFile | grep ")=" | awk -F ")" '{print $1}')
 		for requirement in $requeriments; do
 			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
 			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
-			read -p "$requirement ($isRequired): " computeQuotaPluginProperties[$requirement]
-			echo "$requirement=${computeQuotaPluginProperties[$requirement]}"
+			read -p "$requirement ($isRequired): " intercomponentProperties[$requirement]
+			echo "$requirement=${intercomponentProperties[$requirement]}"
 		done
 	}
 
 	function getDefaultValues {
 		echo "Getting default values"
+		if [ -z "${intercomponentProperties[xmpp_server_ip]}" ]; then
+			intercomponentProperties[xmpp_server_ip]=$DMZ_HOST_IP
+			echo "xmpp_server_ip=${intercomponentProperties[xmpp_server_ip]}"
+		fi
+
+		if [ -z "${intercomponentProperties[xmpp_server_port]}" ]; then
+			intercomponentProperties[xmpp_server_port]="5327"
+			echo "xmpp_server_port=${intercomponentProperties[xmpp_server_port]}"
+		fi
+
+		if [ -z "${intercomponentProperties[xmpp_timeout]}" ]; then
+			intercomponentProperties[xmpp_timeout]="5000"
+			echo "xmpp_timeout=${intercomponentProperties[xmpp_timeout]}"
+		fi
 	}
-	
-	computeQuotaPluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
-	echo "Compute quota plugin class name: ${computeQuotaPluginProperties[classname]}"
 	
 	getRequirements
 	getDefaultValues
@@ -438,5 +462,5 @@ function getIntercomponentInfos {
 
 getCloudInfos
 getBehavioralInfos
-#getIntercomponentInfos
+getIntercomponentInfos
 
