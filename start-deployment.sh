@@ -465,6 +465,14 @@ function getManagerInfos {
 			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
 			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
 			read -p "$requirement ($isRequired): " managerProperties[$requirement]
+
+			if [ -z "${managerProperties[$requirement]}" ]; then
+				managerProperties[$requirement]=$(cat $requirementsFile | grep '(*)=.' | grep "$requirement" | awk -F '=' '{print $2}')
+				if [ -n "${managerProperties[$requirement]}" ]; then
+					echo "Using default value"
+				fi
+			fi
+
 			echo "$requirement=${managerProperties[$requirement]}"
 		done
 	}
@@ -558,6 +566,13 @@ function getMembershipInfos {
 			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
 			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
 			read -p "$requirement ($isRequired): " membershipProperties[$requirement]
+
+			if [ -z "${membershipProperties[$requirement]}" ]; then
+				membershipProperties[$requirement]=$(cat $requirementsFile | grep '(*)=.' | grep "$requirement" | awk -F '=' '{print $2}')
+				if [ -n "${membershipProperties[$requirement]}" ]; then
+					echo "Using default value"
+				fi
+			fi
 
 			echo "$requirement=${membershipProperties[$requirement]}"
 		done
