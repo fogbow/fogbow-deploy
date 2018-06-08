@@ -206,7 +206,7 @@ function getCloudInfos {
 			declare -gA computePluginProperties
 			computePluginProperties[name]=$cloudType
 			
-			requirementsFile=$(echo "$cloudTypeFiles" | grep "compute")
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "compute-")
 			echo "Requirements file: $requirementsFile"
 
 			if [ -z "$requirementsFile" ]; then
@@ -239,7 +239,7 @@ function getCloudInfos {
 			declare -gA volumePluginProperties
 			volumePluginProperties[name]=$cloudType
 			
-			requirementsFile=$(echo "$cloudTypeFiles" | grep "volume")
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "volume-")
 			echo "Requirements file: $requirementsFile"
 
 			if [ -z "$requirementsFile" ]; then
@@ -272,12 +272,12 @@ function getCloudInfos {
 			declare -gA networkPluginProperties
 			networkPluginProperties[name]=$cloudType
 			
-			requirementsFile=$(echo "$cloudTypeFiles" | grep "network")
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "network-")
 			echo "Requirements file: $requirementsFile"
 			
 			if [ -z "$requirementsFile" ]; then
 				echo "Cannot identify the $cloudType network plugin"
-				exit 104
+				exit 105
 			fi
 			
 			function getRequirements {
@@ -298,10 +298,78 @@ function getCloudInfos {
 			getRequirements
 			getDefaultValues
 		}
+
+		function getAttachmentInfos {
+			echo "Getting attachment infos"
+			
+			declare -gA attachmentPluginProperties
+			attachmentPluginProperties[name]=$cloudType
+			
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "attachment-")
+			echo "Requirements file: $requirementsFile"
+			
+			if [ -z "$requirementsFile" ]; then
+				echo "Cannot identify the $cloudType attachment plugin"
+				exit 106
+			fi
+			
+			function getRequirements {
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				for requirement in $requeriments; do
+					read -p "$requirement: " attachmentPluginProperties[$requirement]
+					echo "$requirement=${attachmentPluginProperties[$requirement]}"
+				done
+			}
+		
+			function getDefaultValues {
+				echo "Getting default values"
+			}
+			
+			attachmentPluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+			echo "Attachment plugin class name: ${attachmentPluginProperties[classname]}"
+			
+			getRequirements
+			getDefaultValues
+		}
+
+		function getComputeQuotaInfos {
+			echo "Getting compute quota infos"
+			
+			declare -gA computeQuotaPluginProperties
+			computeQuotaPluginProperties[name]=$cloudType
+			
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "computequota-")
+			echo "Requirements file: $requirementsFile"
+			
+			if [ -z "$requirementsFile" ]; then
+				echo "Cannot identify the $cloudType compute quota plugin"
+				exit 107
+			fi
+			
+			function getRequirements {
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
+				for requirement in $requeriments; do
+					read -p "$requirement: " computeQuotaPluginProperties[$requirement]
+					echo "$requirement=${computeQuotaPluginProperties[$requirement]}"
+				done
+			}
+		
+			function getDefaultValues {
+				echo "Getting default values"
+			}
+			
+			computeQuotaPluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+			echo "Compute quota plugin class name: ${computeQuotaPluginProperties[classname]}"
+			
+			getRequirements
+			getDefaultValues
+		}
 		
 		getComputeInfos
 		getVolumeInfos
 		getNetworkInfos
+		getAttachmentInfos
+		getComputeQuotaInfos
 	}
 	
 	getLocalIdentityInfos
