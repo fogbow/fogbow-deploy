@@ -29,7 +29,7 @@ function getBehavioralInfos {
 		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${federationIdentityProperties[name]}-")
 		
 		function getRequirements {
-			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
+			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
 				read -p "$requirement: " federationIdentityProperties[$requirement]
 				echo "$requirement=${federationIdentityProperties[$requirement]}"
@@ -40,11 +40,11 @@ function getBehavioralInfos {
 			echo "Getting default values"
 		}
 		
-		if [ -n "$requerimentsFile" ]; then
-			echo "Requirements file: $requerimentsFile"
-			getRequirements
-			getDefaultValues
-		fi
+		echo "Requirements file: $requerimentsFile"
+		federationIdentityProperties[classname]=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
+		echo "Federation identity plugin class name: ${federationIdentityProperties[classname]}"
+		getRequirements
+		getDefaultValues
 	}
 	
 	function getLocalUserCredentialsMapperInfos {
@@ -73,7 +73,7 @@ function getBehavioralInfos {
 		echo "Requirements file: $requerimentsFile"
 		
 		function getRequirements {
-			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
+			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
 				read -p "$requirement: " localUserCredentialsMapperProperties[$requirement]
 				echo "$requirement=${localUserCredentialsMapperProperties[$requirement]}"
@@ -84,6 +84,8 @@ function getBehavioralInfos {
 			echo "Getting default values"
 		}
 		
+		localUserCredentialsMapperProperties[classname]=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
+		echo "Local user credentials mapper plugin class name: ${localUserCredentialsMapperProperties[classname]}"
 		getRequirements
 		getDefaultValues
 	}
@@ -106,58 +108,34 @@ function getBehavioralInfos {
 			echo "Cannot identify authorization type"
 			echo "Using default type"
 			authorizationProperties[name]=$DEFAULT_AUTHORIZATION
-			echo "Authorization type: ${authorizationProperties[name]}"
-		else
-			echo "Authorization type: ${authorizationProperties[name]}"
-			requerimentsFile=$(echo "$requerimentsFiles" | grep "^${authorizationProperties[name]}-")
-		
-			echo "Requirements file: $requerimentsFile"
-		
-			function getRequirements {
-				requeriments=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
-				for requirement in $requeriments; do
-					read -p "$requirement: " authorizationProperties[$requirement]
-					echo "$requirement=${authorizationProperties[$requirement]}"
-				done
-			}
-		
-			function getDefaultValues {
-				echo "Getting default values"
-			}
-		
-			getRequirements
-			getDefaultValues
-		fi
-	}
-
-	function getBehaviorProperties {
-		declare -gA behaviorProperties
-		
-		echo "Getting behavior properties"
-		
-		if [ "${federationIdentityProperties[name]}" == "ldap" ]; then
-			behaviorProperties[fipclass]="org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin"
-		else
-			behaviorProperties[fipclass]="org.fogbowcloud.manager.core.plugins.behavior.federationidentity.DefaultFederationIdentityPlugin"
 		fi
 		
-		if [ "${localUserCredentialsMapperProperties[name]}" == "default_mapper" ]; then
-			behaviorProperties[lucmpclass]="org.fogbowcloud.manager.core.plugins.behavior.mapper.DefaultLocalUserCredentialsMapper"
-		fi
+		echo "Authorization type: ${authorizationProperties[name]}"
+		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${authorizationProperties[name]}-")
 	
-		if [ "${authorizationProperties[name]}" == "default" ]; then
-			behaviorProperties[authclass]="org.fogbowcloud.manager.core.plugins.behavior.authorization.DefaultAuthorizationPlugin"
-		fi
+		echo "Requirements file: $requerimentsFile"
 	
-		echo "Federation identity plugin class: ${behaviorProperties[fipclass]}"
-		echo "Local user credentials mapper plugin class: ${behaviorProperties[lucmpclass]}"
-		echo "Authorization plugin class: ${behaviorProperties[authclass]}"
+		function getRequirements {
+			requeriments=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
+			for requirement in $requeriments; do
+				read -p "$requirement: " authorizationProperties[$requirement]
+				echo "$requirement=${authorizationProperties[$requirement]}"
+			done
+		}
+	
+		function getDefaultValues {
+			echo "Getting default values"
+		}
+	
+		authorizationProperties[classname]=$(cat $AUTHORIZATION_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
+		echo "Authorization plugin class name: ${authorizationProperties[classname]}"
+		getRequirements
+		getDefaultValues
 	}
 
 	getFederationIdentityInfos
 	getLocalUserCredentialsMapperInfos
 	getAuthorizationInfos
-	getBehaviorProperties
 }
 
 function getCloudInfos {
