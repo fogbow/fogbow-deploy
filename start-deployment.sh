@@ -22,7 +22,7 @@ if [ -z "$INTERNAL_HOST_IP" ]; then
 	exit 1
 fi
 
-mkdir -p conf-files
+mkdir -p $CONF_FILES_DIR
 
 function getBehavioralInfos {
 	BEHAVIOR_DIR=$REQUIREMENTS_DIR/"behavior-plugins"
@@ -50,6 +50,9 @@ function getBehavioralInfos {
 		
 		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${federationIdentityProperties[name]}-")
 		
+		confFileName=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "conf_file_name" | awk -F "=" '{print $2}')
+		touch $CONF_FILES_DIR/$confFileName
+
 		function getRequirements {
 			requeriments=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
 			for requirement in $requeriments; do
@@ -57,6 +60,7 @@ function getBehavioralInfos {
 				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
 				read -p "$requirement ($isRequired): " federationIdentityProperties[$requirement]
 				echo "$requirement=${federationIdentityProperties[$requirement]}"
+				echo "$requirement=${federationIdentityProperties[$requirement]}" >> $CONF_FILES_DIR/$confFileName
 			done
 		}
 		
@@ -67,51 +71,6 @@ function getBehavioralInfos {
 		echo "Requirements file: $requerimentsFile"
 		federationIdentityProperties[classname]=$(cat $FEDERATION_PLUGINS_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
 		echo "Federation identity plugin class name: ${federationIdentityProperties[classname]}"
-		getRequirements
-		getDefaultValues
-	}
-	
-	function getLocalUserCredentialsMapperInfos {
-		LOCAL_USER_CREDENTIALS_MAPPER_DIR=$BEHAVIOR_DIR/"local-user-credentials-mapper"
-		DEFAULT_LOCAL_USER_CREDENTIALS_MAPPER="default_mapper"
-	
-		requerimentsFiles=$(ls ./$LOCAL_USER_CREDENTIALS_MAPPER_DIR)
-		localUserCredentialsMapperTypes=$(echo "$requerimentsFiles" | awk -F "-" '{print $1}')
-	
-		echo "Local user credentials mapper types: $localUserCredentialsMapperTypes"
-
-		declare -gA localUserCredentialsMapperProperties
-		read -p 'Local user credentials mapper: ' localUserCredentialsMapper
-	
-		localUserCredentialsMapperProperties[name]=$(echo "$localUserCredentialsMapperTypes" | fgrep -wx "$localUserCredentialsMapper")
-		if [ -z "${localUserCredentialsMapperProperties[name]}" ]; then
-			echo "Cannot identify local user credentials mapper type"
-			echo "Using default type"
-			localUserCredentialsMapperProperties[name]=$DEFAULT_LOCAL_USER_CREDENTIALS_MAPPER
-		fi
-		
-		echo "Local user credentials mapper type: ${localUserCredentialsMapperProperties[name]}"
-		
-		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${localUserCredentialsMapperProperties[name]}-")
-		
-		echo "Requirements file: $requerimentsFile"
-		
-		function getRequirements {
-			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
-			for requirement in $requeriments; do
-				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
-				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
-				read -p "$requirement ($isRequired): " localUserCredentialsMapperProperties[$requirement]
-				echo "$requirement=${localUserCredentialsMapperProperties[$requirement]}"
-			done
-		}
-		
-		function getDefaultValues {
-			echo "Getting default values"
-		}
-		
-		localUserCredentialsMapperProperties[classname]=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
-		echo "Local user credentials mapper plugin class name: ${localUserCredentialsMapperProperties[classname]}"
 		getRequirements
 		getDefaultValues
 	}
@@ -162,7 +121,6 @@ function getBehavioralInfos {
 	}
 
 	getFederationIdentityInfos
-	getLocalUserCredentialsMapperInfos
 	getAuthorizationInfos
 }
 
@@ -208,6 +166,51 @@ function getCloudInfos {
 		localIdentityProperties[classname]=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
 		echo "Local identity plugin class name: ${localIdentityProperties[classname]}"
 		
+		getRequirements
+		getDefaultValues
+	}
+
+	function getLocalUserCredentialsMapperInfos {
+		LOCAL_USER_CREDENTIALS_MAPPER_DIR=$BEHAVIOR_DIR/"local-user-credentials-mapper"
+		DEFAULT_LOCAL_USER_CREDENTIALS_MAPPER="default_mapper"
+	
+		requerimentsFiles=$(ls ./$LOCAL_USER_CREDENTIALS_MAPPER_DIR)
+		localUserCredentialsMapperTypes=$(echo "$requerimentsFiles" | awk -F "-" '{print $1}')
+	
+		echo "Local user credentials mapper types: $localUserCredentialsMapperTypes"
+
+		declare -gA localUserCredentialsMapperProperties
+		read -p 'Local user credentials mapper: ' localUserCredentialsMapper
+	
+		localUserCredentialsMapperProperties[name]=$(echo "$localUserCredentialsMapperTypes" | fgrep -wx "$localUserCredentialsMapper")
+		if [ -z "${localUserCredentialsMapperProperties[name]}" ]; then
+			echo "Cannot identify local user credentials mapper type"
+			echo "Using default type"
+			localUserCredentialsMapperProperties[name]=$DEFAULT_LOCAL_USER_CREDENTIALS_MAPPER
+		fi
+		
+		echo "Local user credentials mapper type: ${localUserCredentialsMapperProperties[name]}"
+		
+		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${localUserCredentialsMapperProperties[name]}-")
+		
+		echo "Requirements file: $requerimentsFile"
+		
+		function getRequirements {
+			requeriments=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep ")=" | awk -F ")" '{print $1}')
+			for requirement in $requeriments; do
+				isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+				requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+				read -p "$requirement ($isRequired): " localUserCredentialsMapperProperties[$requirement]
+				echo "$requirement=${localUserCredentialsMapperProperties[$requirement]}"
+			done
+		}
+		
+		function getDefaultValues {
+			echo "Getting default values"
+		}
+		
+		localUserCredentialsMapperProperties[classname]=$(cat $LOCAL_USER_CREDENTIALS_MAPPER_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
+		echo "Local user credentials mapper plugin class name: ${localUserCredentialsMapperProperties[classname]}"
 		getRequirements
 		getDefaultValues
 	}
@@ -413,7 +416,8 @@ function getCloudInfos {
 	}
 	
 	getLocalIdentityInfos
-	getCloudInfos
+	getLocalUserCredentialsMapperInfos
+	#getCloudInfos
 }
 
 function getIntercomponentInfos {
@@ -584,11 +588,11 @@ function getMembershipInfos {
 	getRequirements
 }
 
-getCloudInfos
+#getCloudInfos
 getBehavioralInfos
-getIntercomponentInfos
-getManagerInfos
-getReverseTunnelInfos
-getMembershipInfos
+#getIntercomponentInfos
+#getManagerInfos
+#getReverseTunnelInfos
+#getMembershipInfos
 
 
