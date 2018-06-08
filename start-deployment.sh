@@ -418,11 +418,6 @@ function getIntercomponentInfos {
 	
 	requirementsFile=$REQUIREMENTS_DIR/"intercomponent.conf"
 	echo "Requirements file: $requirementsFile"
-	
-	if [ -z "$requirementsFile" ]; then
-		echo "Cannot identify the intercomponent requirements file"
-		exit 108
-	fi
 
 	declare -gA intercomponentProperties
 	
@@ -432,6 +427,14 @@ function getIntercomponentInfos {
 			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
 			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
 			read -p "$requirement ($isRequired): " intercomponentProperties[$requirement]
+
+			if [ -z "${intercomponentProperties[$requirement]}" ]; then
+				intercomponentProperties[$requirement]=$(cat $requirementsFile | grep '(*)=.' | grep "$requirement" | awk -F '=' '{print $2}')
+				if [ -n "${intercomponentProperties[$requirement]}" ]; then
+					echo "Using default value"
+				fi
+			fi
+
 			echo "$requirement=${intercomponentProperties[$requirement]}"
 		done
 	}
@@ -441,16 +444,6 @@ function getIntercomponentInfos {
 		if [ -z "${intercomponentProperties[xmpp_server_ip]}" ]; then
 			intercomponentProperties[xmpp_server_ip]=$DMZ_HOST_IP
 			echo "xmpp_server_ip=${intercomponentProperties[xmpp_server_ip]}"
-		fi
-
-		if [ -z "${intercomponentProperties[xmpp_server_port]}" ]; then
-			intercomponentProperties[xmpp_server_port]="5327"
-			echo "xmpp_server_port=${intercomponentProperties[xmpp_server_port]}"
-		fi
-
-		if [ -z "${intercomponentProperties[xmpp_timeout]}" ]; then
-			intercomponentProperties[xmpp_timeout]="5000"
-			echo "xmpp_timeout=${intercomponentProperties[xmpp_timeout]}"
 		fi
 	}
 	
@@ -463,11 +456,6 @@ function getManagerInfos {
 	
 	requirementsFile=$REQUIREMENTS_DIR/"manager.conf"
 	echo "Requirements file: $requirementsFile"
-	
-	if [ -z "$requirementsFile" ]; then
-		echo "Cannot identify the manager requirements file"
-		exit 109
-	fi
 
 	declare -gA managerProperties
 	
@@ -500,8 +488,64 @@ function getManagerInfos {
 	getDefaultValues
 }
 
+function getReverseTunnelInfos {
+	echo "Getting reverse tunnel infos"
+	
+	requirementsFile=$REQUIREMENTS_DIR/"reverse-tunnel.conf"
+	echo "Requirements file: $requirementsFile"
+
+	declare -gA reverseTunnelProperties
+	
+	function getRequirements {
+		requeriments=$(cat $requirementsFile | grep ")=" | awk -F ")" '{print $1}')
+		for requirement in $requeriments; do
+			isRequired=$(echo "$requirement" | awk -F "(" '{print $2}')
+			requirement=$(echo "$requirement" | awk -F "(" '{print $1}')
+			read -p "$requirement ($isRequired): " reverseTunnelProperties[$requirement]
+			
+			if [ -z "${reverseTunnelProperties[$requirement]}" ]; then
+				reverseTunnelProperties[$requirement]=$(cat $requirementsFile | grep '(*)=.' | grep "$requirement" | awk -F '=' '{print $2}')
+				if [ -n "${reverseTunnelProperties[$requirement]}" ]; then
+					echo "Using default value"
+				fi
+			fi
+
+			echo "$requirement=${reverseTunnelProperties[$requirement]}"
+
+		done
+	}
+
+	function getDefaultValues {
+		echo "Getting default values"
+		if [ -z "${reverseTunnelProperties[host_key_path]}" ] || [ ! -f "${reverseTunnelProperties[host_key_path]}" ]; then
+			echo "Cannot identify the reverse tunnel host key"
+			echo "Using manager private key"
+
+			reverseTunnelProperties[host_key_path]=${managerProperties[manager_ssh_private_key_file_path]}
+			echo "host_key_path=${reverseTunnelProperties[host_key_path]}"
+		fi
+
+		if [ -z "${reverseTunnelProperties[reverse_tunnel_public_address]}" ]; then
+			echo "Cannot identify the reverse tunnel public address, using DMZ host public ip"
+			
+			reverseTunnelProperties[reverse_tunnel_public_address]=$DMZ_HOST_PUBLIC_IP
+			echo "reverse_tunnel_public_address=${reverseTunnelProperties[reverse_tunnel_public_address]}"
+		fi
+
+		if [ -z "${reverseTunnelProperties[reverse_tunnel_private_address]}" ]; then
+			echo "Cannot identify the reverse tunnel private address, using DMZ host internal ip"
+			
+			reverseTunnelProperties[reverse_tunnel_private_address]=$DMZ_HOST_IP
+			echo "reverse_tunnel_private_address=${reverseTunnelProperties[reverse_tunnel_private_address]}"
+		fi
+	}
+	
+	getRequirements
+	getDefaultValues
+}
 
 getCloudInfos
 getBehavioralInfos
 getIntercomponentInfos
 getManagerInfos
+getReverseTunnelInfos
