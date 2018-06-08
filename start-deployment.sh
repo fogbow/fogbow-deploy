@@ -161,9 +161,10 @@ function getCloudInfos {
 		echo "Local identity type: ${localIdentityProperties[name]}"
 		
 		requerimentsFile=$(echo "$requerimentsFiles" | grep "^${localIdentityProperties[name]}-")
-		
+		echo "Requirements file: $requerimentsFile"
+
 		function getRequirements {
-			requeriments=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "=" | awk -F "=" '{print $1}')
+			requeriments=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "=$" | awk -F "=" '{print $1}')
 			for requirement in $requeriments; do
 				read -p "$requirement: " localIdentityProperties[$requirement]
 				echo "$requirement=${localIdentityProperties[$requirement]}"
@@ -174,11 +175,11 @@ function getCloudInfos {
 			echo "Getting default values"
 		}
 		
-		if [ -n "$requerimentsFile" ]; then
-			echo "Requirements file: $requerimentsFile"
-			getRequirements
-			getDefaultValues
-		fi
+		localIdentityProperties[classname]=$(cat $LOCAL_PLUGINS_DIR/$requerimentsFile | grep "class" | awk -F "=" '{print $2}')
+		echo "Local identity plugin class name: ${localIdentityProperties[classname]}"
+		
+		getRequirements
+		getDefaultValues
 	}
 	
 	function getCloudInfos {
@@ -204,15 +205,17 @@ function getCloudInfos {
 			
 			declare -gA computePluginProperties
 			computePluginProperties[name]=$cloudType
-			requirementsFile=$(echo "$cloudTypeFiles" | grep "compute")
 			
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "compute")
+			echo "Requirements file: $requirementsFile"
+
 			if [ -z "$requirementsFile" ]; then
 				echo "Cannot identify the $cloudType compute plugin"
 				exit 103
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
 				for requirement in $requeriments; do
 					read -p "$requirement: " computePluginProperties[$requirement]
 					echo "$requirement=${computePluginProperties[$requirement]}"
@@ -222,8 +225,10 @@ function getCloudInfos {
 			function getDefaultValues {
 				echo "Getting default values"
 			}
+
+			computePluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+			echo "Compute plugin class name: ${computePluginProperties[classname]}"
 			
-			echo "Requirements file: $requirementsFile"
 			getRequirements
 			getDefaultValues
 		}
@@ -233,15 +238,17 @@ function getCloudInfos {
 			
 			declare -gA volumePluginProperties
 			volumePluginProperties[name]=$cloudType
-			requirementsFile=$(echo "$cloudTypeFiles" | grep "volume")
 			
+			requirementsFile=$(echo "$cloudTypeFiles" | grep "volume")
+			echo "Requirements file: $requirementsFile"
+
 			if [ -z "$requirementsFile" ]; then
 				echo "Cannot identify the $cloudType volume plugin"
 				exit 104
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
 				for requirement in $requeriments; do
 					read -p "$requirement: " volumePluginProperties[$requirement]
 					echo "$requirement=${volumePluginProperties[$requirement]}"
@@ -252,7 +259,9 @@ function getCloudInfos {
 				echo "Getting default values"
 			}
 			
-			echo "Requirements file: $requirementsFile"
+			volumePluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+			echo "Volume plugin class name: ${volumePluginProperties[classname]}"
+			
 			getRequirements
 			getDefaultValues
 		}
@@ -262,7 +271,9 @@ function getCloudInfos {
 			
 			declare -gA networkPluginProperties
 			networkPluginProperties[name]=$cloudType
+			
 			requirementsFile=$(echo "$cloudTypeFiles" | grep "network")
+			echo "Requirements file: $requirementsFile"
 			
 			if [ -z "$requirementsFile" ]; then
 				echo "Cannot identify the $cloudType network plugin"
@@ -270,7 +281,7 @@ function getCloudInfos {
 			fi
 			
 			function getRequirements {
-				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=" | awk -F "=" '{print $1}')
+				requeriments=$(cat ./$CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "=$" | awk -F "=" '{print $1}')
 				for requirement in $requeriments; do
 					read -p "$requirement: " networkPluginProperties[$requirement]
 					echo "$requirement=${networkPluginProperties[$requirement]}"
@@ -281,7 +292,9 @@ function getCloudInfos {
 				echo "Getting default values"
 			}
 			
-			echo "Requirements file: $requirementsFile"
+			networkPluginProperties[classname]=$(cat $CLOUD_TYPE_DIR/$cloudType/$requirementsFile | grep "class" | awk -F "=" '{print $2}')
+			echo "Network plugin class name: ${networkPluginProperties[classname]}"
+			
 			getRequirements
 			getDefaultValues
 		}
