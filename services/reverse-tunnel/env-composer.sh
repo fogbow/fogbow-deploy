@@ -1,11 +1,21 @@
 #!/bin/bash
 DIR_BASE=$(pwd)
+CONF_FILES_DIR=$DIR_BASE/"conf-files"
 
-CONF_FILE_PATH=$1
+CONF_FILE_PATH=$CONF_FILES_DIR/"reverse-tunnel.conf"
 HOST_KEY_PATTERN="host_key_path"
 
-HOST_KEY_FILE_PATH=$(cat $CONF_FILE_PATH | grep $HOST_KEY_PATTERN | awk -F "=" '{print $2}')
+HOST_KEY_FILE_PATH=$(grep $HOST_KEY_PATTERN $CONF_FILE_PATH | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
 HOST_KEY_FILE_NAME=$(basename $HOST_KEY_FILE_PATH)
+
+if [ -z "$HOST_KEY_FILE_PATH" ] || [ ! -f "$HOST_KEY_FILE_PATH" ]; then
+	echo "Cannot identify the host key file, using manager private key"
+	MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
+	
+	MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
+	HOST_KEY_FILE_PATH=$(grep $HOST_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	HOST_KEY_FILE_NAME=$(basename $HOST_KEY_FILE_PATH)
+fi
 
 echo "Host key file path: $HOST_KEY_FILE_PATH"
 echo "Host key file name: $HOST_KEY_FILE_NAME"
