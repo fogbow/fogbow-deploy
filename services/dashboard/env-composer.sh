@@ -27,8 +27,10 @@ CONF_FILE_NAME="local_settings.py"
 
 yes | cp -f $BASE_DIR/$CONF_FILE_NAME".example" $BASE_DIR/$CONF_FILE_NAME
 
+FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"behavior-plugins"/"federation-identity"/
+
 if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
-	LDAP_CONF_FILE=$CONF_FILES_DIR/"behavior-plugin"/"ldap-identity-plugin.conf"
+	LDAP_CONF_FILE=$FEDERATION_IDENTITY_DIR/"ldap-identity-plugin.conf"
 	
 	MANAGER_AUTH_TYPE="ldap"
 	
@@ -49,21 +51,37 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	PRIVATE_KEY_PATH_PATTERN="private_key_path"
 	PRIVATE_KEY_PATH=$(grep $PRIVATE_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
 	PRIVATE_KEY_NAME=$(basename $PRIVATE_KEY_PATH)
+	
+	echo "Private key path: $PRIVATE_KEY_PATH"
+	
 	yes | cp -f $PRIVATE_KEY_PATH $BASE_DIR/$PRIVATE_KEY_NAME
 	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_DIR/$PRIVATE_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	
+	echo "Container public key path: $CONTAINER_DIR/$PRIVATE_KEY_NAME"
 
 	PUBLIC_KEY_PATH_PATTERN="private_key_path"
 	PUBLIC_KEY_PATH=$(grep $PUBLIC_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
 	PUBLIC_KEY_NAME=$(basename $PUBLIC_KEY_PATH)
+	
+	echo "Public key path: $PUBLIC_KEY_PATH"
+	
 	yes | cp -f $PUBLIC_KEY_PATH $BASE_DIR/$PUBLIC_KEY_NAME
 	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_DIR/$PUBLIC_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	
+	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
 	LDAP_BASE_PATTERN="ldap_base"
 	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	
+	echo "LDAP base: $FOGBOW_LDAP_BASE"
+	
 	sed -i "s!.*# FOGBOW_LDAP_BASE.*!FOGBOW_LDAP_BASE = '$FOGBOW_LDAP_BASE'!" $BASE_DIR/$CONF_FILE_NAME
 
 	LDAP_ENCRYPT_PATTERN="ldap_encrypt_type"
 	FOGBOW_LDAP_ENCRYPT=$(grep $LDAP_ENCRYPT_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	
+	echo "LDAP encrypt type: $FOGBOW_LDAP_ENCRYPT"
+	
 	sed -i "s!.*# FOGBOW_LDAP_ENCRYPT.*!FOGBOW_LDAP_ENCRYPT = '$FOGBOW_LDAP_ENCRYPT'!" $BASE_DIR/$CONF_FILE_NAME
 fi
 
