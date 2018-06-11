@@ -1,12 +1,24 @@
 #!/bin/bash
-
+DIR=$(pwd)
+CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/dashboard"
 CONTAINER_DIR="/root/fogbow-dashboard-core"
-MANAGER_IP=$1
-MANAGER_PORT=$2
 
-MEMBERSHIP_IP=$3
-MEMBERSHIP_PORT=$4
+# Getting manager and membership ip and port
+
+IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+
+MANAGER_IP=$INTERNAL_HOST_IP
+
+PORT_PATTERN="server_port"
+MANAGER_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+
+MEMBERSHIP_IP=$INTERNAL_HOST_IP
+MEMBERSHIP_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+
+echo "Manager url: $MANAGER_IP:$MANAGER_PORT"
+echo "Membership url: $MEMBERSHIP_IP:$MEMBERSHIP_PORT"
 
 MANAGER_AUTH_TYPE=$5
 MANAGER_AUTH_ENDPOINT=$6
