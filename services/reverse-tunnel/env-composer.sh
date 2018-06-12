@@ -10,11 +10,8 @@ HOST_KEY_FILE_NAME=$(basename $HOST_KEY_FILE_PATH)
 
 HOST_KEY_PATH_PATTERN="host_key_path"
 
-if [ -z "$HOST_KEY_FILE_PATH" ] || [ ! -f "$HOST_KEY_FILE_PATH" ]; then
+if [ -z "$HOST_KEY_FILE_PATH" ]; then
 	echo "Cannot identify the host key file, using manager private key"
-	
-	# Replacing HOST_KEY_FILE_PATH with an empty string
-	sed -i "s#$HOST_KEY_PATH_PATTERN=$HOST_KEY_FILE_PATH#$HOST_KEY_PATH_PATTERN=#" ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
 	
 	MANAGER_CONF_FILES_DIR=$DIR_BASE/"services"/"manager-core"/"conf-files"
 	MANAGER_CONF_FILE=$MANAGER_CONF_FILES_DIR/"manager.conf"
