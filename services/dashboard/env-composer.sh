@@ -7,21 +7,21 @@ CONTAINER_DIR="/root/fogbow-dashboard-core"
 # Getting manager and membership ip and port
 
 IP_PATTERN="internal_host_private_ip"
-INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
 MANAGER_IP=$INTERNAL_HOST_IP
 
 PORT_PATTERN="server_port"
-MANAGER_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+MANAGER_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
 
 MEMBERSHIP_IP=$INTERNAL_HOST_IP
-MEMBERSHIP_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+MEMBERSHIP_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
 
 echo "Manager url: $MANAGER_IP:$MANAGER_PORT"
 echo "Membership url: $MEMBERSHIP_IP:$MEMBERSHIP_PORT"
 
 AUTH_TYPE_PATTERN="federation_identity_plugin_class"
-AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"behavior.conf" | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"behavior.conf" | awk -F "=" '{print $2}')
 
 CONF_FILE_NAME="local_settings.py"
 
@@ -35,7 +35,7 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	MANAGER_AUTH_TYPE="ldap"
 	
 	MANAGER_AUTH_URL_PATTERN="ldap_identity_url"
-	MANAGER_AUTH_ENDPOINT=$(grep $MANAGER_AUTH_URL_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	MANAGER_AUTH_ENDPOINT=$(grep $MANAGER_AUTH_URL_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
 	
 	echo "Manager auth type: $MANAGER_AUTH_TYPE"
 	echo "Manager auth endpoint: $MANAGER_AUTH_ENDPOINT"
@@ -49,7 +49,7 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	sed -i "s#.*FOGBOW_FEDERATION_AUTH_TYPE.*#FOGBOW_FEDERATION_AUTH_TYPE = 'ldap'#" $BASE_DIR/$CONF_FILE_NAME
 
 	PRIVATE_KEY_PATH_PATTERN="private_key_path"
-	PRIVATE_KEY_PATH=$(grep $PRIVATE_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	PRIVATE_KEY_PATH=$(grep $PRIVATE_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
 	PRIVATE_KEY_NAME=$(basename $PRIVATE_KEY_PATH)
 	
 	echo "Private key path: $PRIVATE_KEY_PATH"
@@ -59,8 +59,8 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	
 	echo "Container public key path: $CONTAINER_DIR/$PRIVATE_KEY_NAME"
 
-	PUBLIC_KEY_PATH_PATTERN="private_key_path"
-	PUBLIC_KEY_PATH=$(grep $PUBLIC_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	PUBLIC_KEY_PATH_PATTERN="public_key_path"
+	PUBLIC_KEY_PATH=$(grep $PUBLIC_KEY_PATH_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
 	PUBLIC_KEY_NAME=$(basename $PUBLIC_KEY_PATH)
 	
 	echo "Public key path: $PUBLIC_KEY_PATH"
@@ -71,14 +71,14 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
 	LDAP_BASE_PATTERN="ldap_base"
-	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
 	
 	echo "LDAP base: $FOGBOW_LDAP_BASE"
 	
 	sed -i "s!.*# FOGBOW_LDAP_BASE.*!FOGBOW_LDAP_BASE = '$FOGBOW_LDAP_BASE'!" $BASE_DIR/$CONF_FILE_NAME
 
 	LDAP_ENCRYPT_PATTERN="ldap_encrypt_type"
-	FOGBOW_LDAP_ENCRYPT=$(grep $LDAP_ENCRYPT_PATTERN $LDAP_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+	FOGBOW_LDAP_ENCRYPT=$(grep $LDAP_ENCRYPT_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
 	
 	echo "LDAP encrypt type: $FOGBOW_LDAP_ENCRYPT"
 	
