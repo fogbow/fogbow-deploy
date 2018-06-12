@@ -6,7 +6,7 @@ LOG4J_FILE_NAME="log4j.properties"
 CONF_FILE_NAME="reverse-tunnel.conf"
 
 HOST_KEY_PATTERN="host_key_path"
-HOST_KEY_NAME=$(cat $CONF_FILE_NAME | grep $HOST_KEY_PATTERN | awk -F "=" '{print $2}' | basename)
+HOST_KEY_NAME=$(grep $HOST_KEY_PATTERN $CONF_FILE_NAME | awk -F "=" '{print $2}' | basename)
 
 IMAGE_NAME="fogbow/reverse-tunnel:latest"
 CONTAINER_NAME="reverse-tunnel"
