@@ -23,7 +23,7 @@ MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
 MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
 MANAGER_PUBLIC_KEY_PATTERN="manager_ssh_public_key_file_path"
 
-MANAGER_PRIVATE_KEY_PATH=$(grep $MANAGER_PRIVATE_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "#" '{print $1}' | awk -F "=" '{print $2}')
+MANAGER_PRIVATE_KEY_PATH=$(grep $MANAGER_PRIVATE_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 if [ -z "$MANAGER_PRIVATE_KEY_PATH" ] || [ ! -f "$MANAGER_PRIVATE_KEY_PATH" ]; then
 	echo "Cannot identify the manager ssh private key"
@@ -50,7 +50,7 @@ CONF_FILES_LIST=$(ls ./$BASE_DIR/$CONF_FILES_DIR)
 SUFFIX_FILE_PATH="path"
 for conf_file_name in $CONF_FILES_LIST; do
 
-	file_path_values=$(cat ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name | grep $SUFFIX_FILE_PATH | awk -F "=" '{print $2}')
+	file_path_values=$(grep $SUFFIX_FILE_PATH ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name | awk -F "=" '{print $2}')
 	
 	for file_path_value in $file_path_values; do
 		if [ -n "$file_path_value" ]; then
@@ -62,3 +62,25 @@ for conf_file_name in $CONF_FILES_LIST; do
 		fi	
 	done
 done
+
+
+# Adding xmpp server ip, reverse tunnel public and private ip
+
+HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
+
+DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
+DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+
+DMZ_HOST_PUBLIC_IP_PATTERN="dmz_host_public_ip"
+DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+
+INTERCOMPONENT_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"intercomponent.conf"
+XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
+sed -i "s#$XMPP_SERVER_IP_PATTERN=#$XMPP_SERVER_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $INTERCOMPONENT_CONF_FILE
+
+REVERSE_TUNNEL_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"reverse-tunnel.conf"
+REVERSE_TUNNEL_PUBLIC_IP_PATTERN="reverse_tunnel_public_address"
+REVERSE_TUNNEL_PRIVATE_IP_PATTERN="reverse_tunnel_private_address"
+
+sed -i "s#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=$DMZ_HOST_PUBLIC_IP#" $REVERSE_TUNNEL_CONF_FILE
+sed -i "s#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $REVERSE_TUNNEL_CONF_FILE
