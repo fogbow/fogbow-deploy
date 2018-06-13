@@ -9,8 +9,11 @@ CONF_FILE_NAME="membership.conf"
 IMAGE_NAME="fogbow/membership-service:latest"
 CONTAINER_NAME="membership-service"
 
-MEMBERSHIP_HOST_PORT=$1
+SERVER_PORT_PATTERN="server_port"
+MEMBERSHIP_HOST_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILE_NAME | awk -F "=" '{print $2}')
 MEMBERSHIP_CONTAINER_PORT="8080"
+
+echo "Membership port: $MEMBERSHIP_HOST_PORT"
 
 sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
