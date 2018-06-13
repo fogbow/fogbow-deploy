@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SERVICES_DIR="services"
+
+MANAGER_SERVICE_DIR=$SERVICES_DIR/"manager-core"
+REVERSE_TUNNEL_SERVICE_DIR=$SERVICES_DIR/"reverse-tunnel"
+XMPP_SERVICE_DIR=$SERVICES_DIR/"xmpp-server"
+MEMBERSHIP_SERVICE_DIR=$SERVICES_DIR/"membership-service"
+DASHBOARD_SERVICE_DIR=$SERVICES_DIR/"dashboard"
+
+SERVICES_LIST="$MANAGER_SERVICE_DIR $REVERSE_TUNNEL_SERVICE_DIR $XMPP_SERVICE_DIR $MEMBERSHIP_SERVICE_DIR $DASHBOARD_SERVICE_DIR"
+
+for service in $SERVICES_LIST; do
+	echo "Running $service/env-composer.sh"
+	bash $service/"env-composer.sh"
+done
