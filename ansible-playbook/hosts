@@ -1,0 +1,15 @@
+[localhost]
+127.0.0.1
+
+[dmz-machine]
+# DMZ VM IP
+[dmz-machine:vars]
+ansible_ssh_private_key_file=
+ansible_python_interpreter=/usr/bin/python3
+
+[internal-machine]
+# Internal VM IP
+[internal-machine:vars] 
+ansible_ssh_private_key_file=
+ansible_python_interpreter=/usr/bin/python3
+

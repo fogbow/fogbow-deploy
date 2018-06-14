@@ -1,0 +1,4 @@
+---
+- include: setup-conf-files.yml
+- include: transfer-services.yml
+- include: deploy-each-service.yml
