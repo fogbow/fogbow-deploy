@@ -1,5 +1,5 @@
 ---
-- include: install-dependencies.yml
-- include: setup-conf-files.yml
-- include: transfer-services.yml
-- include: deploy-each-service.yml
+- import_playbook: install-dependencies.yml
+- import_playbook: setup-conf-files.yml
+- import_playbook: transfer-services.yml
+- import_playbook: deploy-each-service.yml
