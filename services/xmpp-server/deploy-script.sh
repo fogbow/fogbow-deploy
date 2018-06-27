@@ -7,19 +7,25 @@ CONF_FILE_NAME="prosody.cfg.lua"
 IMAGE_NAME="fogbow/xmpp-server:latest"
 CONTAINER_NAME="xmpp-server"
 
-C2S_PORT="5222"
-S2S_PORT="5269"
-# Default: "5347"
-C2C_PORT=$1
+C2S_CONTAINER_PORT="5222"
+S2S_CONTAINER_PORT="5269"
+
+INTERCOMPONENT_FILE_PATH="intercomponent.conf"
+SERVER_PORT_PATTERN="xmpp_server_port"
+
+C2C_PORT=$(grep $SERVER_PORT_PATTERN $INTERCOMPONENT_FILE_PATH | awk -F "=" '{print $2}')
+C2C_CONTAINER_PORT="5347"
 
 sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
+echo "Xmpp C2S port: $C2C_PORT"
+
 sudo docker run -tdi --name $CONTAINER_NAME \
-	-p $C2S_PORT:$C2S_PORT \
-	-p $S2S_PORT:$S2S_PORT \
-	-p $C2C_PORT:$C2C_PORT \
+	-p $C2S_CONTAINER_PORT:$C2S_CONTAINER_PORT \
+	-p $S2S_CONTAINER_PORT:$S2S_CONTAINER_PORT \
+	-p $C2C_PORT:$C2C_CONTAINER_PORT \
 	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME:ro \
 	$IMAGE_NAME
 

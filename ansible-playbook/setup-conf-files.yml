@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    script_runner: sh start-env-composers.sh
+    script_path: ../
+  tasks:
+    - name: Setting up configuration files
+      shell: "{{ script_runner }}"
+      args:
+        chdir: "{{ script_path }}"

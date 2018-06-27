@@ -1,0 +1,34 @@
+---
+- hosts: dmz-machine
+  vars:
+    xmpp_dir_name: xmpp-server
+    dashboard_dir_name: dashboard
+    reverse_tunnel: reverse-tunnel
+    fogbow_components: /home/ubuntu/fogbow-components
+    deploy_script_runner: sh deploy-script.sh
+  tasks:
+    - name: Deploying services in DMZ Machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
+        - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
+        - "{{ fogbow_components }}/{{ reverse_tunnel }}"
+
+- hosts: internal-machine
+  vars:
+    manager_dir_name: manager-core
+    membership_dir_name: membership-service
+    fogbow_components: /home/ubuntu/fogbow-components
+    deploy_script_runner: sh deploy-script.sh
+  tasks:
+    - name: Deploying services in Internal Machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ manager_dir_name }}"
+        - "{{ fogbow_components }}/{{ membership_dir_name }}"

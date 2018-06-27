@@ -23,4 +23,5 @@ ENV HOME /root
 # Define working directory.
 WORKDIR /root
 
-CMD service prosody restart
+CMD service prosody restart && tail -f /dev/null
+

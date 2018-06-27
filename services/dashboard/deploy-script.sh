@@ -4,11 +4,11 @@ DIR_PATH=$(pwd)
 IMAGE_NAME="fogbow/dashboard:latest"
 CONTAINER_NAME="dashboard"
 
-CONTAINER_BASE_PATH="root/fogbow-dashboard-core"
+CONTAINER_BASE_PATH="/root/fogbow-dashboard-core"
 CONF_FILE_NAME="local_settings.py"
 CONTAINER_CONF_FILE_PATH="openstack_dashboard/local"
 
-DASHBOARD_PORT=$1
+DASHBOARD_PORT="80"
 CONTAINER_PORT="8080"
 
 sudo docker pull $IMAGE_NAME

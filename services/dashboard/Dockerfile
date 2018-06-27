@@ -33,4 +33,4 @@ WORKDIR /root/fogbow-dashboard-core
 RUN \
   yes | ./run_tests.sh
 
-CMD nohup ./run_tests.sh --runserver 0.0.0.0:8080 &
+CMD (nohup ./run_tests.sh --runserver 0.0.0.0:8080 &) && tail -f /dev/null

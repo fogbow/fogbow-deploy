@@ -1,0 +1,33 @@
+---
+- hosts: dmz-machine
+  vars:
+    services_path: ../services
+    xmpp_dir_name: xmpp-server
+    dashboard_dir_name: dashboard
+    reverse_tunnel: reverse-tunnel
+    fogbow_components: /home/ubuntu/fogbow-components/
+  tasks:
+    - name: Copying services to DMZ-Machine
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+      with_items:
+        - "{{ services_path }}/{{ xmpp_dir_name }}"
+        - "{{ services_path }}/{{ dashboard_dir_name }}"
+        - "{{ services_path }}/{{ reverse_tunnel }}"
+
+- hosts: internal-machine
+  vars:
+    services_path: ../services
+    manager_dir_name: manager-core
+    membership_dir_name: membership-service
+    fogbow_components: /home/ubuntu/fogbow-components/
+  tasks:
+    - name: Copying services to Internal-Machine
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+      with_items:
+        - "{{ services_path }}/{{ manager_dir_name }}"
+        - "{{ services_path }}/{{ membership_dir_name }}"
+

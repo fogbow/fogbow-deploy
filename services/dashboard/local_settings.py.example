@@ -8,9 +8,9 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Endpoint Manager
-FOGBOW_MANAGER_ENDPOINT = 'http://localhost:8182' # Mandatory
+FOGBOW_MANAGER_ENDPOINT = '' # Mandatory, Ex: http://localhost:8188
 # Endpoint Membership
-FOGBOW_MEMBERSHIP_ENDPOINT = 'http://localhost:8188' # Mandatory
+FOGBOW_MEMBERSHIP_ENDPOINT = '' # Mandatory, Ex: http://localhost:8188
 
 FOGBOW_FEDERATION_AUTH_ENDPOINT = '' # Mandatory
 # types : keystone, opennebula, voms, raw_opennebula, raw_keystone, shibboleth, naf, ldap
