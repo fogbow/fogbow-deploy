@@ -1,5 +1,4 @@
 # Fogbow Playbook
-==========
 
 This tutorial provides an easy way to deploy the entire fogbow infrastructure.
 
