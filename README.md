@@ -10,14 +10,6 @@ Before performing the installation it is necessary to make some administrative s
 
 It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address.
 
-### Firewall configuration
-
-The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following ports open:
-
-1. XMPP server to server communication port (**Default**: *5327*);
-2. Reverse tunnel ssh port range;
-3. Reverse tunnel service port range.
-
 ## Installation
 
 ### Environment setup
