@@ -48,7 +48,7 @@ File: [behavior.conf](https://github.com/fogbow/fogbow-playbook/blob/master/conf
 
 After the **behavior.conf** edition is necessary to edit the federation identity, authorization and local user credentials mapper configuration files that were configured in the **behavior.conf**.
 
-#### Federation identity 
+#### Federation identity configuration
 
 See the federation identity configuration files list [here](https://github.com/fogbow/fogbow-playbook/tree/master/conf-files/behavior-plugins/federation-identity). Please, configure the federation identity used in the **behavior.conf**.
 
@@ -60,7 +60,7 @@ File: [ldap-identity-plugin.conf](https://github.com/fogbow/fogbow-playbook/blob
 
 Configuration is not necessary.
 
-#### Authorization 
+#### Authorization configuration
 
 See the authorization configuration files list [here](https://github.com/fogbow/fogbow-playbook/tree/master/conf-files/behavior-plugins/authorization). Please, configure the authorization used in the **behavior.conf**.
 
@@ -68,7 +68,7 @@ See the authorization configuration files list [here](https://github.com/fogbow/
 
 Configuration is not necessary.
 
-#### Local user credentials mapper 
+#### Local user credentials mapper configuration
 
 See the local user credentials mapper configuration files list [here](https://github.com/fogbow/fogbow-playbook/tree/master/conf-files/behavior-plugins/local-user-credentials-mapper). Please, configure the local user credentials mapper used in the **behavior.conf**.
 
