@@ -74,7 +74,7 @@ See the federation identity configuration files list [here](conf-files/behavior-
 
 File: [ldap-identity-plugin.conf](conf-files/behavior-plugins/federation-identity/ldap-identity-plugin.conf)
 
-To know more about the ***ldap-identity-plugin.conf*** constants please see [configure federation identity](install-configure-fogbow-manager.md#--federation-indentity).
+To know more about the ***ldap-identity-plugin.conf*** constants please see [configure federation identity](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--federation-indentity).
 
 - **Default**
 
@@ -102,7 +102,7 @@ To know more about the ***default_mapper.conf*** constants please see [please-gi
 
 File: [cloud.conf](conf-files/cloud.conf)
 
-To know more about the ***cloud.conf*** constants please see [configure cloud plugins](install-configure-fogbow-manager.md#--cloud-specific-plugins).
+To know more about the ***cloud.conf*** constants please see [configure cloud plugins](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
 After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins).
 
@@ -110,7 +110,7 @@ After the **cloud.conf** edition is necessary to edit the cloud type configurati
 
 File: [openstack.conf](conf-files/cloud-plugins/openstack.conf)
 
-To know more about the ***openstack.conf*** constants please see [configure openstack plugin](install-configure-fogbow-manager.md#--cloud-specific-plugins).
+To know more about the ***openstack.conf*** constants please see [configure openstack plugin](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
 #### Manager configuration
 
@@ -120,13 +120,13 @@ The ***server_port*** configuration constant is the port that the Fogbow Manager
 
 The ***manager_ssh_public_key_file_path*** and ***manager_ssh_private_key_file_path*** configuration constants are not required, however if they are not configured the *fogbow-playbook* will generate the keys automatically placing them at the *fogbow-playbook* directory.
 
-To know more about the ***manager.conf*** constants please see [configure manager](install-configure-fogbow-manager.md#configure).
+To know more about the ***manager.conf*** constants please see [configure manager](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#configure).
 
 #### Intercomponent configuration
 
 File: [intercomponent.conf](conf-files/intercomponent.conf)
 
-To know more about the ***intercomponent.conf*** constants please see [configure xmpp server](install-configure-xmpp.md#configure).
+To know more about the ***intercomponent.conf*** constants please see [configure xmpp server](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-xmpp.md#configure).
 
 #### Membership configuration
 
@@ -134,7 +134,7 @@ File: [membership.conf](conf-files/membership.conf)
 
 The ***server_port*** configuration constant is the port that the Membership component will server requests in the **internal-host**, note that the Membership service ***server_port*** should be different of the Manager ***server_port***.
 
-To know more about the ***membership.conf*** constants please see [configure membership](install-configure-fogbow-rendezvous.md#configure).
+To know more about the ***membership.conf*** constants please see [configure membership](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-rendezvous.md#configure).
 
 #### Reverse tunnel configuration
 
@@ -144,7 +144,7 @@ The ***host_key_path*** configuration constant is not required, however if it is
 
 For the configuration constants ***reverse_tunnel_port*** and ***reverse_tunnel_http_port*** do not choose the 80 port because this port is used to server the Dashboard front-end in the **dmz-host**.
 
-To know more about the ***reverse-tunnel.conf*** constants please see [configure reverse tunnel](install-configure-reverse-tunnel.md#configure).
+To know more about the ***reverse-tunnel.conf*** constants please see [configure reverse tunnel](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-reverse-tunnel.md#configure).
 
 ### Run
 
