@@ -33,5 +33,5 @@ RUN \
 
 # Define working directory.
 WORKDIR /root/fogbow-manager-core
-  
-CMD /bin/bash bin/start-manager > log.out 2> log.err && tail -f /dev/null
+
+CMD ./mvnw spring-boot:run -Drun.arguments="src/main/resources/private" & > log.out 2> log.err && tail -f /dev/null
