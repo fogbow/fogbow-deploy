@@ -19,7 +19,7 @@ The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following po
 3. Reverse tunnel external services port range;
 4. Dashboard server port (**Default**: *80*).
 
-The **dmz-host** should be with the following ports with ***internal access***:
+And with the following ports with ***internal access***:
 
 1. XMPP component to server communication port (**Default**: *5222*);
 2. XMPP component to component communication port (**Default**: *5347*);
