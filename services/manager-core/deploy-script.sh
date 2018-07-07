@@ -3,7 +3,7 @@
 DIR_PATH=$(pwd)
 CONF_FILES_DIR="conf-files"
 CONTAINER_BASE_PATH="/root/fogbow-manager-core"
-CONTAINER_CONF_FILES_DIR=".fogbow"
+CONTAINER_CONF_FILES_DIR="/src/main/resources/private"
 
 IMAGE_NAME="fogbow/manager-core:latest"
 CONTAINER_NAME="manager-core"
