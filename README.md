@@ -8,7 +8,7 @@ Before performing the installation it is necessary to make some administrative s
 
 ### Hosts
 
-It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address.
+It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address. On the **dmz-host** there will be the [reverse-tunnel](https://github.com/fogbow/fogbow-reverse-tunnel), [dashboard](https://github.com/fogbow/fogbow-dashboard-core) and [xmpp-server](https://prosody.im/doc/xmpp). On the **internal-host** there will be the [manager-core](https://github.com/fogbow/fogbow-manager-core) and [membership-service](https://github.com/fogbow/fogbow-membership-service).
 
 ### Firewall configuration
 
