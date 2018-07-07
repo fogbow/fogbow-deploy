@@ -37,6 +37,8 @@ The **internal-host** should be in the private network with the following ports 
 
 It is necessary to configure the DNS to enable the **dmz-host** to receive XMPP messages. This DNS entry is the **XMPP ID** a.k.a **member-site-id** of the Fogbow installation. This configuration associates the public IP of the **dmz-host** to its **XMPP ID**.
 
+Futhermore, you can configure the DNS to enable the **dmz-host** to receive HTTP messages in the **dashboard server port** associating a DNS entry to **dmz-host** public IP and **dashboard server port**.
+
 ### Cloud configuration
 
 Fogbow uses a Mapper plugin to map federation users to users that are known in the local cloud. The simplest way to do that is to create a single user in the local cloud that is used to map any federation user that submits requests. The credentials used by this user to get access to resources in the local cloud are used to configure the Mapper plugin (details will be presented later).
