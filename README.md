@@ -8,15 +8,30 @@ Before performing the installation it is necessary to make some administrative s
 
 ### Hosts
 
-It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address. On the **dmz-host** there will be the [reverse-tunnel](https://github.com/fogbow/fogbow-reverse-tunnel), [dashboard](https://github.com/fogbow/fogbow-dashboard-core) and [xmpp-server](https://prosody.im/doc/xmpp). On the **internal-host** there will be the [manager-core](https://github.com/fogbow/fogbow-manager-core) and [membership-service](https://github.com/fogbow/fogbow-membership-service).
+It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address. On the **dmz-host** there will be the [reverse tunnel](https://github.com/fogbow/fogbow-reverse-tunnel), [dashboard](https://github.com/fogbow/fogbow-dashboard-core) and [xmpp server](https://prosody.im/doc/xmpp). On the **internal-host** there will be the [manager core](https://github.com/fogbow/fogbow-manager-core) and [membership service](https://github.com/fogbow/fogbow-membership-service).
 
 ### Firewall configuration
 
-The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following ports open:
+The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following ports with ***external access***:
 
-1. XMPP server to server communication port (**Default**: *5327*);
+1. XMPP server to server communication port (**Default**: *5269*);
 2. Reverse tunnel ssh port range;
-3. Reverse tunnel service port range.
+3. Reverse tunnel external services port range;
+4. Dashboard server port (**Default**: *80*).
+
+The **dmz-host** should be with the following ports with ***internal access***:
+
+1. XMPP component to server communication port (**Default**: *5222*);
+2. XMPP component to component communication port (**Default**: *5347*);
+3. Reverse tunnel HTTP server port (**Default**: *8000*);
+4. SSH port.
+
+The **internal-host** should be in the private network with the following ports with ***internal access***:
+
+1. XMPP component communication port (**Default**: *5327*);
+2. Manager core HTTP server port (**Default**: *8000*);
+3. Membership service HTTP server port (**Default**: *9000*);
+4. SSH port.
 
 ### DNS configuration
 
