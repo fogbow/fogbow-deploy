@@ -81,7 +81,7 @@ File: [behavior.conf](conf-files/behavior.conf)
 
 To know more about the ***behavior.conf*** constants please see [please-give-me-an-explanation-link](http://www.fogbowcloud.org).
 
-After the **behavior.conf** edition is necessary to edit the federation identity, authorization and local user credentials mapper configuration files that were configured in the **behavior.conf**.
+After the **behavior.conf** edition is necessary to edit the federation identity, authorization and local user credentials mapper configuration files that were configured in the **behavior.conf**. These editions should be made in the **behavior-plugins** directory.
 
 #### Federation identity configuration
 
@@ -121,7 +121,7 @@ File: [cloud.conf](conf-files/cloud.conf)
 
 To know more about the ***cloud.conf*** constants please see [configure cloud plugins](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
-After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins).
+After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins). This edition should be made in the **cloud-plugins** directory.
 
 - **OpenStack**
 
