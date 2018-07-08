@@ -25,7 +25,9 @@ sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
-echo "Xmpp C2S port: $C2C_PORT"
+echo "Xmpp S2S port: $S2S_PORT"
+echo "Xmpp C2S port: $C2S_PORT"
+echo "Xmpp C2C port: $C2C_PORT"
 
 sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $C2S_PORT:$C2S_CONTAINER_PORT \
