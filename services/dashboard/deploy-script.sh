@@ -8,7 +8,14 @@ CONTAINER_BASE_PATH="/root/fogbow-dashboard-core"
 CONF_FILE_NAME="local_settings.py"
 CONTAINER_CONF_FILE_PATH="openstack_dashboard/local"
 
-DASHBOARD_PORT="80"
+MANAGER_CONF_FILE="manager.conf"
+DASHBOARD_PORT_PATTERN="fogbow_dashboard_server_port"
+DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
+
+if [ -z "$DASHBOARD_PORT" ]; then
+	DASHBOARD_PORT="80"
+fi
+
 CONTAINER_PORT="8080"
 
 sudo docker pull $IMAGE_NAME
