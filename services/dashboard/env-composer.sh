@@ -4,8 +4,11 @@ CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/dashboard"
 CONTAINER_DIR="/root/fogbow-dashboard-core"
 
-# Getting manager and membership ip and port
+MANAGER_CONF_FILE="manager.conf"
 
+yes | cp -f $CONF_FILES_DIR/$MANAGER_CONF_FILE $BASE_DIR/$MANAGER_CONF_FILE
+
+# Getting manager and membership ip and port\
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
