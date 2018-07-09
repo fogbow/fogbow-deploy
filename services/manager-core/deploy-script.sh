@@ -9,7 +9,7 @@ IMAGE_NAME="fogbow/manager-core:latest"
 CONTAINER_NAME="manager-core"
 
 MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
-SERVER_PORT_PATTERN="server_port"
+SERVER_PORT_PATTERN="manager_server_port"
 MANAGER_PORT=$(grep $SERVER_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 CONTAINER_PORT="8080"
 
