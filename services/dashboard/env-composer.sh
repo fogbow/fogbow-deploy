@@ -2,7 +2,12 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/dashboard"
+
+EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
+mkdir -p $EXTRA_FILES_DIR
+
 CONTAINER_DIR="/root/fogbow-dashboard-core"
+CONTAINER_EXTRA_FILES_DIR=$CONTAINER_DIR/"extra-files"
 
 MANAGER_CONF_FILE="manager.conf"
 
@@ -59,8 +64,8 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	
 	echo "Private key path: $PRIVATE_KEY_PATH"
 	
-	yes | cp -f $PRIVATE_KEY_PATH $BASE_DIR/$PRIVATE_KEY_NAME
-	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_DIR/$PRIVATE_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	yes | cp -f $PRIVATE_KEY_PATH $EXTRA_FILES_DIR/$PRIVATE_KEY_NAME
+	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PRIVATE_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PRIVATE_KEY_NAME"
 
@@ -70,8 +75,8 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	
 	echo "Public key path: $PUBLIC_KEY_PATH"
 	
-	yes | cp -f $PUBLIC_KEY_PATH $BASE_DIR/$PUBLIC_KEY_NAME
-	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_DIR/$PUBLIC_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	yes | cp -f $PUBLIC_KEY_PATH $EXTRA_FILES_DIR/$PUBLIC_KEY_NAME
+	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PUBLIC_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
