@@ -26,6 +26,7 @@ MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
 MANAGER_PUBLIC_KEY_PATTERN="manager_ssh_public_key_file_path"
 
 MANAGER_PRIVATE_KEY_PATH=$(grep $MANAGER_PRIVATE_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
+MANAGER_PUBLIC_KEY_PATH=$(grep $MANAGER_PUBLIC_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 if [ -z "$MANAGER_PRIVATE_KEY_PATH" ] || [ ! -f "$MANAGER_PRIVATE_KEY_PATH" ]; then
 	echo "Cannot identify the manager ssh private key"
@@ -35,13 +36,13 @@ if [ -z "$MANAGER_PRIVATE_KEY_PATH" ] || [ ! -f "$MANAGER_PRIVATE_KEY_PATH" ]; t
 	MANAGER_PUBLIC_KEY_PATH=$DIR/"manager-id_rsa.pub"
 	
 	ssh-keygen -f $MANAGER_PRIVATE_KEY_PATH -t rsa -b 4096 -C "fogbow@manager" -N ""
-	
-	sed -i "s#$MANAGER_PRIVATE_KEY_PATTERN=#$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH#" $MANAGER_CONF_FILE
-	sed -i "s#$MANAGER_PUBLIC_KEY_PATTERN=#$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH#" $MANAGER_CONF_FILE
-	
-	echo "$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH"
-	echo "$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH"
 fi
+
+echo "$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH"
+echo "$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH"
+
+sed -i "s#$MANAGER_PRIVATE_KEY_PATTERN=#$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH#" $MANAGER_CONF_FILE
+sed -i "s#$MANAGER_PUBLIC_KEY_PATTERN=#$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH#" $MANAGER_CONF_FILE
 
 # Copying files from conf files specification
 
@@ -50,6 +51,9 @@ echo "Copying files specified in conf files to manager-core directory"
 CONF_FILES_LIST=$(ls ./$BASE_DIR/$CONF_FILES_DIR)
 
 SUFFIX_FILE_PATH="path"
+
+CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 for conf_file_name in $CONF_FILES_LIST; do
 
 	file_path_values=$(grep $SUFFIX_FILE_PATH ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name | awk -F "=" '{print $2}')
@@ -60,8 +64,8 @@ for conf_file_name in $CONF_FILES_LIST; do
 			file_name_value=$(basename $file_path_value)
 			yes | cp -f $file_path_value ./$BASE_DIR/$CONF_FILES_DIR/$file_name_value
 			echo "Replacing files path properties in conf files"
-			sed -i "s#$file_path_value#$file_name_value#" ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
-		fi	
+			sed -i "s#$file_path_value#$CONTAINER_BASE_PATH/$CONTAINER_CONF_FILES_DIR/$file_name_value#" ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
+		fi
 	done
 done
 
@@ -91,3 +95,4 @@ REVERSE_TUNNEL_PRIVATE_IP_PATTERN="reverse_tunnel_private_address"
 
 sed -i "s#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=$DMZ_HOST_PUBLIC_IP#" $REVERSE_TUNNEL_CONF_FILE
 sed -i "s#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $REVERSE_TUNNEL_CONF_FILE
+
