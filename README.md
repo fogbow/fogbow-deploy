@@ -1,14 +1,16 @@
-Fogbow Playbook
+Install a Fogbow site
 ==========
-Provides an easy way to deploy the entire fogbow infrastructure.
+This tutorial provides an easy way to deploy a Fogbow site.
 
 ## Pre-installation
 
-Before performing the installation it is necessary to make some administrative settings.
+Before performing the installation it is necessary to get access to the machines (real or virtual) that will be used to deploy the site, as well as request the site administrator to perform a few configurations in the organization's DNS and firewall. Additionally, it is necessary to request the administrator of the cloud that is being federated to setup the security and allocation policies that will regulate how the cloud is exposed to the federation.
 
 ### Hosts
 
-It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address. On the **dmz-host** there will be the [reverse tunnel](https://github.com/fogbow/fogbow-reverse-tunnel), [dashboard](https://github.com/fogbow/fogbow-dashboard-core) and [xmpp server](https://prosody.im/doc/xmpp). On the **internal-host** there will be the [manager core](https://github.com/fogbow/fogbow-manager-core) and [membership service](https://github.com/fogbow/fogbow-membership-service).
+It is necessary to have at least two hosts. One of them should be outside the private network of the organization - let us call it **dmz-host**, and another that should be inside the private network - let us call it **internal-host**. The **dmz-host** must have a public IP address.
+
+The [reverse tunnel](https://github.com/fogbow/fogbow-reverse-tunnel) and the [xmpp server](https://prosody.im/doc/xmpp) are deployed on the **dmz-host** there, while the [manager core](https://github.com/fogbow/fogbow-manager-core), the [membership service](https://github.com/fogbow/fogbow-membership-service), and the [dashboard](https://github.com/fogbow/fogbow-dashboard-core) are deployed on the **internal-host**.
 
 ### Firewall configuration
 
@@ -17,7 +19,6 @@ The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following po
 1. XMPP server to server communication port (**Default**: *5269*);
 2. Reverse tunnel ssh port range;
 3. Reverse tunnel external services port range;
-4. Dashboard server port (**Default**: *80*).
 
 And with the following ports with ***internal access***:
 
@@ -31,13 +32,12 @@ The **internal-host** should be in the private network with the following ports 
 1. XMPP component communication port (**Default**: *5327*);
 2. Manager core HTTP server port (**Default**: *8000*);
 3. Membership service HTTP server port (**Default**: *9000*);
-4. SSH port.
+4. Dashboard server port (**Default**: *80*).
+5. SSH port.
 
 ### DNS configuration
 
 It is necessary to configure the DNS to enable the **dmz-host** to receive XMPP messages. This DNS entry is the **XMPP ID** a.k.a **member-site-id** of the Fogbow installation. This configuration associates the public IP of the **dmz-host** to its **XMPP ID**.
-
-Futhermore, you can configure the DNS to enable the **dmz-host** to receive HTTP messages in the **dashboard server port** associating a DNS entry to **dmz-host** public IP and **dashboard server port**.
 
 ### Cloud configuration
 
