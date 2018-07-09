@@ -3,7 +3,7 @@
 DIR_PATH=$(pwd)
 CONF_FILES_DIR="conf-files"
 CONTAINER_BASE_PATH="/root/fogbow-manager-core"
-CONTAINER_CONF_FILES_DIR=".fogbow"
+CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
 IMAGE_NAME="fogbow/manager-core:latest"
 CONTAINER_NAME="manager-core"
@@ -22,6 +22,6 @@ sudo docker rm $CONTAINER_NAME
 sudo docker run -idt \
 	--name $CONTAINER_NAME \
 	-p $MANAGER_PORT:$CONTAINER_PORT \
-	--read-only -v $DIR_PATH/$CONF_FILES_DIR:$CONTAINER_BASE_PATH/$CONTAINER_CONF_FILES_DIR \
+	-v $DIR_PATH/$CONF_FILES_DIR:$CONTAINER_BASE_PATH/$CONTAINER_CONF_FILES_DIR \
 	$IMAGE_NAME
 
