@@ -18,6 +18,8 @@ done
 
 # Checking manager ssh keys
 
+echo "Checking SSH keys"
+
 MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
 
 MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
@@ -43,7 +45,7 @@ fi
 
 # Copying files from conf files specification
 
-echo "Copying to manager-core dir files specified in the conf files"
+echo "Copying files specified in conf files to manager-core directory"
 
 CONF_FILES_LIST=$(ls ./$BASE_DIR/$CONF_FILES_DIR)
 
@@ -63,7 +65,6 @@ for conf_file_name in $CONF_FILES_LIST; do
 	done
 done
 
-
 # Adding xmpp server ip, reverse tunnel public and private ip
 
 HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
@@ -77,6 +78,11 @@ DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F 
 INTERCOMPONENT_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"intercomponent.conf"
 XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
 sed -i "s#$XMPP_SERVER_IP_PATTERN=#$XMPP_SERVER_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $INTERCOMPONENT_CONF_FILE
+
+XMPP_MANAGER_PORT_PATTERN="xmpp_c2c_port"
+XMPP_MANAGER_PORT=$(grep $XMPP_MANAGER_PORT_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
+XMPP_MANAGER_PORT_PROPERTY="xmpp_server_port"
+echo "$XMPP_MANAGER_PORT_PROPERTY=$XMPP_MANAGER_PORT" >> $INTERCOMPONENT_CONF_FILE
 
 REVERSE_TUNNEL_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"reverse-tunnel.conf"
 REVERSE_TUNNEL_PUBLIC_IP_PATTERN="reverse_tunnel_public_address"
