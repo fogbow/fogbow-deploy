@@ -16,6 +16,8 @@ if [ -z "$DASHBOARD_PORT" ]; then
 	DASHBOARD_PORT="80"
 fi
 
+echo "Dashboard port: $DASHBOARD_PORT"
+
 CONTAINER_PORT="8080"
 
 sudo docker pull $IMAGE_NAME
