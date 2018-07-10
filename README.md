@@ -75,6 +75,10 @@ The ***dmz_host_public_ip*** configuration constant is the **dmz-host** public n
 
 The ***internal_host_private_ip*** configuration constant is the **internal-host** private network address.
 
+The ***remote_hosts_user*** configuration constant is the ssh remote user name in both **internal** and **dmz** hosts.
+
+The ***ansible_ssh_private_key_file*** configuration constant is the ssh private file key path for ssh connections in both **internal** and **dmz** hosts. Note that, if this property is not specified, Ansible will use the host ssh private key.
+
 #### Behavior configuration
 
 File: [behavior.conf](conf-files/behavior.conf)
