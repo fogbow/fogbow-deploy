@@ -81,7 +81,7 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
 	LDAP_BASE_PATTERN="ldap_base"
-	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
+	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "base=" '{print $2}')
 	
 	echo "LDAP base: $FOGBOW_LDAP_BASE"
 	
