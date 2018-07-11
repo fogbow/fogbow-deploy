@@ -58,7 +58,12 @@ git clone https://github.com/fogbow/fogbow-playbook.git
 3. Install ***pwgen***:
 
 ```bash
-sudo apt install pwgen
+# DEBIAN/UBUNTU
+apt-get install -y pwgen
+# FEDORA
+dnf install -y pwgen
+# CENTOS
+yum install -y pwgen
 ```
 
 ### Fogbow configuration
