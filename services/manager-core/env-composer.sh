@@ -19,14 +19,14 @@ for conf_file_path in $CONF_FILES_LIST; do
 	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
 done
 
-# Adding manager JDBC property
+# Adding Manager JDBC properties
 
 MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
 
 DATABASES_DIR=$CONTAINER_BASE_PATH/"databases"
 MANAGER_JDBC_NAME="manager.db"
 
-MANAGER_JDBC_URL_PROPERTY="manager_jdbc_url"
+MANAGER_JDBC_URL_PROPERTY="jdbc_database_url"
 MANAGER_JDBC_URL=$DATABASES_DIR/$MANAGER_JDBC_NAME
 
 echo "$MANAGER_JDBC_URL_PROPERTY=$MANAGER_JDBC_URL"
