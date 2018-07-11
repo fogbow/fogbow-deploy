@@ -1,22 +1,39 @@
-Fogbow Playbook
+Install a Fogbow site
 ==========
-Provides an easy way to deploy the entire fogbow infrastructure.
+This tutorial provides an easy way to deploy a Fogbow site.
 
 ## Pre-installation
 
-Before performing the installation it is necessary to make some administrative settings.
+Before performing the installation it is necessary to get access to the machines (real or virtual) that will be used to deploy the site, as well as request the site administrator to perform a few configurations in the organization's DNS and firewall. Additionally, it is necessary to request the administrator of the cloud that is being federated to setup the security and allocation policies that will regulate how the cloud is exposed to the federation.
 
 ### Hosts
 
-It is necessary to have two hosts **dmz-host** and **internal-host**, at least the **dmz-host** must have a public IP address.
+It is necessary to have at least two hosts. One of them should be outside the private network of the organization - let us call it **dmz-host**, and another that should be inside the private network - let us call it **internal-host**. The **dmz-host** must have a public IP address.
+
+The [reverse tunnel](https://github.com/fogbow/fogbow-reverse-tunnel) and the [xmpp server](https://prosody.im/doc/xmpp) are deployed on the **dmz-host** there, while the [manager core](https://github.com/fogbow/fogbow-manager-core), the [membership service](https://github.com/fogbow/fogbow-membership-service), and the [dashboard](https://github.com/fogbow/fogbow-dashboard-core) are deployed on the **internal-host**.
 
 ### Firewall configuration
 
-The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following ports open:
+The **dmz-host** should be at the DMZ (Demilitarized Zone) with the following ports with ***external access***:
 
-1. XMPP server to server communication port (**Default**: *5327*);
+1. XMPP server to server communication port (**Default**: *5269*);
 2. Reverse tunnel ssh port range;
-3. Reverse tunnel service port range.
+3. Reverse tunnel external services port range;
+
+And with the following ports with ***internal access***:
+
+1. XMPP component to server communication port (**Default**: *5222*);
+2. XMPP component to component communication port (**Default**: *5347*);
+3. Reverse tunnel HTTP server port (**Default**: *8080*);
+4. SSH port.
+
+The **internal-host** should be in the private network with the following ports with ***internal access***:
+
+1. XMPP component communication port (**Default**: *5327*);
+2. Manager core HTTP server port (**Default**: *8080*);
+3. Membership service HTTP server port (**Default**: *8081*);
+4. Dashboard server port (**Default**: *80*).
+5. SSH port.
 
 ### DNS configuration
 
@@ -38,6 +55,17 @@ git clone https://github.com/fogbow/fogbow-playbook.git
 
 2. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
+3. Install ***pwgen***:
+
+```bash
+# DEBIAN/UBUNTU
+apt-get install -y pwgen
+# FEDORA
+dnf install -y pwgen
+# CENTOS
+yum install -y pwgen
+```
+
 ### Fogbow configuration
 
 Go to the directory *conf-files* inside *fogbow-playbook* directory.
@@ -58,13 +86,17 @@ The ***dmz_host_public_ip*** configuration constant is the **dmz-host** public n
 
 The ***internal_host_private_ip*** configuration constant is the **internal-host** private network address.
 
+The ***remote_hosts_user*** configuration constant is the ssh remote user name in both **internal** and **dmz** hosts.
+
+The ***ansible_ssh_private_key_file*** configuration constant is the ssh private file key path for ssh connections in both **internal** and **dmz** hosts. Note that, if this property is not specified, Ansible will use the host ssh private key.
+
 #### Behavior configuration
 
 File: [behavior.conf](conf-files/behavior.conf)
 
 To know more about the ***behavior.conf*** constants please see [please-give-me-an-explanation-link](http://www.fogbowcloud.org).
 
-After the **behavior.conf** edition is necessary to edit the federation identity, authorization and local user credentials mapper configuration files that were configured in the **behavior.conf**.
+After the **behavior.conf** edition is necessary to edit the federation identity, authorization and local user credentials mapper configuration files that were configured in the **behavior.conf**. These editions should be made in the **behavior-plugins** directory.
 
 #### Federation identity configuration
 
@@ -104,7 +136,7 @@ File: [cloud.conf](conf-files/cloud.conf)
 
 To know more about the ***cloud.conf*** constants please see [configure cloud plugins](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
-After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins).
+After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins). This edition should be made in the **cloud-plugins** directory.
 
 - **OpenStack**
 

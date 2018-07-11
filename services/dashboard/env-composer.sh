@@ -2,20 +2,30 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/dashboard"
+
+EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
+mkdir -p $EXTRA_FILES_DIR
+
 CONTAINER_DIR="/root/fogbow-dashboard-core"
+CONTAINER_EXTRA_FILES_DIR=$CONTAINER_DIR/"extra-files"
 
-# Getting manager and membership ip and port
+MANAGER_CONF_FILE="manager.conf"
 
+yes | cp -f $CONF_FILES_DIR/$MANAGER_CONF_FILE $BASE_DIR/$MANAGER_CONF_FILE
+
+# Getting manager and membership ip and port\
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
 MANAGER_IP=$INTERNAL_HOST_IP
 
-PORT_PATTERN="server_port"
-MANAGER_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
+MANAGER_PORT_PATTERN="manager_server_port"
+MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
 
 MEMBERSHIP_IP=$INTERNAL_HOST_IP
-MEMBERSHIP_PORT=$(grep $PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
+
+MEMBERSHIP_PORT_PATTERN="server_port"
+MEMBERSHIP_PORT=$(grep $MEMBERSHIP_PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
 
 echo "Manager url: $MANAGER_IP:$MANAGER_PORT"
 echo "Membership url: $MEMBERSHIP_IP:$MEMBERSHIP_PORT"
@@ -54,8 +64,8 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	
 	echo "Private key path: $PRIVATE_KEY_PATH"
 	
-	yes | cp -f $PRIVATE_KEY_PATH $BASE_DIR/$PRIVATE_KEY_NAME
-	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_DIR/$PRIVATE_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	yes | cp -f $PRIVATE_KEY_PATH $EXTRA_FILES_DIR/$PRIVATE_KEY_NAME
+	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PRIVATE_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PRIVATE_KEY_NAME"
 
@@ -65,13 +75,13 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	
 	echo "Public key path: $PUBLIC_KEY_PATH"
 	
-	yes | cp -f $PUBLIC_KEY_PATH $BASE_DIR/$PUBLIC_KEY_NAME
-	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_DIR/$PUBLIC_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
+	yes | cp -f $PUBLIC_KEY_PATH $EXTRA_FILES_DIR/$PUBLIC_KEY_NAME
+	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PUBLIC_KEY_NAME'!" $BASE_DIR/$CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
 	LDAP_BASE_PATTERN="ldap_base"
-	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "=" '{print $2}')
+	FOGBOW_LDAP_BASE=$(grep $LDAP_BASE_PATTERN $LDAP_CONF_FILE | awk -F "base=" '{print $2}')
 	
 	echo "LDAP base: $FOGBOW_LDAP_BASE"
 	
