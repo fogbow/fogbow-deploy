@@ -3,6 +3,9 @@ DIR=$(pwd)
 BASE_DIR="services/manager-core"
 CONF_FILES_DIR="conf-files"
 
+CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_CONF_FILES_DIR="src/main/resources/private"
+
 # Moving conf files
 
 CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
@@ -16,11 +19,24 @@ for conf_file_path in $CONF_FILES_LIST; do
 	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
 done
 
+# Adding manager JDBC property
+
+MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
+
+DATABASES_DIR=$CONTAINER_BASE_PATH/"databases"
+MANAGER_JDBC_NAME="manager.db"
+
+MANAGER_JDBC_URL_PROPERTY="manager_jdbc_url"
+MANAGER_JDBC_URL=$DATABASES_DIR/$MANAGER_JDBC_NAME
+
+echo "$MANAGER_JDBC_URL_PROPERTY=$MANAGER_JDBC_URL"
+
+echo "" >> $MANAGER_CONF_FILE
+echo "$MANAGER_JDBC_URL_PROPERTY=$MANAGER_JDBC_URL" >> $MANAGER_CONF_FILE
+
 # Checking manager ssh keys
 
 echo "Checking SSH keys"
-
-MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
 
 MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
 MANAGER_PUBLIC_KEY_PATTERN="manager_ssh_public_key_file_path"
@@ -52,8 +68,6 @@ CONF_FILES_LIST=$(ls ./$BASE_DIR/$CONF_FILES_DIR)
 
 SUFFIX_FILE_PATH="path"
 
-CONTAINER_BASE_PATH="/root/fogbow-manager-core"
-CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 for conf_file_name in $CONF_FILES_LIST; do
 
 	file_path_values=$(grep $SUFFIX_FILE_PATH ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name | awk -F "=" '{print $2}')
@@ -95,4 +109,3 @@ REVERSE_TUNNEL_PRIVATE_IP_PATTERN="reverse_tunnel_private_address"
 
 sed -i "s#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=$DMZ_HOST_PUBLIC_IP#" $REVERSE_TUNNEL_CONF_FILE
 sed -i "s#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $REVERSE_TUNNEL_CONF_FILE
-
