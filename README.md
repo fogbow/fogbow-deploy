@@ -24,14 +24,14 @@ And with the following ports with ***internal access***:
 
 1. XMPP component to server communication port (**Default**: *5222*);
 2. XMPP component to component communication port (**Default**: *5347*);
-3. Reverse tunnel HTTP server port (**Default**: *8000*);
+3. Reverse tunnel HTTP server port (**Default**: *8080*);
 4. SSH port.
 
 The **internal-host** should be in the private network with the following ports with ***internal access***:
 
 1. XMPP component communication port (**Default**: *5327*);
-2. Manager core HTTP server port (**Default**: *8000*);
-3. Membership service HTTP server port (**Default**: *9000*);
+2. Manager core HTTP server port (**Default**: *8080*);
+3. Membership service HTTP server port (**Default**: *8081*);
 4. Dashboard server port (**Default**: *80*).
 5. SSH port.
 
