@@ -55,6 +55,17 @@ git clone https://github.com/fogbow/fogbow-playbook.git
 
 2. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
+3. Install ***pwgen***:
+
+```bash
+# DEBIAN/UBUNTU
+apt-get install -y pwgen
+# FEDORA
+dnf install -y pwgen
+# CENTOS
+yum install -y pwgen
+```
+
 ### Fogbow configuration
 
 Go to the directory *conf-files* inside *fogbow-playbook* directory.
