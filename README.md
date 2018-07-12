@@ -64,6 +64,8 @@ apt-get install -y pwgen
 dnf install -y pwgen
 # CENTOS
 yum install -y pwgen
+# MacOS
+brew install pwgen
 ```
 
 ### Fogbow configuration
