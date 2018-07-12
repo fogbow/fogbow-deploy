@@ -7,32 +7,27 @@ from openstack_dashboard import exceptions
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+## -------------------------- FOGBOW CONFIGURATION -------------------------- ##
+
 # Endpoint Manager
-FOGBOW_MANAGER_ENDPOINT = '' # Mandatory, Ex: http://localhost:8188
+FOGBOW_MANAGER_CORE_ENDPOINT = 'http://localhost:8181' # Mandatory
+FOGBOW_MANAGER_CORE_XMPP_JID = 'manager.lsd.ufcg.br' # Mandatory
 # Endpoint Membership
-FOGBOW_MEMBERSHIP_ENDPOINT = '' # Mandatory, Ex: http://localhost:8188
+FOGBOW_MEMBERSHIP_ENDPOINT = 'http://localhost:8180' # Mandatory
 
-FOGBOW_FEDERATION_AUTH_ENDPOINT = '' # Mandatory
-# types : keystone, opennebula, voms, raw_opennebula, raw_keystone, shibboleth, naf, ldap
+# Extensions (True or False)
+FEDERATED_NETWORK_EXTENSION = False # Mandatory
+
+# Types : ldap
 FOGBOW_FEDERATION_AUTH_TYPE = '' # Mandatory
-
-# for naf federation auth
-## dashboard private key path
-# FOGBOW_NAF_DASHBOARD_PRIVATE_KEY_PATH='$path_to/dash_private_key.pem'
-## dashboard private key path
-# FOGBOW_NAF_DASHBOARD_PUBLIC_KEY_PATH='$path_to/dash_public_key.pem'
-## portal public key path
-# FOGBOW_NAF_PORTAL_PUBLIC_KEY_PATH='$path_to/portal_public_key.pem'
-
-# for ldap federation auth
-# PRIVATE_KEY_PATH='$path_to/private_key.pem'
-# PUBLIC_KEY_PATH='$path_to/public_key.pem'
-# FOGBOW_LDAP_BASE='dc=lsd,dc=ufcg,dc=edu,dc=br'
-# FOGBOW_LDAP_ENCRYPT=''
+# Fogbow-cli configuration path  
+# PS: Read the fogbow-cli documentation. 
+FOGBOW_AUTHENTICATION_CONF_PATH = 
+# example : '{home}/fogbow-dashboard-core/openstack_dashboard/local/auth_conf_example' 
 
 # custom_theme 
 # customization of style
-CUSTOM_THEME = 'naf-theme'
+CUSTOM_THEME = ''
 
 # Communication between F_dashboard and F_manager
 # Default 15 | seconds 
@@ -50,9 +45,9 @@ TIMEOUT_GET=60
 # https://docs.djangoproject.com/en/1.4/ref/settings/#secure-proxy-ssl-header
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
-#
-# ----------- fogbow ------------- 
-#
+
+## -------------------------- FOGBOW CONFIGURATION -------------------------- ##
+
 
 # Required for Django 1.5.
 # If horizon is running in production (DEBUG is False), set this
