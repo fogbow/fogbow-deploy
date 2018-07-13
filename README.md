@@ -182,6 +182,14 @@ For the configuration constants ***reverse_tunnel_port*** and ***reverse_tunnel_
 
 To know more about the ***reverse-tunnel.conf*** constants please see [configure reverse tunnel](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-reverse-tunnel.md#configure).
 
+#### Federated network service configuration
+
+File: [federated-network.conf](conf-files/federated-network.conf)
+
+The ***server_port*** configuration constant is the port that the Federated network service will server requests in the **internal-host**, note that the ***server_port*** should be different of the Manager and Membership-service ***server_port***.
+
+To know more about the ***federated-network.conf*** constants please see [please-give-an-explanation-link](please-give-an-explanation-link).
+
 ### Run
 
 In the *fogbow-playbook* directory:
