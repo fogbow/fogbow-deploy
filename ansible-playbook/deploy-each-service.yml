@@ -20,6 +20,7 @@
     manager_dir_name: manager-core
     membership_dir_name: membership-service
     dashboard_dir_name: dashboard
+    fednet_dir_name: federated-network
     fogbow_components: /home/ubuntu/fogbow-components
     deploy_script_runner: sh deploy-script.sh
   tasks:
@@ -32,3 +33,4 @@
         - "{{ fogbow_components }}/{{ manager_dir_name }}"
         - "{{ fogbow_components }}/{{ membership_dir_name }}"
         - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
+        - "{{ fogbow_components }}/{{ fednet_dir_name }}"

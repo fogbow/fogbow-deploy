@@ -20,6 +20,7 @@
     manager_dir_name: manager-core
     membership_dir_name: membership-service
     dashboard_dir_name: dashboard
+    fednet_dir_name: federated-network
     fogbow_components: /home/ubuntu/fogbow-components/
   tasks:
     - name: Copying services to Internal-Machine
@@ -30,3 +31,4 @@
         - "{{ services_path }}/{{ manager_dir_name }}"
         - "{{ services_path }}/{{ membership_dir_name }}"
         - "{{ services_path }}/{{ dashboard_dir_name }}"
+        - "{{ services_path }}/{{ fednet_dir_name }}"
