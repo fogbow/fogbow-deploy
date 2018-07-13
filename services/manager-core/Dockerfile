@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM openjdk:8
 
 # Install.
 RUN \
@@ -11,15 +11,6 @@ RUN \
   apt-get install -y net-tools iputils-ping && \
   rm -rf /var/lib/apt/lists/*
 
-# Install Java.
-RUN \
-  apt-get update -y && \
-  apt-get install -y openjdk-7-jdk && \
-  rm -rf /var/lib/apt/lists/*
-
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
-
 # Set environment variables.
 ENV HOME /root
 
@@ -29,7 +20,7 @@ WORKDIR /root
 # Installing Manager
 RUN \
   git clone https://github.com/fogbow/fogbow-manager-core.git && \
-  (cd fogbow-manager-core && mvn install)
+  (cd fogbow-manager-core && git checkout integrate-code && mvn install -Dmaven.test.skip=true)
 
 # Define working directory.
 WORKDIR /root/fogbow-manager-core
