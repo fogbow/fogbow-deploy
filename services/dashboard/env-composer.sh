@@ -98,7 +98,7 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	echo "Private key path: $PRIVATE_KEY_PATH"
 	
 	yes | cp -f $PRIVATE_KEY_PATH $EXTRA_FILES_DIR/$PRIVATE_KEY_NAME
-	sed -i "s!.*# PRIVATE_KEY_PATH.*!PRIVATE_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PRIVATE_KEY_NAME'!" $EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME
+	sed -i "s!.*private_key_path.*!private_key_path=$CONTAINER_EXTRA_FILES_DIR/$PRIVATE_KEY_NAME!" $EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PRIVATE_KEY_NAME"
 
@@ -109,7 +109,7 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	echo "Public key path: $PUBLIC_KEY_PATH"
 	
 	yes | cp -f $PUBLIC_KEY_PATH $EXTRA_FILES_DIR/$PUBLIC_KEY_NAME
-	sed -i "s!.*# PUBLIC_KEY_PATH.*!PUBLIC_KEY_PATH = '$CONTAINER_EXTRA_FILES_DIR/$PUBLIC_KEY_NAME'!" $EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME
+	sed -i "s!.*public_key_path.*!public_key_path=$CONTAINER_EXTRA_FILES_DIR/$PUBLIC_KEY_NAME!" $EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME
 	
 	echo "Container public key path: $CONTAINER_DIR/$PUBLIC_KEY_NAME"
 
