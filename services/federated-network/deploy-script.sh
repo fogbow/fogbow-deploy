@@ -1,10 +1,12 @@
 #!/bin/bash
 
 DIR_PATH=$(pwd)
+EXTRA_FILES_DIR=$DIR_PATH/"extra-files"
 CONTAINER_BASE_PATH="/root/federated-network-service"
+CONTAINER_EXTRA_FILES_PATH=$CONTAINER_BASE_PATH/"extra-files"
 
-IMAGE_NAME="fogbow/federated-network:latest"
-CONTAINER_NAME="federated-network"
+IMAGE_NAME="fogbow/federated-network-service:latest"
+CONTAINER_NAME="federated-network-service"
 
 FEDNET_CONF_FILE_NAME="federated-network.conf"
 
@@ -22,5 +24,6 @@ sudo docker run -idt \
 	--name $CONTAINER_NAME \
 	-p $FEDNET_PORT:$CONTAINER_PORT \
 	-v $DIR_PATH/$FEDNET_CONF_FILE_NAME:$CONTAINER_BASE_PATH/$FEDNET_CONF_FILE_NAME \
+	-v $EXTRA_FILES_DIR:$CONTAINER_EXTRA_FILES_PATH \
 	$IMAGE_NAME
 
