@@ -3,6 +3,7 @@
   vars:
     xmpp_dir_name: xmpp-server
     reverse_tunnel: reverse-tunnel
+    fednet_agent_dir_name: federated-network-agent
     fogbow_components: /home/ubuntu/fogbow-components
     deploy_script_runner: sh deploy-script.sh
   tasks:
@@ -14,6 +15,7 @@
       with_items:
         - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
         - "{{ fogbow_components }}/{{ reverse_tunnel }}"
+        - "{{ fogbow_components }}/{{ fednet_agent_dir_name }}"
 
 - hosts: internal-machine
   vars:

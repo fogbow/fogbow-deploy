@@ -4,6 +4,7 @@
     services_path: ../services
     xmpp_dir_name: xmpp-server
     reverse_tunnel: reverse-tunnel
+    fednet_agent_dir_name: federated-network-agent
     fogbow_components: /home/ubuntu/fogbow-components/
   tasks:
     - name: Copying services to DMZ-Machine
@@ -13,6 +14,7 @@
       with_items:
         - "{{ services_path }}/{{ xmpp_dir_name }}"
         - "{{ services_path }}/{{ reverse_tunnel }}"
+        - "{{ services_path }}/{{ fednet_agent_dir_name }}"
 
 - hosts: internal-machine
   vars:
