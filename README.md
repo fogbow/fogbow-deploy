@@ -64,6 +64,8 @@ apt-get install -y pwgen
 dnf install -y pwgen
 # CENTOS
 yum install -y pwgen
+# MacOS
+brew install pwgen
 ```
 
 ### Fogbow configuration
@@ -148,7 +150,9 @@ To know more about the ***openstack.conf*** constants please see [configure open
 
 File: [manager.conf](conf-files/manager.conf)
 
-The ***server_port*** configuration constant is the port that the Fogbow Manager component will server requests in the **internal-host**.
+The ***manager_server_port*** configuration constant is the port that the Fogbow Manager component will server requests in the **internal-host**.
+
+The ***dashboard_server_port*** configuration constant is the port that the Fogbow Dashboard component will server in the **internal-host**.
 
 The ***manager_ssh_public_key_file_path*** and ***manager_ssh_private_key_file_path*** configuration constants are not required, however if they are not configured the *fogbow-playbook* will generate the keys automatically placing them at the *fogbow-playbook* directory.
 
@@ -177,6 +181,14 @@ The ***host_key_path*** configuration constant is not required, however if it is
 For the configuration constants ***reverse_tunnel_port*** and ***reverse_tunnel_http_port*** do not choose the 80 port because this port is used to server the Dashboard front-end in the **dmz-host**.
 
 To know more about the ***reverse-tunnel.conf*** constants please see [configure reverse tunnel](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-reverse-tunnel.md#configure).
+
+#### Federated network service configuration
+
+File: [federated-network.conf](conf-files/federated-network.conf)
+
+The ***server_port*** configuration constant is the port that the Federated network service will server requests in the **internal-host**, note that the ***server_port*** should be different of the Manager and Membership-service ***server_port***.
+
+To know more about the ***federated-network.conf*** constants please see [please-give-an-explanation-link](please-give-an-explanation-link).
 
 ### Run
 

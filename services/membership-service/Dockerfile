@@ -25,7 +25,4 @@ RUN \
 # Define working directory.
 WORKDIR /root/fogbow-membership-service
 
-RUN \
-  rm src/main/resources/application.properties
-
 CMD /bin/bash bin/start-membership-service > log.out && tail -f /dev/null
