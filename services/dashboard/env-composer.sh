@@ -30,8 +30,14 @@ INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{
 
 MANAGER_IP=$INTERNAL_HOST_IP
 
-MANAGER_PORT_PATTERN="manager_server_port"
-MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
+#MANAGER_PORT_PATTERN="manager_server_port"
+#MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
+
+echo "Using Federated network service"
+
+FEDNET_CONF_FILE=$CONF_FILES_DIR/"federated-network.conf"
+FEDNET_PORT_PATTERN="server_port"
+MANAGER_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager url: $MANAGER_IP:$MANAGER_PORT"
 
