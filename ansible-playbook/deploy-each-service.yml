@@ -4,7 +4,7 @@
     xmpp_dir_name: xmpp-server
     reverse_tunnel: reverse-tunnel
     fednet_agent_dir_name: federated-network-agent
-    fogbow_components: /home/ubuntu/fogbow-components
+    fogbow_components: ~/fogbow-components
     deploy_script_runner: sh deploy-script.sh
   tasks:
     - name: Deploying services in DMZ Machine
@@ -23,7 +23,7 @@
     membership_dir_name: membership-service
     dashboard_dir_name: dashboard
     fednet_dir_name: federated-network
-    fogbow_components: /home/ubuntu/fogbow-components
+    fogbow_components: ~/fogbow-components
     deploy_script_runner: sh deploy-script.sh
   tasks:
     - name: Deploying services in Internal Machine
