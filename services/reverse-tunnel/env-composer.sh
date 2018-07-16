@@ -36,7 +36,7 @@ yes | cp -f $CONF_FILE_PATH ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
 # Replacing keys and values in reverse-tunnel conf file
 
 # Replacing HOST_KEY_FILE_PATH with HOST_KEY_FILE_NAME
-sed -i "s#$HOST_KEY_PATH_PATTERN=$HOST_KEY_FILE_PATH#$HOST_KEY_PATH_PATTERN=$HOST_KEY_FILE_NAME#" ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
+sed -i "s#.*$HOST_KEY_PATH_PATTERN=.*#$HOST_KEY_PATH_PATTERN=$HOST_KEY_FILE_NAME#" ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
 
 # Replacing reverse_tunnel_http_port with http_port
 sed -i "s#reverse_tunnel_http_port#http_port#" ./$REVERSE_TUNNEL_DIR/$REVERSE_TUNNEL_CONF_FILE
