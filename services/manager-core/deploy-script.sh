@@ -5,7 +5,7 @@ CONF_FILES_DIR="conf-files"
 CONTAINER_BASE_PATH="/root/fogbow-manager-core"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
-IMAGE_NAME="fogbow/manager-core:latest"
+IMAGE_NAME="fogbow/fogbow-manager-core"
 CONTAINER_NAME="manager-core"
 
 MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
