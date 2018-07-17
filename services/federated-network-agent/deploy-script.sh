@@ -5,6 +5,12 @@ CONTAINER_NAME="strongswan"
 
 CONF_FILE_PATH="/etc/ipsec.conf"
 
+# Download Agent scripts
+echo "Downloading agent scripts"
+
+wget https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-create-federated-network
+wget https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-delete-federated-network
+
 MANAGER_CONF_FILE="manager.conf"
 MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
 MANAGER_JDBC_PASSWORD=$(grep $MANAGER_JDBC_PASSWORD_PROPERTY $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
