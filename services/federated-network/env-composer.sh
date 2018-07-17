@@ -93,3 +93,15 @@ echo "Agent access password: $MANAGER_JDBC_PASSWORD"
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FEDNET_CONF_FILE
 
+# Adding Agent scripts path
+
+DEFAULT_AGENT_SCRIPTS_PATH="~/fogbow-components/federated-network-agent"
+CREATE_SCRIPT_NAME="config-create-federated-network"
+DELETE_SCRIPT_NAME="config-delete-federated-network"
+
+echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME"
+echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME"
+
+echo "" >> $ENV_FEDNET_CONF_FILE
+echo "add_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME"
+echo "remove_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME"
