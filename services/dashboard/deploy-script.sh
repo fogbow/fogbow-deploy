@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
 
-IMAGE_NAME="fogbow/dashboard:latest"
+IMAGE_NAME="fogbow/fogbow-dashboard-core"
 CONTAINER_NAME="dashboard"
 
 CONF_FILE_NAME="local_settings.py"
