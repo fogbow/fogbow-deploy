@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR=$(pwd)
-BASE_DIR="services/federated-network"
+BASE_DIR="services/federated-network-service"
 CONF_FILES_DIR=$DIR/"conf-files"
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 CONTAINER_BASE_DIR="/root/federated-network-service"
