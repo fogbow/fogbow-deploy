@@ -1,12 +1,12 @@
 #!/bin/bash
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
-BASE_DIR="services/dashboard"
+BASE_DIR="services/fogbow-gui"
 
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 mkdir -p $EXTRA_FILES_DIR
 
-CONTAINER_DIR="/root/fogbow-dashboard-core"
+CONTAINER_DIR="/root/fogbow-gui"
 CONTAINER_EXTRA_FILES_DIR=$CONTAINER_DIR/"extra-files"
 
 # Copying related conf files

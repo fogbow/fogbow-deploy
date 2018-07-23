@@ -1,12 +1,12 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
-CONTAINER_BASE_PATH="/root/fogbow-membership-service"
+CONTAINER_BASE_PATH="/root/membership-service"
 PROJECT_RESOURCES_PATH="src/main/resources"
 
 LOG4J_FILE_NAME="log4j.properties"
 CONF_FILE_NAME="membership.conf"
 
-IMAGE_NAME="fogbow/membership-service:latest"
+IMAGE_NAME="fogbow/membership-service"
 CONTAINER_NAME="membership-service"
 
 SERVER_PORT_PATTERN="server_port"

@@ -1,9 +1,9 @@
 #!/bin/bash
 DIR=$(pwd)
-BASE_DIR="services/manager-core"
+BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
 
-CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
 # Moving conf files

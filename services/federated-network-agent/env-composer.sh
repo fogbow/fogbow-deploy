@@ -5,7 +5,7 @@ BASE_DIR="services/federated-network-agent"
 
 # Get Agent access password
 MANAGER_CONFIGURED_FILE_NAME="manager.conf"
-MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"manager-core"/"conf-files"
+MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
 
 echo "Copying $MANAGER_CONFIGURED_FILES_DIR/$MANAGER_CONFIGURED_FILE_NAME to $BASE_DIR/$MANAGER_CONFIGURED_FILE_NAME"
 

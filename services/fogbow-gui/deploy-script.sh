@@ -1,12 +1,12 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
 
-IMAGE_NAME="fogbow/fogbow-dashboard-core"
-CONTAINER_NAME="dashboard"
+IMAGE_NAME="fogbow/fogbow-gui"
+CONTAINER_NAME="fogbow-gui"
 
 CONF_FILE_NAME="local_settings.py"
 
-CONTAINER_BASE_PATH="/root/fogbow-dashboard-core"
+CONTAINER_BASE_PATH="/root/fogbow-gui"
 CONTAINER_CONF_FILE_PATH="openstack_dashboard/local"
 
 EXTRA_FILES_DIR=$DIR_PATH/"extra-files"

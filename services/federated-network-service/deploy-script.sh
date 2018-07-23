@@ -5,7 +5,7 @@ EXTRA_FILES_DIR=$DIR_PATH/"extra-files"
 CONTAINER_BASE_PATH="/root/federated-network-service"
 CONTAINER_EXTRA_FILES_PATH=$CONTAINER_BASE_PATH/"extra-files"
 
-IMAGE_NAME="fogbow/federated-network-service:latest"
+IMAGE_NAME="fogbow/federated-network-service"
 CONTAINER_NAME="federated-network-service"
 
 FEDNET_CONF_FILE_NAME="federated-network.conf"

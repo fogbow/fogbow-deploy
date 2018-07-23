@@ -2,11 +2,11 @@
 
 DIR_PATH=$(pwd)
 CONF_FILES_DIR="conf-files"
-CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
-IMAGE_NAME="fogbow/fogbow-manager-core"
-CONTAINER_NAME="manager-core"
+IMAGE_NAME="fogbow/resource-allocation-service"
+CONTAINER_NAME="resource-allocation-service"
 
 MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
 SERVER_PORT_PATTERN="manager_server_port"
