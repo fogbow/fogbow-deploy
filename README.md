@@ -32,8 +32,9 @@ The **internal-host** should be in the private network with the following ports 
 1. XMPP component communication port (**Default**: *5327*);
 2. Manager core HTTP server port (**Default**: *8080*);
 3. Membership service HTTP server port (**Default**: *8081*);
-4. Dashboard server port (**Default**: *80*).
-5. SSH port.
+4. Federated network service HTTP server port (**Default**: *8082*);
+5. Dashboard server port (**Default**: *80*);
+6. SSH port.
 
 ### DNS configuration
 
