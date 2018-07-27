@@ -2,9 +2,9 @@
 - hosts: dmz-machine
   vars:
     xmpp_dir_name: xmpp-server
-    reverse_tunnel: reverse-tunnel
+    reverse_tunnel: reverse-tunnel-service
     fednet_agent_dir_name: federated-network-agent
-    fogbow_components: /home/ubuntu/fogbow-components
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: sh deploy-script.sh
   tasks:
     - name: Deploying services in DMZ Machine
@@ -19,11 +19,11 @@
 
 - hosts: internal-machine
   vars:
-    manager_dir_name: manager-core
+    manager_dir_name: resource-allocation-service
     membership_dir_name: membership-service
-    dashboard_dir_name: dashboard
-    fednet_dir_name: federated-network
-    fogbow_components: /home/ubuntu/fogbow-components
+    dashboard_dir_name: fogbow-gui
+    fednet_dir_name: federated-network-service
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: sh deploy-script.sh
   tasks:
     - name: Deploying services in Internal Machine

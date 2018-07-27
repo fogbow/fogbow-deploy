@@ -4,7 +4,7 @@ CONTAINER_BASE_PATH="/etc/prosody"
 
 CONF_FILE_NAME="prosody.cfg.lua"
 
-IMAGE_NAME="fogbow/xmpp-server:latest"
+IMAGE_NAME="fogbow/xmpp-server"
 CONTAINER_NAME="xmpp-server"
 
 INTERCOMPONENT_FILE_PATH="intercomponent.conf"

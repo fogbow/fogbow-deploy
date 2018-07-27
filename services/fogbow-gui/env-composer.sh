@@ -1,12 +1,12 @@
 #!/bin/bash
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
-BASE_DIR="services/dashboard"
+BASE_DIR="services/fogbow-gui"
 
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 mkdir -p $EXTRA_FILES_DIR
 
-CONTAINER_DIR="/root/fogbow-dashboard-core"
+CONTAINER_DIR="/root/fogbow-gui"
 CONTAINER_EXTRA_FILES_DIR=$CONTAINER_DIR/"extra-files"
 
 # Copying related conf files
@@ -91,9 +91,9 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 
 	# Add authentication conf file 
 	
-	echo "Dashboard auth conf file: $CONTAINER_EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME"
+	echo "Dashboard auth conf file: $CONTAINER_EXTRA_FILES_DIR/"
 	
-	sed -i "s#.*FOGBOW_AUTHENTICATION_CONF_PATH.*#FOGBOW_AUTHENTICATION_CONF_PATH = '$CONTAINER_EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME'#" $BASE_DIR/$CONF_FILE_NAME
+	sed -i "s#.*FOGBOW_AUTHENTICATION_CONF_FILES_DIR.*#FOGBOW_AUTHENTICATION_CONF_FILES_DIR = '$CONTAINER_EXTRA_FILES_DIR'#" $BASE_DIR/$CONF_FILE_NAME
 	
 	# Modifying ldap conf file
 	

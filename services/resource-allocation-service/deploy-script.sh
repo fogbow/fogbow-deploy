@@ -2,11 +2,11 @@
 
 DIR_PATH=$(pwd)
 CONF_FILES_DIR="conf-files"
-CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
-IMAGE_NAME="fogbow/manager-core:latest"
-CONTAINER_NAME="manager-core"
+IMAGE_NAME="fogbow/resource-allocation-service"
+CONTAINER_NAME="resource-allocation-service"
 
 MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
 SERVER_PORT_PATTERN="manager_server_port"
@@ -22,8 +22,11 @@ CONTAINER_XMPP_PORT="5327"
 
 echo "Manager xmpp port: $XMPP_PORT"
 
+JDBC_PREFIX="jdbc:sqlite:"
+
 CONTAINER_DATABASE_PATH_PATTERN="jdbc_database_url"
 CONTAINER_DATABASE_PATH=$(grep $CONTAINER_DATABASE_PATH_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
+CONTAINER_DATABASE_PATH=${CONTAINER_DATABASE_PATH#$JDBC_PREFIX}
 CONTAINER_DATABASE_DIR=$(dirname $CONTAINER_DATABASE_PATH)
 
 HOST_DATABASE_DIR=$DIR_PATH/"databases"

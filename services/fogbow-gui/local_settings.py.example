@@ -22,7 +22,7 @@ FEDERATED_NETWORK_EXTENSION = False # Mandatory
 FOGBOW_FEDERATION_AUTH_TYPE = '' # Mandatory
 # Fogbow-cli configuration path  
 # PS: Read the fogbow-cli documentation. 
-FOGBOW_AUTHENTICATION_CONF_PATH = 
+FOGBOW_AUTHENTICATION_CONF_FILES_DIR = 
 # example : '{home}/fogbow-dashboard-core/openstack_dashboard/local/auth_conf_example' 
 
 # custom_theme 

@@ -3,9 +3,9 @@
   vars:
     services_path: ../services
     xmpp_dir_name: xmpp-server
-    reverse_tunnel: reverse-tunnel
+    reverse_tunnel: reverse-tunnel-service
     fednet_agent_dir_name: federated-network-agent
-    fogbow_components: /home/ubuntu/fogbow-components/
+    fogbow_components: ~/fogbow-components/
   tasks:
     - name: Copying services to DMZ-Machine
       copy:
@@ -19,11 +19,11 @@
 - hosts: internal-machine
   vars:
     services_path: ../services
-    manager_dir_name: manager-core
+    manager_dir_name: resource-allocation-service
     membership_dir_name: membership-service
-    dashboard_dir_name: dashboard
-    fednet_dir_name: federated-network
-    fogbow_components: /home/ubuntu/fogbow-components/
+    dashboard_dir_name: fogbow-gui
+    fednet_dir_name: federated-network-service
+    fogbow_components: ~/fogbow-components/
   tasks:
     - name: Copying services to Internal-Machine
       copy:

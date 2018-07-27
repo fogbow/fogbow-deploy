@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
-CONTAINER_BASE_PATH="/root/fogbow-reverse-tunnel"
+CONTAINER_BASE_PATH="/root/reverse-tunnel-service"
 
 LOG4J_FILE_NAME="log4j.properties"
 CONF_FILE_NAME="reverse-tunnel.conf"
@@ -10,8 +10,8 @@ HOST_KEY_NAME=$(grep $HOST_KEY_PATTERN $CONF_FILE_NAME | awk -F "=" '{print $2}'
 
 echo "Host key name: $HOST_KEY_NAME"
 
-IMAGE_NAME="fogbow/reverse-tunnel:latest"
-CONTAINER_NAME="reverse-tunnel"
+IMAGE_NAME="fogbow/reverse-tunnel-service"
+CONTAINER_NAME="reverse-tunnel-service"
 
 sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME

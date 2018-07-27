@@ -1,9 +1,9 @@
 #!/bin/bash
 DIR=$(pwd)
-BASE_DIR="services/manager-core"
+BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
 
-CONTAINER_BASE_PATH="/root/fogbow-manager-core"
+CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
 # Moving conf files
@@ -26,8 +26,10 @@ MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
 DATABASES_DIR=$CONTAINER_BASE_PATH/"databases"
 MANAGER_JDBC_NAME="manager.db"
 
+JDBC_PREFIX="jdbc:sqlite:"
+
 MANAGER_JDBC_URL_PROPERTY="jdbc_database_url"
-MANAGER_JDBC_URL=$DATABASES_DIR/$MANAGER_JDBC_NAME
+MANAGER_JDBC_URL=$JDBC_PREFIX$DATABASES_DIR/$MANAGER_JDBC_NAME
 
 echo "Manager JDBC database url: $MANAGER_JDBC_URL"
 

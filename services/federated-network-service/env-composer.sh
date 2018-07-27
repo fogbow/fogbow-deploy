@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR=$(pwd)
-BASE_DIR="services/federated-network"
+BASE_DIR="services/federated-network-service"
 CONF_FILES_DIR=$DIR/"conf-files"
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 CONTAINER_BASE_DIR="/root/federated-network-service"
@@ -39,7 +39,7 @@ echo "" >> $ENV_FEDNET_CONF_FILE
 echo "manager_core_port=$MANAGER_SERVER_PORT" >> $ENV_FEDNET_CONF_FILE
 
 # Get Manager ssh private key
-MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"manager-core"/"conf-files"
+MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
 MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"manager.conf"
 
 MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN="manager_ssh_private_key_file_path"
@@ -93,3 +93,15 @@ echo "Agent access password: $MANAGER_JDBC_PASSWORD"
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FEDNET_CONF_FILE
 
+# Adding Agent scripts path
+
+DEFAULT_AGENT_SCRIPTS_PATH="~/fogbow-components/federated-network-agent"
+CREATE_SCRIPT_NAME="config-create-federated-network"
+DELETE_SCRIPT_NAME="config-delete-federated-network"
+
+echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME"
+echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME"
+
+echo "" >> $ENV_FEDNET_CONF_FILE
+echo "add_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME" >> $ENV_FEDNET_CONF_FILE
+echo "remove_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME" >> $ENV_FEDNET_CONF_FILE
