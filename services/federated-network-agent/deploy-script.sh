@@ -3,6 +3,20 @@ DIR=$(pwd)
 IMAGE_NAME="fogbow/strongswan"
 CONTAINER_NAME="strongswan"
 
+MANAGER_PUBLIC_KEY_FILE_NAME="manager-public-key.pub"
+MANAGER_SSH_PUBLIC_KEY=$(cat $MANAGER_PUBLIC_KEY_FILE_NAME)
+
+HOSTS_CONF_FILE="hosts.conf"
+REMOTE_HOST_USER_PATTERN="remote_hosts_user"
+REMOTE_HOST_USER=$(grep $REMOTE_HOST_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+
+AUTHORIZED_KEYS_FILE_PATH=/"home"/$REMOTE_HOST_USER/".ssh"/"authorized_keys"
+grep "$MANAGER_SSH_PUBLIC_KEY" $AUTHORIZED_KEYS_FILE_PATH
+if [ "$?" -ne "0" ]; then
+	echo "Adding manager ssh public in authorized key"
+	echo "$MANAGER_SSH_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
+fi
+
 MANAGER_CONF_FILE="manager.conf"
 MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
 MANAGER_JDBC_PASSWORD=$(grep $MANAGER_JDBC_PASSWORD_PROPERTY $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
