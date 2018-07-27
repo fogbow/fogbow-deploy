@@ -13,7 +13,7 @@ EXTRA_FILES_DIR=$DIR_PATH/"extra-files"
 CONTAINER_EXTRA_FILES_DIR=$CONTAINER_BASE_PATH/"extra-files"
 
 MANAGER_CONF_FILE="manager.conf"
-DASHBOARD_PORT_PATTERN="dashboard_server_port"
+DASHBOARD_PORT_PATTERN="fogbow_dashboard_server_port"
 DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 if [ -z "$DASHBOARD_PORT" ]; then
