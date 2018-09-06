@@ -10,6 +10,7 @@ mkdir -p $EXTRA_FILES_DIR
 
 HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
 MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
+INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
 # Copying fed net conf file
 FEDNET_FILE_NAME="federated-network.conf"
@@ -25,7 +26,6 @@ MANAGER_IP_PATTERN="internal_host_private_ip"
 MANAGER_IP=$(grep $MANAGER_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager ip: $MANAGER_IP"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "manager_core_ip=$MANAGER_IP" >> $ENV_FEDNET_CONF_FILE
 
@@ -34,9 +34,24 @@ MANAGER_SERVER_PORT_PATTERN="manager_server_port"
 MANAGER_SERVER_PORT=$(grep $MANAGER_SERVER_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager server port: $MANAGER_SERVER_PORT"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "manager_core_port=$MANAGER_SERVER_PORT" >> $ENV_FEDNET_CONF_FILE
+
+# Get site name
+SITE_NAME_PATTERN="xmpp_jid"
+SITE_NAME=$(grep $SITE_NAME_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
+
+echo "Site name: $SITE_NAME"
+echo "" >> $ENV_FEDNET_CONF_FILE
+echo "member_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
+
+# Set database file path
+DATABASE_FILE_NAME="fednet.db"
+DATABASE_FILE_PATH=$CONTAINER_BASE_DIR/$DATABASE_FILE_NAME
+
+echo "Database file path: $DATABASE_FILE_PATH"
+echo "" >> $ENV_FEDNET_CONF_FILE
+echo "database_file_path=$DATABASE_FILE_PATH" >> $ENV_FEDNET_CONF_FILE
 
 # Get Manager ssh private key
 MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
@@ -53,7 +68,6 @@ yes | cp -f $MANAGER_SSH_PRIVATE_KEY_FILE_PATH $EXTRA_FILES_DIR
 FEDNET_PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/"extra-files"/$MANAGER_SSH_PRIVATE_KEY_FILE_NAME
 
 echo "federated_network_agent_permission_file_path=$FEDNET_PERMISSION_FILE_PATH"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_permission_file_path=$FEDNET_PERMISSION_FILE_PATH" >> $ENV_FEDNET_CONF_FILE
 
@@ -62,7 +76,6 @@ REMOTE_HOSTS_USER_PATTERN="remote_hosts_user"
 REMOTE_HOSTS_USER=$(grep $REMOTE_HOSTS_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Remote hosts user: $REMOTE_HOSTS_USER"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_user=$REMOTE_HOSTS_USER" >> $ENV_FEDNET_CONF_FILE
 
@@ -71,7 +84,6 @@ AGENT_PRIVATE_IP_PATTERN="dmz_host_private_ip"
 AGENT_PRIVATE_IP=$(grep $AGENT_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Agent private ip: $AGENT_PRIVATE_IP"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_private_address=$AGENT_PRIVATE_IP" >> $ENV_FEDNET_CONF_FILE
 
@@ -80,7 +92,6 @@ AGENT_PUBLIC_IP_PATTERN="dmz_host_public_ip"
 AGENT_PUBLIC_IP=$(grep $AGENT_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Agent public ip: $AGENT_PUBLIC_IP"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_address=$AGENT_PUBLIC_IP" >> $ENV_FEDNET_CONF_FILE
 
@@ -89,7 +100,6 @@ MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
 MANAGER_JDBC_PASSWORD=$(grep $MANAGER_JDBC_PASSWORD_PROPERTY $MANAGER_CONFIGURED_FILE | awk -F "=" '{print $2}')
 
 echo "Agent access password: $MANAGER_JDBC_PASSWORD"
-
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FEDNET_CONF_FILE
 
