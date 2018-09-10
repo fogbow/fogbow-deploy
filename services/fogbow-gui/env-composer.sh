@@ -3,12 +3,6 @@ DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/fogbow-gui"
 
-EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
-mkdir -p $EXTRA_FILES_DIR
-
-CONTAINER_DIR="/root/fogbow-gui"
-CONTAINER_EXTRA_FILES_DIR=$CONTAINER_DIR/"extra-files"
-
 # Copying related conf files
 
 MANAGER_CONF_FILE="manager.conf"
@@ -70,9 +64,6 @@ FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"behavior-plugins"/"federation-identity"
 if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 	LDAP_CONF_FILE_NAME="ldap-identity-plugin.conf"
 	LDAP_CONF_FILE=$FEDERATION_IDENTITY_DIR/$LDAP_CONF_FILE_NAME
-	
-	# Copying ldap conf file
-	yes | cp -f $LDAP_CONF_FILE $EXTRA_FILES_DIR/$LDAP_CONF_FILE_NAME
 	
 	AUTH_TYPE_PATTERN="authPlugin"
 	AUTH_TYPE="Ldap"
