@@ -105,10 +105,7 @@ echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FED
 
 # Adding Agent scripts path
 
-REMOTE_HOST_USER_PATTERN="remote_hosts_user"
-REMOTE_HOST_USER=$(grep $REMOTE_HOST_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
-DEFAULT_AGENT_SCRIPTS_PATH=/"home"/$REMOTE_HOST_USER/"fogbow-components"/"federated-network-agent"
+DEFAULT_AGENT_SCRIPTS_PATH=~/"fogbow-components"/"federated-network-agent"
 CREATE_SCRIPT_NAME="config-create-federated-network"
 DELETE_SCRIPT_NAME="config-delete-federated-network"
 
