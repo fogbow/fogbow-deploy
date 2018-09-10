@@ -26,7 +26,7 @@ MANAGER_PORT_PATTERN="manager_server_port"
 MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
 
 echo "Manager url: $INTERNAL_HOST_IP:$MANAGER_PORT"
-sed -i "s#.*manager:.*#	manager: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT'#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*manager:.*#	manager: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting federated network service ip and port 
 
@@ -36,7 +36,7 @@ FEDNET_PORT_PATTERN="server_port"
 FEDNET_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Federated network service url: $INTERNAL_HOST_IP:$FEDNET_PORT"
-sed -i "s#.*fedenet:.*#	fedenet: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT'#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*fedenet:.*#	fedenet: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port
 
@@ -44,7 +44,7 @@ MEMBERSHIP_PORT_PATTERN="server_port"
 MEMBERSHIP_PORT=$(grep $MEMBERSHIP_PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
 
 echo "Membership url: $INTERNAL_HOST_IP:$MEMBERSHIP_PORT"
-sed -i "s#.*membership:.*#	membership: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT'#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*membership:.*#	membership: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 
@@ -52,7 +52,7 @@ XMPP_JID_PATTERN="xmpp_jid"
 XMPP_JID=$(grep $XMPP_JID_PATTERN $CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "XMPP JID: $XMPP_JID"
-sed -i "s#.*local:.*#	local: '$XMPP_JID'#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Setting up Authentication Type
 
