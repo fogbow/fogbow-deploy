@@ -2,7 +2,6 @@
 - hosts: dmz-machine
   vars:
     xmpp_dir_name: xmpp-server
-    reverse_tunnel: reverse-tunnel-service
     fednet_agent_dir_name: federated-network-agent
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: sh deploy-script.sh
@@ -14,7 +13,6 @@
         chdir: "{{ item }}"
       with_items:
         - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
-        - "{{ fogbow_components }}/{{ reverse_tunnel }}"
         - "{{ fogbow_components }}/{{ fednet_agent_dir_name }}"
 
 - hosts: internal-machine
