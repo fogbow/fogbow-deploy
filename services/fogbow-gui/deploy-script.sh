@@ -18,7 +18,7 @@ if [ -z "$DASHBOARD_PORT" ]; then
 fi
 echo "Dashboard port: $DASHBOARD_PORT"
 
-CONTAINER_PORT="8080"
+CONTAINER_PORT="3000"
 
 sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
