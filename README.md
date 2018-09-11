@@ -95,7 +95,7 @@ The ***ansible_ssh_private_key_file*** configuration constant is the ssh private
 
 #### Behavior configuration
 
-File: [behavior.conf](conf-files/behavior.conf)
+File: [behavior.conf](conf-files/aaa.conf)
 
 To know more about the ***behavior.conf*** constants please see [please-give-me-an-explanation-link](http://www.fogbowcloud.org).
 
@@ -103,11 +103,11 @@ After the **behavior.conf** edition is necessary to edit the federation identity
 
 #### Federation identity configuration
 
-See the federation identity configuration files list [here](conf-files/behavior-plugins/federation-identity). Please, configure the federation identity used in the **behavior.conf**.
+See the federation identity configuration files list [here](conf-files/aaa-plugins/federation-identity). Please, configure the federation identity used in the **behavior.conf**.
 
 - **LDAP**
 
-File: [ldap-identity-plugin.conf](conf-files/behavior-plugins/federation-identity/ldap-identity-plugin.conf)
+File: [ldap-identity-plugin.conf](conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf)
 
 To know more about the ***ldap-identity-plugin.conf*** constants please see [configure federation identity](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--federation-indentity).
 
@@ -117,7 +117,7 @@ Configuration is not necessary.
 
 #### Authorization configuration
 
-See the authorization configuration files list [here](conf-files/behavior-plugins/authorization). Please, configure the authorization used in the **behavior.conf**.
+See the authorization configuration files list [here](conf-files/aaa-plugins/authorization). Please, configure the authorization used in the **behavior.conf**.
 
 - **Default**
 
@@ -125,31 +125,31 @@ Configuration is not necessary.
 
 #### Local user credentials mapper configuration
 
-See the local user credentials mapper configuration files list [here](conf-files/behavior-plugins/local-user-credentials-mapper). Please, configure the local user credentials mapper used in the **behavior.conf**.
+See the local user credentials mapper configuration files list [here](conf-files/aaa-plugins/local-user-credentials-mapper). Please, configure the local user credentials mapper used in the **behavior.conf**.
 
 - **Default**
 
-File: [default_mapper.conf](conf-files/behavior-plugins/local-user-credentials-mapper/default_mapper.conf)
+File: [default_mapper.conf](conf-files/aaa-plugins/local-user-credentials-mapper/keystone-v3-mapper.conf)
 
 To know more about the ***default_mapper.conf*** constants please see [please-give-me-an-explanation-link](http://www.fogbowcloud.org).
 
 #### Cloud configuration
 
-File: [cloud.conf](conf-files/cloud.conf)
+File: [cloud.conf](conf-files/interoperability.conf)
 
 To know more about the ***cloud.conf*** constants please see [configure cloud plugins](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
-After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/cloud-plugins). This edition should be made in the **cloud-plugins** directory.
+After the **cloud.conf** edition is necessary to edit the cloud type configuration file that was configured in the **cloud.conf**, see the cloud types configuration files list [here](conf-files/interoperability-plugins). This edition should be made in the **cloud-plugins** directory.
 
 - **OpenStack**
 
-File: [openstack.conf](conf-files/cloud-plugins/openstack.conf)
+File: [openstack.conf](conf-files/interoperability-plugins/openstack.conf)
 
 To know more about the ***openstack.conf*** constants please see [configure openstack plugin](https://github.com/fogbow/fogbowcloud.org/blob/master/content/pages/install-configure-fogbow-manager.md#--cloud-specific-plugins).
 
 #### Manager configuration
 
-File: [manager.conf](conf-files/manager.conf)
+File: [manager.conf](conf-files/ras.conf)
 
 The ***manager_server_port*** configuration constant is the port that the Fogbow Manager component will server requests in the **internal-host**.
 
