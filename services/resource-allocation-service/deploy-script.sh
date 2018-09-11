@@ -8,7 +8,7 @@ CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 IMAGE_NAME="fogbow/resource-allocation-service"
 CONTAINER_NAME="resource-allocation-service"
 
-MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
+MANAGER_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 SERVER_PORT_PATTERN="manager_server_port"
 MANAGER_PORT=$(grep $SERVER_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 CONTAINER_PORT="8080"

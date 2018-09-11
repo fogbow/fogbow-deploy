@@ -5,7 +5,7 @@ BASE_DIR="services/fogbow-gui"
 
 # Copying related conf files
 
-MANAGER_CONF_FILE="manager.conf"
+MANAGER_CONF_FILE="ras.conf"
 yes | cp -f $CONF_FILES_DIR/$MANAGER_CONF_FILE $BASE_DIR/$MANAGER_CONF_FILE
 
 INTERCOMPONENT_CONF_FILE="intercomponent.conf"
@@ -23,7 +23,7 @@ IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
 MANAGER_PORT_PATTERN="manager_server_port"
-MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/"manager.conf" | awk -F "=" '{print $2}')
+MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/$MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager url: $INTERNAL_HOST_IP:$MANAGER_PORT"
 sed -i "s#.*manager:.*#	manager: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT',#" $BASE_DIR/$CONF_FILE_NAME
@@ -62,7 +62,7 @@ AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"behavior.conf" | awk 
 FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"behavior-plugins"/"federation-identity"/
 
 if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
-	LDAP_CONF_FILE_NAME="ldap-identity-plugin.conf"
+	LDAP_CONF_FILE_NAME="ldap-token-generator-plugin.conf"
 	LDAP_CONF_FILE=$FEDERATION_IDENTITY_DIR/$LDAP_CONF_FILE_NAME
 	
 	AUTH_TYPE_PATTERN="authPlugin"

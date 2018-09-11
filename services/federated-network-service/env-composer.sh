@@ -9,7 +9,7 @@ CONTAINER_BASE_DIR="/root/federated-network-service"
 mkdir -p $EXTRA_FILES_DIR
 
 HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
-MANAGER_CONF_FILE=$CONF_FILES_DIR/"manager.conf"
+MANAGER_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
 # Copying fed net conf file
@@ -55,7 +55,7 @@ echo "database_file_path=$DATABASE_FILE_PATH" >> $ENV_FEDNET_CONF_FILE
 
 # Get Manager ssh private key
 MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
-MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"manager.conf"
+MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"ras.conf"
 
 MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN="manager_ssh_private_key_file_path"
 MANAGER_SSH_PRIVATE_KEY_FILE_NAME=$(grep $MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN $MANAGER_CONFIGURED_FILE | awk -F "=" '{print $2}' | xargs basename)
