@@ -10,7 +10,7 @@ CONTAINER_BASE_PATH="/fogbow-gui"
 CONTAINER_CONF_FILE_PATH="src/defaults"
 
 MANAGER_CONF_FILE="manager.conf"
-DASHBOARD_PORT_PATTERN="fogbow_dashboard_server_port"
+DASHBOARD_PORT_PATTERN="fogbow_gui_server_port"
 DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 if [ -z "$DASHBOARD_PORT" ]; then
