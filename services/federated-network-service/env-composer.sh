@@ -49,7 +49,7 @@ echo "member_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
 MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
 MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"ras.conf"
 
-MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN="manager_ssh_private_key_file_path"
+MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN="ras_ssh_private_key_file_path"
 MANAGER_SSH_PRIVATE_KEY_FILE_NAME=$(grep $MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN $MANAGER_CONFIGURED_FILE | awk -F "=" '{print $2}' | xargs basename)
 MANAGER_SSH_PRIVATE_KEY_FILE_PATH=$MANAGER_CONFIGURED_FILES_DIR/$MANAGER_SSH_PRIVATE_KEY_FILE_NAME
 
@@ -96,7 +96,7 @@ echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FEDNET_CONF_FILE
 
 # Adding Agent scripts path
-DEFAULT_AGENT_SCRIPTS_PATH=~/"fogbow-components"/"federated-network-agent"
+DEFAULT_AGENT_SCRIPTS_PATH='~'/"fogbow-components"/"federated-network-agent"
 CREATE_SCRIPT_NAME="config-create-federated-network"
 DELETE_SCRIPT_NAME="config-delete-federated-network"
 
