@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR=$(pwd)
-CONF_FILE_PATH=$DIR/"general-conf-file"
+CONF_FILE_PATH=$DIR/"general.conf"
 
 PRIVATE_KEY_PROPERTY="private_key_file_path"
 PUBLIC_KEY_PROPERTY="public_key_file_path"
@@ -14,8 +14,8 @@ if [ -z "${PRIVATE_KEY_PATH// }" ] || [ ! -s "${PRIVATE_KEY_PATH// }" ] || [ ! -
 	echo "Cannot identify the manager ssh private key"
 	echo "Generating manager ssh private key"
 
-	PRIVATE_KEY_PATH=$DIR/"manager-id_rsa"
-	PUBLIC_KEY_PATH=$DIR/"manager-id_rsa.pub"
+	PRIVATE_KEY_PATH=$DIR/"fogbow-id_rsa"
+	PUBLIC_KEY_PATH=$DIR/"fogbow-id_rsa.pub"
 	
 	ssh-keygen -f $PRIVATE_KEY_PATH -t rsa -b 4096 -C "fogbow@manager" -N ""
 
