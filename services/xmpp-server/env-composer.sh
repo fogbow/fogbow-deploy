@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
+GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 
 XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
@@ -14,6 +15,13 @@ MANAGER_XMPP_ID=$(grep $MANAGER_XMPP_ID_PATTERN $INTERCOMPONENT_CONF_FILE | awk 
 
 MANAGER_PASSWORD_PATTERN="xmpp_password"
 MANAGER_PASSWORD=$(grep $MANAGER_PASSWORD_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
+
+if [ -z "${MANAGER_PASSWORD// }" ] ] ]; then
+	GENERAL_PASSWORD="password"
+	GENERAL_PASSWORD=$(grep $GENERAL_PASSWORD $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+	MANAGER_PASSWORD=$GENERAL_PASSWORD
+	echo "Empty password in intercomponent.conf file, using general password: $GENERAL_PASSWORD"
+fi
 
 yes | cp -f ./$XMPP_SERVER_DIR/$PROSODY_CONF_TEMPLATE ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
