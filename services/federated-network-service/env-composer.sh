@@ -86,12 +86,12 @@ echo "" >> $ENV_FEDNET_CONF_FILE
 echo "federated_network_agent_address=$AGENT_PUBLIC_IP" >> $ENV_FEDNET_CONF_FILE
 
 # Get Agent access password
-MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
-MANAGER_JDBC_PASSWORD=$(grep $MANAGER_JDBC_PASSWORD_PROPERTY $MANAGER_CONFIGURED_FILE | awk -F "=" '{print $2}')
+GENERAL_PASSWORD="password"
+GENERAL_PASSWORD=$(grep $GENERAL_PASSWORD $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
-echo "Agent access password: $MANAGER_JDBC_PASSWORD"
+echo "Agent access password: $GENERAL_PASSWORD"
 echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_pre_shared_key=$MANAGER_JDBC_PASSWORD" >> $ENV_FEDNET_CONF_FILE
+echo "federated_network_agent_pre_shared_key=$GENERAL_PASSWORD" >> $ENV_FEDNET_CONF_FILE
 
 # Adding Agent scripts path
 DEFAULT_AGENT_SCRIPTS_PATH='~'/"fogbow-components"/"federated-network-agent"
