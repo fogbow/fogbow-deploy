@@ -1,17 +1,19 @@
 #!/bin/bash
+DIR=$(pwd)
+CONF_FILES_DIR=$DIR/"conf-files"
 
 XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
 PROSODY_CONF_FILE="prosody.cfg.lua"
 
-CONF_FILE_PATH=$(pwd)/"conf-files"/"intercomponent.conf"
-yes | cp -f $CONF_FILE_PATH $XMPP_SERVER_DIR
+INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
+yes | cp -f $INTERCOMPONENT_CONF_FILE $XMPP_SERVER_DIR
 
 MANAGER_XMPP_ID_PATTERN="xmpp_jid"
-MANAGER_XMPP_ID=$(grep $MANAGER_XMPP_ID_PATTERN $CONF_FILE_PATH | awk -F "=" '{print $2}')
+MANAGER_XMPP_ID=$(grep $MANAGER_XMPP_ID_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
 
 MANAGER_PASSWORD_PATTERN="xmpp_password"
-MANAGER_PASSWORD=$(grep $MANAGER_PASSWORD_PATTERN $CONF_FILE_PATH | awk -F "=" '{print $2}')
+MANAGER_PASSWORD=$(grep $MANAGER_PASSWORD_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
 
 yes | cp -f ./$XMPP_SERVER_DIR/$PROSODY_CONF_TEMPLATE ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
