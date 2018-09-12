@@ -45,14 +45,6 @@ echo "Site name: $SITE_NAME"
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "member_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
 
-# Set database file path
-DATABASE_FILE_NAME="fednet.db"
-DATABASE_FILE_PATH=$CONTAINER_BASE_DIR/"databases"/$DATABASE_FILE_NAME
-
-echo "Database file path: $DATABASE_FILE_PATH"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "database_file_path=$DATABASE_FILE_PATH" >> $ENV_FEDNET_CONF_FILE
-
 # Get Manager ssh private key
 MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
 MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"ras.conf"
