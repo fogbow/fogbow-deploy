@@ -5,6 +5,7 @@ BASE_DIR="services/federated-network-service"
 CONF_FILES_DIR=$DIR/"conf-files"
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 CONTAINER_BASE_DIR="/root/federated-network-service"
+GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 
 mkdir -p $EXTRA_FILES_DIR
 
@@ -45,19 +46,16 @@ echo "Site name: $SITE_NAME"
 echo "" >> $ENV_FEDNET_CONF_FILE
 echo "member_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
 
-# Get Manager ssh private key
-MANAGER_CONFIGURED_FILES_DIR=$DIR/"services"/"resource-allocation-service"/"conf-files"
-MANAGER_CONFIGURED_FILE=$MANAGER_CONFIGURED_FILES_DIR/"ras.conf"
+# Get ssh private key
+GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
+GENERAL_PRIVATE_KEY_PATH=$(grep $GENERAL_PRIVATE_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+GENERAL_PRIVATE_KEY_NAME=$(basename $GENERAL_PRIVATE_KEY_PATH)
 
-MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN="ras_ssh_private_key_file_path"
-MANAGER_SSH_PRIVATE_KEY_FILE_NAME=$(grep $MANAGER_SSH_PRIVATE_KEY_FILE_PATH_PATTERN $MANAGER_CONFIGURED_FILE | awk -F "=" '{print $2}' | xargs basename)
-MANAGER_SSH_PRIVATE_KEY_FILE_PATH=$MANAGER_CONFIGURED_FILES_DIR/$MANAGER_SSH_PRIVATE_KEY_FILE_NAME
+echo "Moving manager ssh private key $GENERAL_PRIVATE_KEY_NAME to $EXTRA_FILES_DIR directory"
 
-echo "Moving manager ssh private key $MANAGER_SSH_PRIVATE_KEY_FILE_PATH to $EXTRA_FILES_DIR directory"
+yes | cp -f $GENERAL_PRIVATE_KEY_NAME $EXTRA_FILES_DIR
 
-yes | cp -f $MANAGER_SSH_PRIVATE_KEY_FILE_PATH $EXTRA_FILES_DIR
-
-FEDNET_PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/"extra-files"/$MANAGER_SSH_PRIVATE_KEY_FILE_NAME
+FEDNET_PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/"extra-files"/$GENERAL_PRIVATE_KEY_NAME
 
 echo "federated_network_agent_permission_file_path=$FEDNET_PERMISSION_FILE_PATH"
 echo "" >> $ENV_FEDNET_CONF_FILE

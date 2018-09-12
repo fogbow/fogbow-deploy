@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR=$(pwd)
-CONF_FILE_PATH=$DIR/"general.conf"
+CONF_FILES_DIR=$DIR/"conf-files"
+CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 
 PRIVATE_KEY_PROPERTY="private_key_file_path"
 PUBLIC_KEY_PROPERTY="public_key_file_path"

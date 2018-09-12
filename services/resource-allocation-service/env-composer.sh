@@ -2,7 +2,7 @@
 DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
-GENERAL_CONF_FILE_PATH=$DIR/"general.conf"
+GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
 
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
