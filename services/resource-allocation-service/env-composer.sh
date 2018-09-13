@@ -7,6 +7,8 @@ GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
+HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
+
 # Moving conf files
 
 CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
@@ -20,39 +22,32 @@ for conf_file_path in $CONF_FILES_LIST; do
 	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
 done
 
-# Adding Manager JDBC properties
+# RAS application.properties configuration
+APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
+yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
-MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
+INTERNAL_HOST_PRIVATE_IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_PRIVATE_IP=$(grep $INTERNAL_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+JDBC_PREFIX="jdbc:postgresql:"
+DB_PORT="5432"
+RAS_DB_ENDPOINT="ras"
 
-DATABASES_DIR=$CONTAINER_BASE_PATH/"databases"
-MANAGER_JDBC_NAME="manager.db"
+DB_URL_PROPERTY="spring.datasource.url"
+DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
+sed -i "s#.*$DB_URL_PROPERTY=.*#$DB_URL_PROPERTY=$DB_URL#" $APPLICATION_CONF_FILE
 
-JDBC_PREFIX="jdbc:sqlite:"
+DB_USERNAME="fogbow"
+DB_USERNAME_PATTERN="spring.datasource.username"
+sed -i "s#.*$DB_USERNAME_PATTERN=.*#$DB_USERNAME_PATTERN=$DB_USERNAME#" $APPLICATION_CONF_FILE
 
-MANAGER_JDBC_URL_PROPERTY="jdbc_database_url"
-MANAGER_JDBC_URL=$JDBC_PREFIX$DATABASES_DIR/$MANAGER_JDBC_NAME
+GENERAL_PASSWORD_PATTERN="password"
+DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DB_PASSWORD_PATTERN="spring.datasource.password"
+sed -i "s#.*$DB_PASSWORD_PATTERN=.*#$DB_PASSWORD_PATTERN=$DB_PASSWORD#" $APPLICATION_CONF_FILE
 
-echo "Manager JDBC database url: $MANAGER_JDBC_URL"
-
-MANAGER_JDBC_USERNAME_PROPERTY="jdbc_database_username"
-MANAGER_JDBC_USERNAME="fogbow"
-
-echo "Manager JDBC database username: $MANAGER_JDBC_USERNAME"
-
-MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
-GENERAL_PASSWORD_KEY="password"
-GENERAL_PASSWORD=$(grep $GENERAL_PASSWORD_KEY $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
-
-echo "Manager JDBC database password: $GENERAL_PASSWORD"
-
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_URL_PROPERTY=$MANAGER_JDBC_URL" >> $MANAGER_CONF_FILE
-
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_USERNAME_PROPERTY=$MANAGER_JDBC_USERNAME" >> $MANAGER_CONF_FILE
-
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_PASSWORD_PROPERTY=$GENERAL_PASSWORD" >> $MANAGER_CONF_FILE
+echo "RAS JDBC database url: $DB_URL"
+echo "Fogbow database username: $DB_USERNAME"
+echo "Fogbow database password: $DB_PASSWORD"
 
 # Checking manager ssh keys
 
@@ -97,9 +92,6 @@ for conf_file_name in $CONF_FILES_LIST; do
 done
 
 # Adding xmpp server ip
-
-HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
-
 DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
 DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 DIR=$(pwd)
 BASE_DIR="services/federated-network-service"
 CONF_FILES_DIR=$DIR/"conf-files"
@@ -12,6 +11,33 @@ mkdir -p $EXTRA_FILES_DIR
 HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
 RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
+
+# Config Fed net application properties
+APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
+yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
+
+INTERNAL_HOST_PRIVATE_IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_PRIVATE_IP=$(grep $INTERNAL_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+JDBC_PREFIX="jdbc:postgresql:"
+DB_PORT="5432"
+FNS_DB_ENDPOINT="fns"
+
+DB_URL_PROPERTY="spring.datasource.url"
+DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$FNS_DB_ENDPOINT
+sed -i "s#.*$DB_URL_PROPERTY=.*#$DB_URL_PROPERTY=$DB_URL#" $APPLICATION_CONF_FILE
+
+DB_USERNAME="fogbow"
+DB_USERNAME_PATTERN="spring.datasource.username"
+sed -i "s#.*$DB_USERNAME_PATTERN=.*#$DB_USERNAME_PATTERN=$DB_USERNAME#" $APPLICATION_CONF_FILE
+
+GENERAL_PASSWORD_PATTERN="password"
+DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DB_PASSWORD_PATTERN="spring.datasource.password"
+sed -i "s#.*$DB_PASSWORD_PATTERN=.*#$DB_PASSWORD_PATTERN=$DB_PASSWORD#" $APPLICATION_CONF_FILE
+
+echo "FNS JDBC database url: $DB_URL"
+echo "Fogbow database username: $DB_USERNAME"
+echo "Fogbow database password: $DB_PASSWORD"
 
 # Copying fed net conf file
 FEDNET_FILE_NAME="fns.conf"
