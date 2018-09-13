@@ -10,11 +10,11 @@ GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 mkdir -p $EXTRA_FILES_DIR
 
 HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
-MANAGER_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
+RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
 # Copying fed net conf file
-FEDNET_FILE_NAME="federated-network.conf"
+FEDNET_FILE_NAME="fns.conf"
 FEDNET_CONF_FILE=$CONF_FILES_DIR/$FEDNET_FILE_NAME
 ENV_FEDNET_CONF_FILE=$BASE_DIR/$FEDNET_FILE_NAME
 
@@ -23,20 +23,20 @@ echo "Moving $FEDNET_CONF_FILE to $ENV_FEDNET_CONF_FILE"
 yes | cp -f $FEDNET_CONF_FILE $ENV_FEDNET_CONF_FILE
 
 # Get Manager IP
-MANAGER_IP_PATTERN="internal_host_private_ip"
-MANAGER_IP=$(grep $MANAGER_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+RAS_IP_PATTERN="internal_host_private_ip"
+RAS_IP=$(grep $RAS_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
-echo "Manager ip: $MANAGER_IP"
+echo "Manager ip: $RAS_IP"
 echo "" >> $ENV_FEDNET_CONF_FILE
-echo "manager_core_ip=$MANAGER_IP" >> $ENV_FEDNET_CONF_FILE
+echo "ras_ip=$RAS_IP" >> $ENV_FEDNET_CONF_FILE
 
 # Get Manager server port
-MANAGER_SERVER_PORT_PATTERN="manager_server_port"
-MANAGER_SERVER_PORT=$(grep $MANAGER_SERVER_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
+RAS_SERVER_PORT_PATTERN="manager_server_port"
+RAS_SERVER_PORT=$(grep $RAS_SERVER_PORT_PATTERN $RAS_CONF_FILE | awk -F "=" '{print $2}')
 
-echo "Manager server port: $MANAGER_SERVER_PORT"
+echo "Manager server port: $RAS_SERVER_PORT"
 echo "" >> $ENV_FEDNET_CONF_FILE
-echo "manager_core_port=$MANAGER_SERVER_PORT" >> $ENV_FEDNET_CONF_FILE
+echo "ras_port=$RAS_SERVER_PORT" >> $ENV_FEDNET_CONF_FILE
 
 # Get site name
 SITE_NAME_PATTERN="xmpp_jid"
@@ -44,7 +44,7 @@ SITE_NAME=$(grep $SITE_NAME_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{pri
 
 echo "Site name: $SITE_NAME"
 echo "" >> $ENV_FEDNET_CONF_FILE
-echo "member_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
+echo "ras_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
 
 # Get ssh private key
 GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
