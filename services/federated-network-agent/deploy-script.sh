@@ -18,7 +18,7 @@ if [ "$?" -ne "0" ]; then
 fi
 
 GENERAL_CONF_FILE="general.conf"
-PASSWORD_PROPERTY="PASSWORD_PROPERTY"
+PASSWORD_PROPERTY="password"
 PASSWORD=$(grep $PASSWORD_PROPERTY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "VPN PSK: $PASSWORD"
