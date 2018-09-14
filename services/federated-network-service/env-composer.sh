@@ -13,16 +13,16 @@ RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
 # Moving conf files
-
 CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
 
-mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
+BASE_CONF_FILES_DIR=$DIR/$BASE_DIR/"conf-files"
+mkdir -p $BASE_CONF_FILES_DIR
 
 for conf_file_path in $CONF_FILES_LIST; do
 	conf_file_name=$(basename $conf_file_path)
 	echo "Conf file path: $conf_file_path"
 	echo "Conf file name: $conf_file_name"
-	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
+	yes | cp -f $conf_file_path $BASE_CONF_FILES_DIR/$conf_file_name
 done
 
 # Config Fed net application properties
@@ -55,7 +55,7 @@ echo "Fogbow database password: $DB_PASSWORD"
 # Copying fed net conf file
 FEDNET_FILE_NAME="fns.conf"
 FEDNET_CONF_FILE=$CONF_FILES_DIR/$FEDNET_FILE_NAME
-ENV_FEDNET_CONF_FILE=$BASE_DIR/$FEDNET_FILE_NAME
+ENV_FEDNET_CONF_FILE=$BASE_DIR
 
 echo "Moving $FEDNET_CONF_FILE to $ENV_FEDNET_CONF_FILE"
 
