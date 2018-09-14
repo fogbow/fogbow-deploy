@@ -57,14 +57,11 @@ sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
 # Setting up Authentication Type
 
 AUTH_TYPE_PATTERN="federation_identity_plugin_class"
-AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"behavior.conf" | awk -F "=" '{print $2}')
+AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"aaa.conf" | awk -F "=" '{print $2}')
 
-FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"behavior-plugins"/"federation-identity"/
+FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"aaa-plugins"/"federation-identity"/
 
 if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
-	LDAP_CONF_FILE_NAME="ldap-token-generator-plugin.conf"
-	LDAP_CONF_FILE=$FEDERATION_IDENTITY_DIR/$LDAP_CONF_FILE_NAME
-	
 	AUTH_TYPE_PATTERN="authPlugin"
 	AUTH_TYPE="Ldap"
 	echo "Dashboard auth type: $AUTH_TYPE"
@@ -79,9 +76,29 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 			type: 'password',
 			label: 'Password'
 		}
-	}
-};" >> $BASE_DIR/$CONF_FILE_NAME
+	}" >> $BASE_DIR/$CONF_FILE_NAME
+elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
+	AUTH_TYPE_PATTERN="authPlugin"
+	AUTH_TYPE="KeystoneV3"
+	echo "Dashboard auth type: $AUTH_TYPE"
+	
+	echo "	$AUTH_TYPE_PATTERN: '$AUTH_TYPE',
+	authFields: {
+		userId: {
+			type: 'text',
+			label: 'User Id'
+		},
+		projectId: {
+			type: 'text',
+			label: 'Project Id'
+		},
+		password: {
+			type: 'password',
+			label: 'Password'
+		}
+	}" >> $BASE_DIR/$CONF_FILE_NAME
 fi
+echo "};" >> $BASE_DIR/$CONF_FILE_NAME
 
 cat $BASE_DIR/$CONF_FILE_NAME
 
