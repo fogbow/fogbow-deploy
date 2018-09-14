@@ -12,6 +12,19 @@ HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
 RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
+# Moving conf files
+
+CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
+
+mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
+
+for conf_file_path in $CONF_FILES_LIST; do
+	conf_file_name=$(basename $conf_file_path)
+	echo "Conf file path: $conf_file_path"
+	echo "Conf file name: $conf_file_name"
+	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
+done
+
 # Config Fed net application properties
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE

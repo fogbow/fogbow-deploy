@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
 
-IMAGE_NAME="postgres"
+IMAGE_NAME="fogbow/database"
 CONTAINER_NAME="fogbow-database"
 
 CONTAINER_PORT="5432"
