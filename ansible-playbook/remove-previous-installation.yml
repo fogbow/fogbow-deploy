@@ -1,0 +1,29 @@
+---
+- hosts: dmz-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+  tasks:
+    - name: Removing all services if applied
+      become: yes
+      file:
+        state: absent
+        path: "{{ fogbow_components }}"
+
+- hosts: internal-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    manager_dir_name: resource-allocation-service
+    membership_dir_name: membership-service
+    dashboard_dir_name: fogbow-gui
+    fednet_dir_name: federated-network-service
+  tasks:
+    - name: Removing all services if applied
+      become: yes
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ manager_dir_name }}"
+        - "{{ fogbow_components }}/{{ membership_dir_name }}"
+        - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
+        - "{{ fogbow_components }}/{{ fednet_dir_name }}"
