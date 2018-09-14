@@ -1,5 +1,7 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
+CONF_FILES_DIR="conf-files"
+GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
 
 IMAGE_NAME="fogbow/database"
 CONTAINER_NAME="fogbow-database"
