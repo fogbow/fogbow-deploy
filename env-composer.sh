@@ -22,6 +22,7 @@ if [ -z "${PRIVATE_KEY_PATH// }" ] || [ ! -s "${PRIVATE_KEY_PATH// }" ] || [ ! -
 	openssl genrsa -out $RSA_KEY_PATH 2048
 	openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
 	openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
+	chmod 600 $PRIVATE_KEY_PATH
 	rm $RSA_KEY_PATH
 
 	sed -i "s#.*$PRIVATE_KEY_PROPERTY=.*#$PRIVATE_KEY_PROPERTY=$PRIVATE_KEY_PATH#" $CONF_FILE_PATH
