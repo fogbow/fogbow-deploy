@@ -3,6 +3,7 @@ DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
 GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
+RAS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
 
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
@@ -49,9 +50,9 @@ echo "RAS JDBC database url: $DB_URL"
 echo "Fogbow database username: $DB_USERNAME"
 echo "Fogbow database password: $DB_PASSWORD"
 
-# Checking manager ssh keys
+# Checking manager keys
 
-echo "Fill SSH keys path"
+echo "Fill keys path"
 
 GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
 GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
@@ -65,8 +66,8 @@ MANAGER_PUBLIC_KEY_PATTERN="ras_public_key_file_path"
 echo "$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH"
 echo "$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH"
 
-sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH#" $MANAGER_CONF_FILE
-sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH#" $MANAGER_CONF_FILE
+sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH#" $RAS_CONF_FILE
+sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH#" $RAS_CONF_FILE
 
 # Copying files from conf files specification
 
