@@ -17,8 +17,12 @@ if [ -z "${PRIVATE_KEY_PATH// }" ] || [ ! -s "${PRIVATE_KEY_PATH// }" ] || [ ! -
 
 	PRIVATE_KEY_PATH=$DIR/"fogbow-id_rsa"
 	PUBLIC_KEY_PATH=$DIR/"fogbow-id_rsa.pub"
+	RSA_KEY_PATH=$DIR/"rsa_key.pem"
 	
-	ssh-keygen -f $PRIVATE_KEY_PATH -t rsa -b 4096 -C "fogbow@manager" -N ""
+	openssl genrsa -out $RSA_KEY_PATH 2048
+	openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
+	openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
+	rm $RSA_KEY_PATH
 
 	sed -i "s#.*$PRIVATE_KEY_PROPERTY=.*#$PRIVATE_KEY_PROPERTY=$PRIVATE_KEY_PATH#" $CONF_FILE_PATH
 	sed -i "s#.*$PUBLIC_KEY_PROPERTY=.*#$PUBLIC_KEY_PROPERTY=$PUBLIC_KEY_PATH#" $CONF_FILE_PATH
