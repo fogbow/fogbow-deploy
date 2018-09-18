@@ -5,6 +5,7 @@ CONF_FILES_DIR=$DIR/"conf-files"
 EXTRA_FILES_DIR=$BASE_DIR/"extra-files"
 CONTAINER_BASE_DIR="/root/federated-network-service"
 GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
+FNS_CONF_FILES_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 
 mkdir -p $EXTRA_FILES_DIR
 
@@ -13,15 +14,14 @@ RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
 
 # Moving conf files
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH | grep '.conf' | xargs)
 
 BASE_CONF_FILES_DIR=$DIR/$BASE_DIR/"conf-files"
 mkdir -p $BASE_CONF_FILES_DIR
 
+echo "Moving conf files to "$BASE_CONF_FILES_DIR
 for conf_file_path in $CONF_FILES_LIST; do
 	conf_file_name=$(basename $conf_file_path)
-	echo "Conf file path: $conf_file_path"
-	echo "Conf file name: $conf_file_name"
 	yes | cp -f $conf_file_path $BASE_CONF_FILES_DIR/$conf_file_name
 done
 
@@ -54,8 +54,8 @@ echo "Fogbow database password: $DB_PASSWORD"
 
 # Copying fed net conf file
 FEDNET_FILE_NAME="fns.conf"
-FEDNET_CONF_FILE=$CONF_FILES_DIR/$FEDNET_FILE_NAME
-ENV_FEDNET_CONF_FILE=$BASE_DIR
+FEDNET_CONF_FILE=$FNS_CONF_FILES_PATH/$FEDNET_FILE_NAME
+ENV_FEDNET_CONF_FILE=$FNS_CONF_FILES_PATH/$FEDNET_FILE_NAME
 
 echo "Moving $FEDNET_CONF_FILE to $ENV_FEDNET_CONF_FILE"
 
