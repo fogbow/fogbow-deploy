@@ -25,6 +25,31 @@ for conf_file_path in $CONF_FILES_LIST; do
 	yes | cp -f $conf_file_path $BASE_CONF_FILES_DIR/$conf_file_name
 done
 
+# Moving RAS aaa.conf
+AAA_FILE="aaa.conf"
+yes | cp -f $CONF_FILES_DIR/$AAA_FILE $BASE_CONF_FILES_DIR/$AAA_FILE
+
+# Moving keys
+GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
+GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
+
+GENERAL_PRIVATE_KEY_PATH=$(grep $GENERAL_PRIVATE_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+GENERAL_PUBLIC_KEY_PATH=$(grep $GENERAL_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+yes | cp -f $GENERAL_PRIVATE_KEY_PATH $BASE_CONF_FILES_DIR
+yes | cp -f $GENERAL_PUBLIC_KEY_PATH $BASE_CONF_FILES_DIR
+
+# Checking manager keys
+echo "Fill keys path"
+
+MANAGER_PRIVATE_KEY_PATTERN="ras_private_key_file_path"
+MANAGER_PUBLIC_KEY_PATTERN="ras_public_key_file_path"
+
+echo "$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH"
+echo "$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH"
+
+sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH#" $RAS_CONF_FILE
+sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH#" $RAS_CONF_FILE
+
 # Config Fed net application properties
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
