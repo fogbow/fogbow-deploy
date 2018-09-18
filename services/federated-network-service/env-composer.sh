@@ -64,26 +64,26 @@ yes | cp -f $FEDNET_CONF_FILE $ENV_FEDNET_CONF_FILE
 # Get Manager IP
 RAS_IP_PATTERN="internal_host_private_ip"
 RAS_IP=$(grep $RAS_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Manager ip: $RAS_IP"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "ras_ip=$RAS_IP" >> $ENV_FEDNET_CONF_FILE
+
+RAS_IP_KEY="ras_ip"
+sed -i "s#.*$RAS_IP_KEY=.*#$RAS_IP_KEY=$RAS_IP#" $ENV_FEDNET_CONF_FILE
 
 # Get Manager server port
 RAS_SERVER_PORT_PATTERN="ras_server_port"
 RAS_SERVER_PORT=$(grep $RAS_SERVER_PORT_PATTERN $RAS_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Manager server port: $RAS_SERVER_PORT"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "ras_port=$RAS_SERVER_PORT" >> $ENV_FEDNET_CONF_FILE
+
+RAS_PORT_KEY="ras_port"
+sed -i "s#.*$RAS_PORT_KEY=.*#$RAS_PORT_KEY=$RAS_SERVER_PORT#" $ENV_FEDNET_CONF_FILE
 
 # Get site name
 SITE_NAME_PATTERN="xmpp_jid"
 SITE_NAME=$(grep $SITE_NAME_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Site name: $SITE_NAME"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "ras_name=$SITE_NAME" >> $ENV_FEDNET_CONF_FILE
+
+RAS_NAME_KEY="ras_name"
+sed -i "s#.*$RAS_NAME_KEY=.*#$RAS_NAME_KEY=$SITE_NAME#" $ENV_FEDNET_CONF_FILE
 
 # Get ssh private key
 GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
@@ -95,42 +95,42 @@ echo "Moving manager ssh private key $GENERAL_PRIVATE_KEY_NAME to $EXTRA_FILES_D
 yes | cp -f $GENERAL_PRIVATE_KEY_NAME $EXTRA_FILES_DIR
 
 FEDNET_PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/"extra-files"/$GENERAL_PRIVATE_KEY_NAME
-
 echo "federated_network_agent_permission_file_path=$FEDNET_PERMISSION_FILE_PATH"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_permission_file_path=$FEDNET_PERMISSION_FILE_PATH" >> $ENV_FEDNET_CONF_FILE
+
+AGENT_PEM_PATH="federated_network_agent_permission_file_path"
+sed -i "s#.*$AGENT_PEM_PATH=.*#$AGENT_PEM_PATH=$FEDNET_PERMISSION_FILE_PATH#" $ENV_FEDNET_CONF_FILE
 
 # Get remote hosts user
 REMOTE_HOSTS_USER_PATTERN="remote_hosts_user"
 REMOTE_HOSTS_USER=$(grep $REMOTE_HOSTS_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Remote hosts user: $REMOTE_HOSTS_USER"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_user=$REMOTE_HOSTS_USER" >> $ENV_FEDNET_CONF_FILE
+
+REMOTE_USER="federated_network_agent_user"
+sed -i "s#.*$REMOTE_USER=.*#$REMOTE_USER=$REMOTE_HOSTS_USER#" $ENV_FEDNET_CONF_FILE
 
 # Get Agent private address
 AGENT_PRIVATE_IP_PATTERN="dmz_host_private_ip"
 AGENT_PRIVATE_IP=$(grep $AGENT_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Agent private ip: $AGENT_PRIVATE_IP"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_private_address=$AGENT_PRIVATE_IP" >> $ENV_FEDNET_CONF_FILE
+
+AGENT_PRIVATE_IP_KEY="federated_network_agent_private_address"
+sed -i "s#.*$AGENT_PRIVATE_IP_KEY=.*#$AGENT_PRIVATE_IP_KEY=$AGENT_PRIVATE_IP#" $ENV_FEDNET_CONF_FILE
 
 # Get Agent public address
 AGENT_PUBLIC_IP_PATTERN="dmz_host_public_ip"
 AGENT_PUBLIC_IP=$(grep $AGENT_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
 echo "Agent public ip: $AGENT_PUBLIC_IP"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_address=$AGENT_PUBLIC_IP" >> $ENV_FEDNET_CONF_FILE
+
+AGENT_PUBLIC_IP_KEY="federated_network_agent_address"
+sed -i "s#.*$AGENT_PUBLIC_IP_KEY=.*#$AGENT_PUBLIC_IP_KEY=$AGENT_PUBLIC_IP#" $ENV_FEDNET_CONF_FILE
 
 # Get Agent access password
-GENERAL_PASSWORD="password"
-GENERAL_PASSWORD=$(grep $GENERAL_PASSWORD $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+VPN_PASSWORD_KEY="vpn_password"
+VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+echo "Agent access password: $VPN_PASSWORD"
 
-echo "Agent access password: $GENERAL_PASSWORD"
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "federated_network_agent_pre_shared_key=$GENERAL_PASSWORD" >> $ENV_FEDNET_CONF_FILE
+VPN_PSK_KEY="federated_network_agent_pre_shared_key"
+sed -i "s#.*$VPN_PSK_KEY=.*#$VPN_PSK_KEY=$VPN_PASSWORD#" $ENV_FEDNET_CONF_FILE
 
 # Adding Agent scripts path
 DEFAULT_AGENT_SCRIPTS_PATH='~'/"fogbow-components"/"federated-network-agent"
@@ -140,6 +140,7 @@ DELETE_SCRIPT_NAME="config-delete-federated-network"
 echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME"
 echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME"
 
-echo "" >> $ENV_FEDNET_CONF_FILE
-echo "add_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME" >> $ENV_FEDNET_CONF_FILE
-echo "remove_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME" >> $ENV_FEDNET_CONF_FILE
+ADD_FEDNET_SCRIPT_KEY="add_federated_network_script_path"
+REMOVE_FEDNET_SCRIPT_KEY="remove_federated_network_script_path"
+sed -i "s#.*$ADD_FEDNET_SCRIPT_KEY=.*#$ADD_FEDNET_SCRIPT_KEY=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME#" $ENV_FEDNET_CONF_FILE
+sed -i "s#.*$REMOVE_FEDNET_SCRIPT_KEY=.*#$REMOVE_FEDNET_SCRIPT_KEY=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME#" $ENV_FEDNET_CONF_FILE
