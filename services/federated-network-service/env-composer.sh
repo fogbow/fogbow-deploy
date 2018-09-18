@@ -70,7 +70,7 @@ echo "" >> $ENV_FEDNET_CONF_FILE
 echo "ras_ip=$RAS_IP" >> $ENV_FEDNET_CONF_FILE
 
 # Get Manager server port
-RAS_SERVER_PORT_PATTERN="manager_server_port"
+RAS_SERVER_PORT_PATTERN="ras_server_port"
 RAS_SERVER_PORT=$(grep $RAS_SERVER_PORT_PATTERN $RAS_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager server port: $RAS_SERVER_PORT"

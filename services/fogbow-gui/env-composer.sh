@@ -22,7 +22,7 @@ yes | cp -f $BASE_DIR/$CONF_FILE_NAME".example" $BASE_DIR/$CONF_FILE_NAME
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
-MANAGER_PORT_PATTERN="manager_server_port"
+MANAGER_PORT_PATTERN="ras_server_port"
 MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/$MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager url: $INTERNAL_HOST_IP:$MANAGER_PORT"
