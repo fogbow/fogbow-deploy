@@ -4,6 +4,7 @@ BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
 GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
 RAS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
+FNS_CONF_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
@@ -12,7 +13,7 @@ HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
 
 # Moving conf files
 
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -path ./$FNS_CONF_PATH -prune -o -print | grep '.conf' | xargs)
 
 mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
 
