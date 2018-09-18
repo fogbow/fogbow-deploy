@@ -18,10 +18,8 @@ if [ "$?" -ne "0" ]; then
 fi
 
 GENERAL_CONF_FILE="general.conf"
-PASSWORD_PROPERTY="password"
-PASSWORD=$(grep $PASSWORD_PROPERTY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
-
-echo "VPN PSK: $PASSWORD"
+VPN_PASSWORD_KEY="vpn_password"
+VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
 
 CREATE_NETWORK_SCRIPT="create-federated-network"
 DELETE_NETWORK_SCRIPT="delete-federated-network"
@@ -38,7 +36,7 @@ sudo docker run -idt \
 	-p 4500:4500/udp \
 	-p 1701:1701/udp \
 	--name $CONTAINER_NAME \
-	-e VPN_PSK=$PASSWORD \
+	-e VPN_PSK=$VPN_PASSWORD \
 	-v $DIR/$CREATE_NETWORK_SCRIPT:/$CREATE_NETWORK_SCRIPT \
 	-v $DIR/$DELETE_NETWORK_SCRIPT:/$DELETE_NETWORK_SCRIPT \
 	-v $DIR/$IPSEC_CONF_FILE:$CONTAINER_IPSEC_CONF_FILE_PATH \

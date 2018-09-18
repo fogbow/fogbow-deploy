@@ -5,10 +5,14 @@ CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 
 PRIVATE_KEY_PROPERTY="private_key_file_path"
 PUBLIC_KEY_PROPERTY="public_key_file_path"
+VPN_PASSWORD_PROPERTY="vpn_password"
+XMPP_PASSWORD_PROPERTY="xmpp_password"
 PASSWORD_PROPERTY="password"
 
 PRIVATE_KEY_PATH=$(grep $PRIVATE_KEY_PROPERTY $CONF_FILE_PATH | awk -F "=" '{print $2}')
 PUBLIC_KEY_PATH=$(grep $PUBLIC_KEY_PROPERTY $CONF_FILE_PATH | awk -F "=" '{print $2}')
+VPN_PASSWORD_VALUE=$(grep $VPN_PASSWORD_PROPERTY $CONF_FILE_PATH | awk -F "=" '{print $2}')
+XMPP_PASSWORD_VALUE=$(grep $XMPP_PASSWORD_PROPERTY $CONF_FILE_PATH | awk -F "=" '{print $2}')
 PASSWORD_VALUE=$(grep $PASSWORD_PROPERTY $CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 if [ -z "${PRIVATE_KEY_PATH// }" ] || [ ! -s "${PRIVATE_KEY_PATH// }" ] || [ ! -s "${PUBLIC_KEY_PATH// }" ] || [ ! -s "${PUBLIC_KEY_PATH// }" ]; then
@@ -31,6 +35,15 @@ fi
 
 if [ -z ${PASSWORD_VALUE// } ]; then
 	GENERATED_PASSWORD=$(pwgen 10 1)
-	echo "Password generated: $GENERATED_PASSWORD"
 	sed -i "s#.*$PASSWORD_PROPERTY=.*#$PASSWORD_PROPERTY=$GENERATED_PASSWORD#" $CONF_FILE_PATH
+fi
+
+if [ -z ${VPN_PASSWORD_VALUE// } ]; then
+	GENERATED_PASSWORD=$(pwgen 10 1)
+	sed -i "s#.*$VPN_PASSWORD_PROPERTY=.*#$VPN_PASSWORD_PROPERTY=$GENERATED_PASSWORD#" $CONF_FILE_PATH
+fi
+
+if [ -z ${XMPP_PASSWORD_VALUE// } ]; then
+	GENERATED_PASSWORD=$(pwgen 10 1)
+	sed -i "s#.*$XMPP_PASSWORD_PROPERTY=.*#$XMPP_PASSWORD_PROPERTY=$GENERATED_PASSWORD#" $CONF_FILE_PATH
 fi
