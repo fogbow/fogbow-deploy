@@ -2,6 +2,7 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/fogbow-gui"
+FNS_CONF_FILES_DIR="ras-confs-to-fns"
 
 # Copying related conf files
 
@@ -31,7 +32,7 @@ sed -i "s#.*manager:.*#	manager: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT',#" $BA
 # Getting federated network service ip and port 
 
 echo "Using Federated network service"
-FEDNET_CONF_FILE=$CONF_FILES_DIR/"federated-network.conf"
+FEDNET_CONF_FILE=$FNS_CONF_FILES_DIR/"fns.conf"
 FEDNET_PORT_PATTERN="server_port"
 FEDNET_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
 
