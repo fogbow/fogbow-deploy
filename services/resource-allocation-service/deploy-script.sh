@@ -23,8 +23,8 @@ XMPP_PORT_PATTERN="xmpp_server_port"
 XMPP_PORT=$(grep $XMPP_PORT_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
 CONTAINER_XMPP_PORT="5327"
 
-IMAGE_BASE_NAME=$(basename IMAGE_NAME)
-SERVICES_CONF=services.conf
+SERVICES_CONF=$CONF_FILES_DIR/"services.conf"
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
 echo "Manager xmpp port: $XMPP_PORT"

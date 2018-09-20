@@ -30,7 +30,7 @@ MANAGER_PORT_PATTERN="ras_server_port"
 MANAGER_PORT=$(grep $MANAGER_PORT_PATTERN $CONF_FILES_DIR/$MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Manager url: $INTERNAL_HOST_IP:$MANAGER_PORT"
-sed -i "s#.*manager:.*#	manager: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*ras:.*#	ras: 'http://$INTERNAL_HOST_IP:$MANAGER_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting federated network service ip and port 
 
@@ -40,7 +40,7 @@ FEDNET_PORT_PATTERN="server_port"
 FEDNET_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
 
 echo "Federated network service url: $INTERNAL_HOST_IP:$FEDNET_PORT"
-sed -i "s#.*fedenet:.*#	fedenet: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*fns:.*#	fns: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port
 
@@ -48,7 +48,7 @@ MEMBERSHIP_PORT_PATTERN="server_port"
 MEMBERSHIP_PORT=$(grep $MEMBERSHIP_PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
 
 echo "Membership url: $INTERNAL_HOST_IP:$MEMBERSHIP_PORT"
-sed -i "s#.*membership:.*#	membership: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*ms:.*#	ms: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 

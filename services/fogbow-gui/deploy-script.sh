@@ -12,7 +12,7 @@ MANAGER_CONF_FILE="ras.conf"
 DASHBOARD_PORT_PATTERN="fogbow_gui_server_port"
 DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
 
-IMAGE_BASE_NAME=$(basename IMAGE_NAME)
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
