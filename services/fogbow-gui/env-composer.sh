@@ -66,12 +66,12 @@ AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/"aaa.conf" | awk -F "=
 FEDERATION_IDENTITY_DIR=$CONF_FILES_DIR/"aaa-plugins"/"federation-identity"/
 
 if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
-	AUTH_TYPE_PATTERN="authPlugin"
+	AUTH_TYPE_PATTERN="authenticationPlugin"
 	AUTH_TYPE="Ldap"
 	echo "Dashboard auth type: $AUTH_TYPE"
 	
 	echo "	$AUTH_TYPE_PATTERN: '$AUTH_TYPE',
-	authFields: {
+	credentialFields: {
 		username: {
 			type: 'text',
 			label: 'Username'
@@ -82,12 +82,12 @@ if [[ $AUTH_TYPE_CLASS = *"Ldap"* ]]; then
 		}
 	}" >> $BASE_DIR/$CONF_FILE_NAME
 elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
-	AUTH_TYPE_PATTERN="authPlugin"
+	AUTH_TYPE_PATTERN="authenticationPlugin"
 	AUTH_TYPE="KeystoneV3"
 	echo "Dashboard auth type: $AUTH_TYPE"
 	
 	echo "	$AUTH_TYPE_PATTERN: '$AUTH_TYPE',
-	authFields: {
+	credentialFields: {
 		userName: {
 			type: 'text',
 			label: 'User Name'
