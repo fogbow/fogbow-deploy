@@ -20,8 +20,8 @@ echo "Dashboard port: $DASHBOARD_PORT"
 
 CONTAINER_PORT="3000"
 
-sudo docker rm $CONTAINER_NAME
 sudo docker stop $CONTAINER_NAME
+sudo docker rm $CONTAINER_NAME
 sudo docker pull $IMAGE_NAME
 
 sudo docker run -tdi --name $CONTAINER_NAME \
