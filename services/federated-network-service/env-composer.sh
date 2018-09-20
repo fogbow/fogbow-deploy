@@ -31,6 +31,9 @@ done
 AAA_FILE="aaa.conf"
 yes | cp -f $CONF_FILES_DIR/$AAA_FILE $BASE_CONF_FILES_DIR/$AAA_FILE
 
+SERVICES_FILE="services.conf"
+yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_CONF_FILES_DIR/$SERVICES_FILE
+
 # Moving keys
 GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
 GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
