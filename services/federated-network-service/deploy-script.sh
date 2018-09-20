@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
 EXTRA_FILES_DIR=$DIR_PATH/"extra-files"
+CONF_FILES_DIR_PATH="conf-files"
 CONF_FILES_DIR=$DIR_PATH/"conf-files"
 FNS_CONF_FILES_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 
@@ -18,14 +19,14 @@ LOG4F_FILE_NAME="log4j.properties"
 APPLICATION_CONF_FILE="application.properties"
 
 SERVER_PORT_PATTERN="server_port"
-FEDNET_PORT=$(grep $SERVER_PORT_PATTERN $FNS_CONF_FILES_PATH/$FEDNET_CONF_FILE_NAME | awk -F "=" '{print $2}')
+FEDNET_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR_PATH/$FEDNET_CONF_FILE_NAME | awk -F "=" '{print $2}')
 CONTAINER_PORT="8081"
 
 echo "Federated network service server port: $FEDNET_PORT"
 
-sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
+sudo docker pull $IMAGE_NAME
 
 FEDNET_AGENT_SSH_PRIVATE_KEY_PATTERN="federated_network_agent_permission_file_path"
 FEDNET_AGENT_SSH_PRIVATE_KEY=$(grep $FEDNET_AGENT_SSH_PRIVATE_KEY_PATTERN $FEDNET_CONF_FILE_NAME | awk -F "=" '{print $2}')

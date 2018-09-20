@@ -85,17 +85,21 @@ elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
 	
 	echo "	$AUTH_TYPE_PATTERN: '$AUTH_TYPE',
 	authFields: {
-		userId: {
+		userName: {
 			type: 'text',
-			label: 'User Id'
-		},
-		projectId: {
-			type: 'text',
-			label: 'Project Id'
+			label: 'User Name'
 		},
 		password: {
 			type: 'password',
 			label: 'Password'
+		},
+		domain: {
+			type: 'text',
+			label: 'Domain'
+		},
+		projectName: {
+			type: 'text',
+			label: 'Project Name'
 		}
 	}" >> $BASE_DIR/$CONF_FILE_NAME
 fi
