@@ -1,0 +1,5 @@
+export const env = {
+    ras: 'http://10.11.4.192:8082',
+    fns: 'http://10.11.4.192:8082',
+    ms: 'http://10.11.4.192:8081',
+    local: 'naf1.lsd.ufcg.edu.br',

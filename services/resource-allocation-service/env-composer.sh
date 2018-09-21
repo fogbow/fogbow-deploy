@@ -2,13 +2,18 @@
 DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
 CONF_FILES_DIR="conf-files"
+GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
+RAS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
+FNS_CONF_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
+HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
+
 # Moving conf files
 
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -path ./$FNS_CONF_PATH -prune -o -print | grep '.conf' | xargs)
 
 mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
 
@@ -19,64 +24,51 @@ for conf_file_path in $CONF_FILES_LIST; do
 	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
 done
 
-# Adding Manager JDBC properties
+# RAS application.properties configuration
+APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
+yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
-MANAGER_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"manager.conf"
+INTERNAL_HOST_PRIVATE_IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_PRIVATE_IP=$(grep $INTERNAL_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+JDBC_PREFIX="jdbc:postgresql:"
+DB_PORT="5432"
+RAS_DB_ENDPOINT="ras"
 
-DATABASES_DIR=$CONTAINER_BASE_PATH/"databases"
-MANAGER_JDBC_NAME="manager.db"
+DB_URL_PROPERTY="spring.datasource.url"
+DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
+sed -i "s#.*$DB_URL_PROPERTY=.*#$DB_URL_PROPERTY=$DB_URL#" $APPLICATION_CONF_FILE
 
-JDBC_PREFIX="jdbc:sqlite:"
+DB_USERNAME="fogbow"
+DB_USERNAME_PATTERN="spring.datasource.username"
+sed -i "s#.*$DB_USERNAME_PATTERN=.*#$DB_USERNAME_PATTERN=$DB_USERNAME#" $APPLICATION_CONF_FILE
 
-MANAGER_JDBC_URL_PROPERTY="jdbc_database_url"
-MANAGER_JDBC_URL=$JDBC_PREFIX$DATABASES_DIR/$MANAGER_JDBC_NAME
+GENERAL_PASSWORD_PATTERN="password"
+DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DB_PASSWORD_PATTERN="spring.datasource.password"
+sed -i "s#.*$DB_PASSWORD_PATTERN=.*#$DB_PASSWORD_PATTERN=$DB_PASSWORD#" $APPLICATION_CONF_FILE
 
-echo "Manager JDBC database url: $MANAGER_JDBC_URL"
+echo "RAS JDBC database url: $DB_URL"
+echo "Fogbow database username: $DB_USERNAME"
+echo "Fogbow database password: $DB_PASSWORD"
 
-MANAGER_JDBC_USERNAME_PROPERTY="jdbc_database_username"
-MANAGER_JDBC_USERNAME="fogbow"
+# Checking manager keys
 
-echo "Manager JDBC database username: $MANAGER_JDBC_USERNAME"
+echo "Fill keys path"
 
-MANAGER_JDBC_PASSWORD_PROPERTY="jdbc_database_password"
-MANAGER_JDBC_PASSWORD=$(pwgen 10 1)
+GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
+GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
 
-echo "Manager JDBC database password: $MANAGER_JDBC_PASSWORD"
+GENERAL_PRIVATE_KEY_PATH=$(grep $GENERAL_PRIVATE_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+GENERAL_PUBLIC_KEY_PATH=$(grep $GENERAL_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_URL_PROPERTY=$MANAGER_JDBC_URL" >> $MANAGER_CONF_FILE
+MANAGER_PRIVATE_KEY_PATTERN="ras_private_key_file_path"
+MANAGER_PUBLIC_KEY_PATTERN="ras_public_key_file_path"
 
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_USERNAME_PROPERTY=$MANAGER_JDBC_USERNAME" >> $MANAGER_CONF_FILE
+echo "$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH"
+echo "$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH"
 
-echo "" >> $MANAGER_CONF_FILE
-echo "$MANAGER_JDBC_PASSWORD_PROPERTY=$MANAGER_JDBC_PASSWORD" >> $MANAGER_CONF_FILE
-
-# Checking manager ssh keys
-
-echo "Checking SSH keys"
-
-MANAGER_PRIVATE_KEY_PATTERN="manager_ssh_private_key_file_path"
-MANAGER_PUBLIC_KEY_PATTERN="manager_ssh_public_key_file_path"
-
-MANAGER_PRIVATE_KEY_PATH=$(grep $MANAGER_PRIVATE_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
-MANAGER_PUBLIC_KEY_PATH=$(grep $MANAGER_PUBLIC_KEY_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
-
-if [ -z "$MANAGER_PRIVATE_KEY_PATH" ] || [ ! -f "$MANAGER_PRIVATE_KEY_PATH" ]; then
-	echo "Cannot identify the manager ssh private key"
-	echo "Generating manager ssh private key"
-
-	MANAGER_PRIVATE_KEY_PATH=$DIR/"manager-id_rsa"
-	MANAGER_PUBLIC_KEY_PATH=$DIR/"manager-id_rsa.pub"
-	
-	ssh-keygen -f $MANAGER_PRIVATE_KEY_PATH -t rsa -b 4096 -C "fogbow@manager" -N ""
-fi
-
-echo "$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH"
-echo "$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH"
-
-sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$MANAGER_PRIVATE_KEY_PATH#" $MANAGER_CONF_FILE
-sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$MANAGER_PUBLIC_KEY_PATH#" $MANAGER_CONF_FILE
+sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH#" $RAS_CONF_FILE
+sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH#" $RAS_CONF_FILE
 
 # Copying files from conf files specification
 
@@ -101,29 +93,20 @@ for conf_file_name in $CONF_FILES_LIST; do
 	done
 done
 
-# Adding xmpp server ip, reverse tunnel public and private ip
-
-HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
-
+# Adding xmpp server ip
 DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
 DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
-DMZ_HOST_PUBLIC_IP_PATTERN="dmz_host_public_ip"
-DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 INTERCOMPONENT_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"intercomponent.conf"
 XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
 sed -i "s#$XMPP_SERVER_IP_PATTERN=#$XMPP_SERVER_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $INTERCOMPONENT_CONF_FILE
 
-XMPP_MANAGER_PORT_PATTERN="xmpp_c2c_port"
+XMPP_MANAGER_PORT_PATTERN="xmpp_c2s_port"
 XMPP_MANAGER_PORT=$(grep $XMPP_MANAGER_PORT_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
-XMPP_MANAGER_PORT_PROPERTY="xmpp_server_port"
+XMPP_MANAGER_PORT_PROPERTY="xmpp_c2s_port"
 echo "" >> $INTERCOMPONENT_CONF_FILE
 echo "$XMPP_MANAGER_PORT_PROPERTY=$XMPP_MANAGER_PORT" >> $INTERCOMPONENT_CONF_FILE
 
-REVERSE_TUNNEL_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"reverse-tunnel.conf"
-REVERSE_TUNNEL_PUBLIC_IP_PATTERN="reverse_tunnel_public_address"
-REVERSE_TUNNEL_PRIVATE_IP_PATTERN="reverse_tunnel_private_address"
-
-sed -i "s#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=#$REVERSE_TUNNEL_PUBLIC_IP_PATTERN=$DMZ_HOST_PUBLIC_IP#" $REVERSE_TUNNEL_CONF_FILE
-sed -i "s#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=#$REVERSE_TUNNEL_PRIVATE_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $REVERSE_TUNNEL_CONF_FILE
+XMPP_PASSWORD_PATTERN="xmpp_password"
+XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+sed -i "s#.*$XMPP_PASSWORD_PATTERN=.*#$XMPP_PASSWORD_PATTERN=$XMPP_PASSWORD#" $INTERCOMPONENT_CONF_FILE
