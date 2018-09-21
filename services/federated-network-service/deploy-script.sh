@@ -3,7 +3,6 @@ DIR_PATH=$(pwd)
 EXTRA_FILES_DIR=$DIR_PATH/"extra-files"
 CONF_FILES_DIR_PATH="conf-files"
 CONF_FILES_DIR=$DIR_PATH/"conf-files"
-FNS_CONF_FILES_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 
 CONTAINER_BASE_PATH="/root/federated-network-service"
 CONTAINER_EXTRA_FILES_PATH=$CONTAINER_BASE_PATH/"extra-files"
@@ -35,7 +34,6 @@ sudo docker pull $IMAGE_NAME
 FEDNET_AGENT_SSH_PRIVATE_KEY_PATTERN="federated_network_agent_permission_file_path"
 FEDNET_AGENT_SSH_PRIVATE_KEY=$(grep $FEDNET_AGENT_SSH_PRIVATE_KEY_PATTERN $FEDNET_CONF_FILE_NAME | awk -F "=" '{print $2}')
 FEDNET_AGENT_SSH_PRIVATE_KEY=$(basename $FEDNET_AGENT_SSH_PRIVATE_KEY)
-sudo chmod 600 $EXTRA_FILES_DIR/$FEDNET_AGENT_SSH_PRIVATE_KEY
 
 sudo docker run -idt \
 	--name $CONTAINER_NAME \
