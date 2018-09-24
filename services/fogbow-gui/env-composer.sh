@@ -88,7 +88,7 @@ elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
 	
 	echo "	$AUTH_TYPE_PATTERN: '$AUTH_TYPE',
 	credentialFields: {
-		userName: {
+		username: {
 			type: 'text',
 			label: 'User Name'
 		},
@@ -100,7 +100,7 @@ elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
 			type: 'text',
 			label: 'Domain'
 		},
-		projectName: {
+		projectname: {
 			type: 'text',
 			label: 'Project Name'
 		}
