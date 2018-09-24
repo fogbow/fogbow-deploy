@@ -31,8 +31,8 @@
       args:
         chdir: "{{ item }}"
       with_items:
+        - "{{ fogbow_components }}/{{ database_dir_name }}"
         - "{{ fogbow_components }}/{{ manager_dir_name }}"
+        - "{{ fogbow_components }}/{{ fednet_dir_name }}"
         - "{{ fogbow_components }}/{{ membership_dir_name }}"
         - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
-        - "{{ fogbow_components }}/{{ fednet_dir_name }}"
-        - "{{ fogbow_components }}/{{ database_dir_name }}"
