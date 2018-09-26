@@ -11,9 +11,10 @@ GENERAL_CONF_FILE="general.conf"
 
 # key to provide access from internal host to dmz host
 DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
-DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
+DMZ_PUBLIC_KEY_NAME=$(basename $DMZ_PUBLIC_KEY_PATH)
 
-DMZ_PUBLIC_KEY=$(cat $DMZ_PUBLIC_KEY_PATH)
+DMZ_PUBLIC_KEY=$(cat $DMZ_PUBLIC_KEY_NAME)
 
 AUTHORIZED_KEYS_FILE_PATH=/"home"/$REMOTE_HOST_USER/".ssh"/"authorized_keys"
 grep "$DMZ_PUBLIC_KEY" $AUTHORIZED_KEYS_FILE_PATH
