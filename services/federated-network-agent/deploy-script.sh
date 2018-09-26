@@ -3,9 +3,6 @@ DIR=$(pwd)
 IMAGE_NAME="fogbow/strongswan"
 CONTAINER_NAME="strongswan"
 
-FOGBOW_PUBLIC_KEY_FILE_NAME="fogbow-id_rsa.pub"
-FOGBOW_SSH_PUBLIC_KEY=$(cat $FOGBOW_PUBLIC_KEY_FILE_NAME)
-
 HOSTS_CONF_FILE="hosts.conf"
 REMOTE_HOST_USER_PATTERN="remote_hosts_user"
 REMOTE_HOST_USER=$(grep $REMOTE_HOST_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
