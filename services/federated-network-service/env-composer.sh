@@ -13,7 +13,8 @@ mkdir -p $EXTRA_FILES_DIR
 
 HOSTS_CONF_FILE=$CONF_FILES_DIR/"hosts.conf"
 RAS_CONF_FILE=$CONF_FILES_DIR/"ras.conf"
-INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/"intercomponent.conf"
+INTERCOMPONENT_CONF_FILE_NAME="intercomponent.conf"
+INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE_NAME
 
 # Moving conf files
 CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH | grep '.conf' | xargs)
@@ -119,6 +120,9 @@ echo "Site name: $SITE_NAME"
 
 RAS_NAME_KEY="ras_name"
 sed -i "s#.*$RAS_NAME_KEY=.*#$RAS_NAME_KEY=$SITE_NAME#" $ENV_FEDNET_CONF_FILE
+
+# Fill intercomponent.conf
+sed -i "s#.*$SITE_NAME_PATTERN=.*#$SITE_NAME_PATTERN=$SITE_NAME#" $BASE_CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE_NAME
 
 # Get ssh private key
 DMZ_PRIVATE_KEY_PATTERN="dmz_private_key_file_path"
