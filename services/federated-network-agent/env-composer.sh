@@ -36,7 +36,7 @@ cat > $BASE_DIR/config-create-federated-network <<EOF
 
 echo "Args: \$1 \$2 \$3 \$4"
 
-docker exec -it strongswan /bin/sh -c "bash $RENAMED_CREATE_FEDNET_SCRIPT \$1 \$2 \$3 \$4"
+docker exec strongswan /bin/sh -c "bash $RENAMED_CREATE_FEDNET_SCRIPT \$1 \$2 \$3 \$4"
 EOF
 
 cat > $BASE_DIR/config-delete-federated-network <<EOF
@@ -44,5 +44,5 @@ cat > $BASE_DIR/config-delete-federated-network <<EOF
 
 echo "Args: \$1 \$2 \$3 \$4"
 
-docker exec -it strongswan /bin/sh -c "bash $RENAMED_DELETE_FEDNET_SCRIPT \$1"
+docker exec strongswan /bin/sh -c "bash $RENAMED_DELETE_FEDNET_SCRIPT \$1"
 EOF

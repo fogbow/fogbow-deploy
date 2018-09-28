@@ -28,6 +28,8 @@ VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2
 
 CREATE_NETWORK_SCRIPT="create-federated-network"
 DELETE_NETWORK_SCRIPT="delete-federated-network"
+chmod +x $CREATE_NETWORK_SCRIPT
+chmod +x $DELETE_NETWORK_SCRIPT
 
 IPSEC_CONF_FILE="ipsec.conf"
 CONTAINER_IPSEC_CONF_FILE_PATH=/"etc"/$IPSEC_CONF_FILE
