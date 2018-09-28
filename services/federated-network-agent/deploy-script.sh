@@ -49,5 +49,7 @@ sudo docker run -idt \
 	-v $DIR/$DELETE_NETWORK_SCRIPT:/$DELETE_NETWORK_SCRIPT \
 	-v $DIR/$IPSEC_CONF_FILE:$CONTAINER_IPSEC_CONF_FILE_PATH \
 	--privileged \
+	--net=host \
+	--cap-add=NET_ADMIN \
 	$IMAGE_NAME
 
