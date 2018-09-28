@@ -2,12 +2,20 @@
 - hosts: dmz-machine
   vars:
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    xmpp_server: "xmpp-server"
+    federated_network_agent: "federated-network-agent"
+    general_conf: "general.conf" # We should get this property dinamically
   tasks:
-    - name: Removing all services if applied
+    - name: Removing xmpp-server
       become: yes
       file:
         state: absent
-        path: "{{ fogbow_components }}"
+        path: "{{ fogbow_components }}/{{ xmpp_server }}"
+    - name: Removing general.conf from federated-network-agent
+      become: yes
+      file:
+        state: absent
+        path: "{{ fogbow_components }}/{{ federated_network_agent }}/{{ general_conf }}"
 
 - hosts: internal-machine
   vars:

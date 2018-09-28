@@ -3,15 +3,27 @@
   vars:
     services_path: ../services
     xmpp_dir_name: xmpp-server
-    fednet_agent_dir_name: federated-network-agent
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying services to DMZ-Machine
+    - name: Copying xmpp-server to DMZ-Machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"
       with_items:
         - "{{ services_path }}/{{ xmpp_dir_name }}"
+
+- hosts: dmz-machine
+  vars:
+    services_path: ../services
+    fednet_agent_dir_name: federated-network-agent
+    fogbow_components: ~/fogbow-components/
+  tasks:
+    - name: Copying strongswan to DMZ-Machine
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+        force: no
+      with_items:
         - "{{ services_path }}/{{ fednet_agent_dir_name }}"
 
 - hosts: internal-machine
