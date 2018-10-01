@@ -28,21 +28,3 @@ RENAMED_DELETE_FEDNET_SCRIPT="delete-federated-network"
 
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-create-federated-network -O $BASE_DIR/$RENAMED_CREATE_FEDNET_SCRIPT
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-delete-federated-network -O $BASE_DIR/$RENAMED_DELETE_FEDNET_SCRIPT
-
-echo "Creating create and delete script to agent docker container"
-
-cat > $BASE_DIR/config-create-federated-network <<EOF
-#!/bin/sh
-
-echo "Args: \$1 \$2 \$3 \$4"
-
-docker exec strongswan /bin/sh -c "bash $RENAMED_CREATE_FEDNET_SCRIPT \$1 \$2 \$3 \$4"
-EOF
-
-cat > $BASE_DIR/config-delete-federated-network <<EOF
-#!/bin/sh
-
-echo "Args: \$1 \$2 \$3 \$4"
-
-docker exec strongswan /bin/sh -c "bash $RENAMED_DELETE_FEDNET_SCRIPT \$1"
-EOF
