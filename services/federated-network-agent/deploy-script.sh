@@ -6,6 +6,11 @@ REMOTE_HOST_USER=$(grep $REMOTE_HOST_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" 
 
 GENERAL_CONF_FILE="general.conf"
 
+echo "Installing Strongswan"
+
+STRONGSWAN_INSTALLATION_SCRIPT="strongswan-installation"
+sudo bash $STRONGSWAN_INSTALLATION_SCRIPT
+
 # key to provide access from internal host to dmz host
 DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
 DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
