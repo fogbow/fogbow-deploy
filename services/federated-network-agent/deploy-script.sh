@@ -30,12 +30,12 @@ VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2
 
 echo "Copying VPN password to ipsec.secrets"
 
-cat > /etc/ipsec.secrets <<EOF
+sudo cat > /etc/ipsec.secrets <<EOF
 # This file holds shared secrets or RSA private keys for authentication.
 
 # RSA private key for this host, authenticating it to any other host
 # which knows the public part.
-: PSK "$VPN_PSK"
+: PSK "$VPN_PASSWORD"
 EOF
 
 CREATE_NETWORK_SCRIPT="create-federated-network"
