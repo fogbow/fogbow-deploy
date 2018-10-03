@@ -8,8 +8,11 @@ GENERAL_CONF_FILE="general.conf"
 
 echo "Installing Strongswan"
 
+VPN_PASSWORD_KEY="vpn_password"
+VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
+
 STRONGSWAN_INSTALLATION_SCRIPT="strongswan-installation"
-sudo bash $STRONGSWAN_INSTALLATION_SCRIPT
+sudo bash $STRONGSWAN_INSTALLATION_SCRIPT $VPN_PASSWORD
 
 # key to provide access from internal host to dmz host
 DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
@@ -24,19 +27,6 @@ if [ "$?" -ne "0" ]; then
 	echo "Adding dmz ssh public key in authorized keys"
 	echo "$DMZ_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
 fi
-
-VPN_PASSWORD_KEY="vpn_password"
-VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
-
-echo "Copying VPN password to ipsec.secrets"
-
-sudo cat > /etc/ipsec.secrets <<EOF
-# This file holds shared secrets or RSA private keys for authentication.
-
-# RSA private key for this host, authenticating it to any other host
-# which knows the public part.
-: PSK "$VPN_PASSWORD"
-EOF
 
 CREATE_NETWORK_SCRIPT="create-federated-network"
 DELETE_NETWORK_SCRIPT="delete-federated-network"
