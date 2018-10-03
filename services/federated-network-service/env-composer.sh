@@ -173,8 +173,8 @@ sed -i "s#.*$VPN_PSK_KEY=.*#$VPN_PSK_KEY=$VPN_PASSWORD#" $ENV_FEDNET_CONF_FILE
 
 # Adding Agent scripts path
 DEFAULT_AGENT_SCRIPTS_PATH='~'/"fogbow-components"/"federated-network-agent"
-CREATE_SCRIPT_NAME="config-create-federated-network"
-DELETE_SCRIPT_NAME="config-delete-federated-network"
+CREATE_SCRIPT_NAME="create-federated-network"
+DELETE_SCRIPT_NAME="delete-federated-network"
 
 echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME"
 echo "Agent create network script path: $DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME"
