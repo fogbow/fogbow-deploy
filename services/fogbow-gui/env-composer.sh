@@ -125,3 +125,13 @@ CERTIFICATE_CHAIN_FILE_PATH=$(grep $CERTIFICATE_CHAIN_FILE $CONF_FILES_DIR/$CERT
 CERTIFICATE_CHAIN_FILE_NAME=$(basename $CERTIFICATE_CHAIN_FILE_PATH)
 yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $BASE_DIR/$CERTIFICATE_CHAIN_FILE_NAME
 
+# Moving cert conf files
+
+CONF_FILES_LIST=$(find $CONF_FILES_DIR/$CERT_CONF_FILES_DIR | grep '.conf' | xargs)
+
+for conf_file_path in $CONF_FILES_LIST; do
+	conf_file_name=$(basename $conf_file_path)
+	echo "Conf file path: $conf_file_path"
+	echo "Conf file name: $conf_file_name"
+	yes | cp -f $conf_file_path ./$BASE_DIR/$conf_file_name
+done
