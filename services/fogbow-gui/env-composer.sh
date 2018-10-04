@@ -3,6 +3,7 @@ DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/fogbow-gui"
 FNS_CONF_FILES_DIR="ras-confs-to-fns"
+CERT_CONF_FILES_DIR="cert-confs"
 
 # Copying related conf files
 
@@ -109,4 +110,21 @@ fi
 echo "};" >> $BASE_DIR/$CONF_FILE_NAME
 
 cat $BASE_DIR/$CONF_FILE_NAME
+
+# Resolving certification files for https
+
+echo "Copying certification files to service directory"
+CERT_CONF_FILE="certificate-files.conf"
+
+CERTIFICATE_FILE="SSL_certificate_file_path"
+CERTIFICATE_FILE_PATH=$(grep $CERTIFICATE_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
+yes | cp -f $CERTIFICATE_FILE_PATH $BASE_DIR/$CERTIFICATE_FILE_PATH
+
+CERTIFICATE_KEY_FILE="SSL_certificate_key_file_path"
+CERTIFICATE_KEY_FILE_PATH=$(grep $CERTIFICATE_KEY_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
+yes | cp -f $CERTIFICATE_KEY_FILE_PATH $BASE_DIR/$CERTIFICATE_KEY_FILE_PATH
+
+CERTIFICATE_CHAIN_FILE="SSL_certificate_chain_file_path"
+CERTIFICATE_CHAIN_FILE_PATH=$(grep $CERTIFICATE_CHAIN_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
+yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $BASE_DIR/$CERTIFICATE_CHAIN_FILE_PATH
 
