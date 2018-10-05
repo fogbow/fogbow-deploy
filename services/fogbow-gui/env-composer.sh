@@ -128,7 +128,7 @@ yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $BASE_DIR/$CERTIFICATE_CHAIN_FILE_NAME
 # Fill virtual host file
 
 VIRTUAL_HOST_FILE="000-default.conf"
-yes | cp -f $VIRTUAL_HOST_FILE'.example' $VIRTUAL_HOST_FILE
+yes | cp -f $BASE_DIR/$VIRTUAL_HOST_FILE'.example' $BASE_DIR/$VIRTUAL_HOST_FILE
 SSL_DIR="/etc/ssl/private"
 
 CERTIFICATE_PATTERN="SSLCertificateFile"
