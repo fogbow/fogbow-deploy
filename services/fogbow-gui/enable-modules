@@ -1,0 +1,5 @@
+#!/bin/bash
+
+/usr/sbin/service apache2 start
+/usr/sbin/a2enmod ssl_load
+/usr/sbin/service apache2 restart
