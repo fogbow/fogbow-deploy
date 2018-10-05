@@ -21,5 +21,8 @@
         Order allow,deny
         Allow from all
     </Location>
+    ProxyPreserveHost on
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/
   </VirtualHost>
 </IfModule>
