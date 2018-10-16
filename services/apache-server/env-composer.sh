@@ -7,13 +7,11 @@ CERT_CONF_FILES_DIR="cert-confs"
 # Copying configuration files
 echo "Copying services.conf to service directory"
 SERVICES_FILE="services.conf"
-yes | cp -f CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
-
-echo "Copying certification files to service directory"
-CERT_CONF_FILE="certificate-files.conf"
-yes | cp -f CONF_FILES_DIR/$CERT_CONF_FILE $BASE_DIR/$CERT_CONF_FILE
+yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
 
 # Resolving certification files for https
+CERT_CONF_FILE="certificate-files.conf"
+
 CERTIFICATE_FILE="SSL_certificate_file_path"
 CERTIFICATE_FILE_PATH=$(grep $CERTIFICATE_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
 CERTIFICATE_FILE_NAME=$(basename $CERTIFICATE_FILE_PATH)
