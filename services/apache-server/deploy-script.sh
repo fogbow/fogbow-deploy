@@ -25,12 +25,15 @@ SSL_DIR="/etc/ssl/private"
 VIRTUAL_HOST_DIR="/etc/apache2/sites-enabled"
 VIRTUAL_HOST_FILE="000-default.conf"
 
+SERVICES_CONF=$DIR_PATH/"services.conf"
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 sudo docker pull $IMAGE_NAME
 
 sudo docker run -tdi --name $CONTAINER_NAME \
-	-p $DASHBOARD_PORT:$DASHBOARD_PORT \
 	-p $SECURE_PORT:$SECURE_PORT \
 	-v $DIR_PATH/$CERTIFICATE_FILE_NAME:$SSL_DIR/$CERTIFICATE_FILE_NAME \
 	-v $DIR_PATH/$CERTIFICATE_KEY_FILE_NAME:$SSL_DIR/$CERTIFICATE_KEY_FILE_NAME \
