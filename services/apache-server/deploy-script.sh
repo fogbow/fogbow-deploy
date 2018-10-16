@@ -25,6 +25,10 @@ SSL_DIR="/etc/ssl/private"
 VIRTUAL_HOST_DIR="/etc/apache2/sites-enabled"
 VIRTUAL_HOST_FILE="000-default.conf"
 
+sudo docker stop $CONTAINER_NAME
+sudo docker rm $CONTAINER_NAME
+sudo docker pull $IMAGE_NAME
+
 sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $DASHBOARD_PORT:$DASHBOARD_PORT \
 	-p $SECURE_PORT:$SECURE_PORT \
