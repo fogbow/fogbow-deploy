@@ -47,7 +47,7 @@
         - "{{ services_path }}/{{ dashboard_dir_name }}"
         - "{{ services_path }}/{{ fednet_dir_name }}"
         - "{{ services_path }}/{{ database_dir_name }}"
-        - "{{ services_path }}/{{ database_dir_name }}"
+        - "{{ services_path }}/{{ apache_dir_name }}"
 
 - hosts: internal-machine
   vars:
