@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
-BASE_DIR="services/aoache-server"
+BASE_DIR="services/apache-server"
 CERT_CONF_FILES_DIR="cert-confs"
 
 # Resolving certification files for https
