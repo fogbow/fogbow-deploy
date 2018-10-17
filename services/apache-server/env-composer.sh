@@ -92,7 +92,7 @@ HOST_CONF="hosts.conf"
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | awk -F "=" '{print $2}')
 
-sed -i "s/$INTERNAL_HOST_IP_PATTERN\b/$INTERNAL_HOST_IP/g" $BASE_DIR/$VIRTUAL_HOST_FILE
+sed -i "s|$INTERNAL_HOST_IP_PATTERN|http://$INTERNAL_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace dashboard-port
 RAS_CONF="ras.conf"
 GUI_PORT_PATTERN="fogbow_gui_server_port"
