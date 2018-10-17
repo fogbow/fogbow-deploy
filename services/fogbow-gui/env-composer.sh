@@ -30,19 +30,22 @@ INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{
 # Getting federated network service ip and port 
 
 echo "Using Federated network service"
+DOMAIN_NAME_FILE="domain-names.conf"
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
-FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR | awk -F "=" '{print $2}')
+FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
 
 echo "Federated network service domain name: $FEDNET_DOMAIN_NAME"
-sed -i "s#.*fns:.*#	fns: '$FEDNET_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port
 
 MS_DOMAIN_NAME_PATTERN="ms_domain_name"
-MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR | awk -F "=" '{print $2}')
+MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+MS_DOMAIN_BASENAME=$(basename $MS_DOMAIN_NAME)
 
 echo "Membership domain name: $MS_DOMAIN_NAME"
-sed -i "s#.*ms:.*#	ms: 'https://$MEMBERSHIP_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 
