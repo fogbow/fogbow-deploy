@@ -17,7 +17,7 @@ SERVICES_CONF=services.conf
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
 if [ -z "$DASHBOARD_PORT" ]; then
-	DASHBOARD_PORT="80"
+	DASHBOARD_PORT="81"
 fi
 echo "Dashboard port: $DASHBOARD_PORT"
 

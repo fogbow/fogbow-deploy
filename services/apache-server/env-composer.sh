@@ -2,7 +2,7 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/apache-server"
-CERT_CONF_FILES_DIR="cert-confs"
+CERT_CONF_FILES_DIR="apache-confs"
 
 # Copying configuration files
 echo "Copying services.conf to service directory"

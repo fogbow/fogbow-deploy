@@ -3,6 +3,7 @@ DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/fogbow-gui"
 FNS_CONF_FILES_DIR="ras-confs-to-fns"
+APACHE_CONF_FILES_DIR="apache-confs"
 
 # Copying related conf files
 
@@ -29,20 +30,19 @@ INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{
 # Getting federated network service ip and port 
 
 echo "Using Federated network service"
-FEDNET_CONF_FILE=$CONF_FILES_DIR/$FNS_CONF_FILES_DIR/"fns.conf"
-FEDNET_PORT_PATTERN="server_port"
-FEDNET_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
+FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
+FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR | awk -F "=" '{print $2}')
 
-echo "Federated network service url: $INTERNAL_HOST_IP:$FEDNET_PORT"
-sed -i "s#.*fns:.*#	fns: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Federated network service domain name: $FEDNET_DOMAIN_NAME"
+sed -i "s#.*fns:.*#	fns: '$FEDNET_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port
 
-MEMBERSHIP_PORT_PATTERN="server_port"
-MEMBERSHIP_PORT=$(grep $MEMBERSHIP_PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
+MS_DOMAIN_NAME_PATTERN="ms_domain_name"
+MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR | awk -F "=" '{print $2}')
 
-echo "Membership url: $INTERNAL_HOST_IP:$MEMBERSHIP_PORT"
-sed -i "s#.*ms:.*#	ms: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Membership domain name: $MS_DOMAIN_NAME"
+sed -i "s#.*ms:.*#	ms: 'https://$MEMBERSHIP_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 
