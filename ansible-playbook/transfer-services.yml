@@ -34,6 +34,7 @@
     dashboard_dir_name: fogbow-gui
     fednet_dir_name: federated-network-service
     database_dir_name: fogbow-database
+    apache_dir_name: apache-server
     fogbow_components: ~/fogbow-components/
   tasks:
     - name: Copying services to Internal-Machine
@@ -46,6 +47,7 @@
         - "{{ services_path }}/{{ dashboard_dir_name }}"
         - "{{ services_path }}/{{ fednet_dir_name }}"
         - "{{ services_path }}/{{ database_dir_name }}"
+        - "{{ services_path }}/{{ apache_dir_name }}"
 
 - hosts: internal-machine
   vars:

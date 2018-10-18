@@ -3,7 +3,7 @@ DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 BASE_DIR="services/fogbow-gui"
 FNS_CONF_FILES_DIR="ras-confs-to-fns"
-CERT_CONF_FILES_DIR="cert-confs"
+APACHE_CONF_FILES_DIR="apache-confs"
 
 # Copying related conf files
 
@@ -30,20 +30,22 @@ INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{
 # Getting federated network service ip and port 
 
 echo "Using Federated network service"
-FEDNET_CONF_FILE=$CONF_FILES_DIR/$FNS_CONF_FILES_DIR/"fns.conf"
-FEDNET_PORT_PATTERN="server_port"
-FEDNET_PORT=$(grep $FEDNET_PORT_PATTERN $FEDNET_CONF_FILE | awk -F "=" '{print $2}')
+DOMAIN_NAME_FILE="domain-names.conf"
+FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
+FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
 
-echo "Federated network service url: $INTERNAL_HOST_IP:$FEDNET_PORT"
-sed -i "s#.*fns:.*#	fns: 'http://$INTERNAL_HOST_IP:$FEDNET_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Federated network service domain name: $FEDNET_DOMAIN_NAME"
+sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port
 
-MEMBERSHIP_PORT_PATTERN="server_port"
-MEMBERSHIP_PORT=$(grep $MEMBERSHIP_PORT_PATTERN $CONF_FILES_DIR/"membership.conf" | awk -F "=" '{print $2}')
+MS_DOMAIN_NAME_PATTERN="ms_domain_name"
+MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+MS_DOMAIN_BASENAME=$(basename $MS_DOMAIN_NAME)
 
-echo "Membership url: $INTERNAL_HOST_IP:$MEMBERSHIP_PORT"
-sed -i "s#.*ms:.*#	ms: 'http://$INTERNAL_HOST_IP:$MEMBERSHIP_PORT',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Membership domain name: $MS_DOMAIN_NAME"
+sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 
@@ -102,51 +104,3 @@ elif [[ $AUTH_TYPE_CLASS = *"OpenStack"* ]]; then
 	}" >> $BASE_DIR/$CONF_FILE_NAME
 fi
 echo "};" >> $BASE_DIR/$CONF_FILE_NAME
-
-cat $BASE_DIR/$CONF_FILE_NAME
-
-# Resolving certification files for https
-
-echo "Copying certification files to service directory"
-CERT_CONF_FILE="certificate-files.conf"
-
-CERTIFICATE_FILE="SSL_certificate_file_path"
-CERTIFICATE_FILE_PATH=$(grep $CERTIFICATE_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
-CERTIFICATE_FILE_NAME=$(basename $CERTIFICATE_FILE_PATH)
-yes | cp -f $CERTIFICATE_FILE_PATH $BASE_DIR/$CERTIFICATE_FILE_NAME
-
-CERTIFICATE_KEY_FILE="SSL_certificate_key_file_path"
-CERTIFICATE_KEY_FILE_PATH=$(grep $CERTIFICATE_KEY_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
-CERTIFICATE_KEY_FILE_NAME=$(basename $CERTIFICATE_KEY_FILE_PATH)
-yes | cp -f $CERTIFICATE_KEY_FILE_PATH $BASE_DIR/$CERTIFICATE_KEY_FILE_NAME
-
-CERTIFICATE_CHAIN_FILE="SSL_certificate_chain_file_path"
-CERTIFICATE_CHAIN_FILE_PATH=$(grep $CERTIFICATE_CHAIN_FILE $CONF_FILES_DIR/$CERT_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
-CERTIFICATE_CHAIN_FILE_NAME=$(basename $CERTIFICATE_CHAIN_FILE_PATH)
-yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $BASE_DIR/$CERTIFICATE_CHAIN_FILE_NAME
-
-# Fill virtual host file
-
-VIRTUAL_HOST_FILE="000-default.conf"
-yes | cp -f $BASE_DIR/$VIRTUAL_HOST_FILE'.example' $BASE_DIR/$VIRTUAL_HOST_FILE
-SSL_DIR="/etc/ssl/private"
-
-CERTIFICATE_PATTERN="SSLCertificateFile"
-sed -i "s#$CERTIFICATE_PATTERN.*#$CERTIFICATE_PATTERN $SSL_DIR/$CERTIFICATE_FILE_NAME#" $BASE_DIR/$VIRTUAL_HOST_FILE
-
-CERTIFICATE_KEY_PATTERN="SSLCertificateKeyFile"
-sed -i "s#$CERTIFICATE_KEY_PATTERN.*#$CERTIFICATE_KEY_PATTERN $SSL_DIR/$CERTIFICATE_KEY_FILE_NAME#" $BASE_DIR/$VIRTUAL_HOST_FILE
-
-CERTIFICATE_CHAIN_PATTERN="SSLCertificateChainFile"
-sed -i "s#$CERTIFICATE_CHAIN_PATTERN.*#$CERTIFICATE_CHAIN_PATTERN $SSL_DIR/$CERTIFICATE_CHAIN_FILE_NAME#" $BASE_DIR/$VIRTUAL_HOST_FILE
-
-# Moving cert conf files
-
-CONF_FILES_LIST=$(find $CONF_FILES_DIR/$CERT_CONF_FILES_DIR | grep '.conf' | xargs)
-
-for conf_file_path in $CONF_FILES_LIST; do
-	conf_file_name=$(basename $conf_file_path)
-	echo "Conf file path: $conf_file_path"
-	echo "Conf file name: $conf_file_name"
-	yes | cp -f $conf_file_path ./$BASE_DIR/$conf_file_name
-done
