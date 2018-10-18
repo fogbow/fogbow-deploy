@@ -17,7 +17,7 @@ SERVICES_CONF=services.conf
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
 if [ -z "$DASHBOARD_PORT" ]; then
-	DASHBOARD_PORT="80"
+	DASHBOARD_PORT="81"
 fi
 echo "Dashboard port: $DASHBOARD_PORT"
 
@@ -31,4 +31,3 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $DASHBOARD_PORT:$CONTAINER_PORT \
 	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$CONTAINER_CONF_FILE_PATH/$CONF_FILE_NAME \
 	$IMAGE_NAME:$TAG
-

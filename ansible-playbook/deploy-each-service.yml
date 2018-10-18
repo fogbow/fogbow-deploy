@@ -17,6 +17,7 @@
 
 - hosts: internal-machine
   vars:
+    apache_dir_name: apache-server
     manager_dir_name: resource-allocation-service
     membership_dir_name: membership-service
     dashboard_dir_name: fogbow-gui
@@ -32,6 +33,7 @@
         chdir: "{{ item }}"
       with_items:
         - "{{ fogbow_components }}/{{ database_dir_name }}"
+        - "{{ fogbow_components }}/{{ apache_dir_name }}"
         - "{{ fogbow_components }}/{{ manager_dir_name }}"
         - "{{ fogbow_components }}/{{ fednet_dir_name }}"
         - "{{ fogbow_components }}/{{ membership_dir_name }}"
