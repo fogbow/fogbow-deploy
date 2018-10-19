@@ -4,7 +4,7 @@ CONTAINER_BASE_PATH="/root/membership-service"
 PROJECT_RESOURCES_PATH="src/main/resources"
 
 LOG4J_FILE_NAME="log4j.properties"
-CONF_FILE_NAME="membership.conf"
+CONF_FILE_NAME="ms.conf"
 
 IMAGE_NAME="fogbow/membership-service"
 CONTAINER_NAME="membership-service"

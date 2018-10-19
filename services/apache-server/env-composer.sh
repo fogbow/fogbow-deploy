@@ -111,7 +111,7 @@ FNS_PORT_PATTERN="fns_port"
 sed -i "s/$FNS_PORT_PATTERN\b/$FNS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
 # replace ms-port
-MS_CONF="membership.conf"
+MS_CONF="ms.conf"
 MS_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR/$MS_CONF | awk -F "=" '{print $2}')
 
 MS_PORT_PATTERN="ms_port"
