@@ -25,7 +25,14 @@ sudo docker rm $CONTAINER_NAME
 
 sudo docker run -idt --name $CONTAINER_NAME \
 	-p $MEMBERSHIP_HOST_PORT:$MEMBERSHIP_CONTAINER_PORT \
-	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME:ro \
+	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME \
 	-v $DIR_PATH/$LOG4J_FILE_NAME:$CONTAINER_BASE_PATH/$LOG4J_FILE_NAME:ro \
 	$IMAGE_NAME:$TAG
 
+# Add build value into ms.conf
+BUILD_FILE_NAME="build"
+MS_CONF_PATH="./ms.conf"
+sudo docker exec cat $BUILD_FILE_NAME >> $MS_CONF_PATH
+
+# Run MS
+sudo docker exec ./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null

@@ -56,3 +56,10 @@ sudo docker run -idt \
 	-v $PARENT_PATH/$TIMESTAMP_DB_DIRECTORY/$RAS_TIMESTAMP_DB_FILE:$CONTAINER_DB_FILE_PATH\
 	$IMAGE_NAME:$TAG
 
+# Add build value into ras.conf
+BUILD_FILE_NAME="build"
+RAS_CONF_PATH="src/main/resources/private/ras.conf"
+sudo docker exec cat $BUILD_FILE_NAME >> $RAS_CONF_PATH
+
+# Run RAS
+sudo docker exec ./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null

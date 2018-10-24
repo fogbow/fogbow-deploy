@@ -59,3 +59,11 @@ sudo docker run -idt \
 	-v $EXTRA_FILES_DIR:$CONTAINER_EXTRA_FILES_PATH \
 	-v $PARENT_PATH/$TIMESTAMP_DB_DIRECTORY/$FNS_TIMESTAMP_DB_FILE:$CONTAINER_DB_FILE_PATH\
 	$IMAGE_NAME:$TAG
+
+# Add build value into fns.conf
+BUILD_FILE_NAME="build"
+FNS_CONF_PATH="src/main/resources/private/fns.conf"
+sudo docker exec cat $BUILD_FILE_NAME >> $FNS_CONF_PATH
+
+# Run FNS
+sudo docker exec ./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null
