@@ -33,7 +33,6 @@ TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
 echo "Manager xmpp port: $XMPP_PORT"
 
-sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
@@ -62,4 +61,4 @@ RAS_CONF_PATH="src/main/resources/private/ras.conf"
 sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $RAS_CONF_PATH"
 
 # Run RAS
-sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &

@@ -19,7 +19,6 @@ TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
 echo "Membership port: $MEMBERSHIP_HOST_PORT"
 
-sudo docker pull $IMAGE_NAME
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
@@ -35,4 +34,4 @@ MS_CONF_PATH="./ms.conf"
 sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $MS_CONF_PATH"
 
 # Run MS
-sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &

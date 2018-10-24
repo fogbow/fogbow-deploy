@@ -33,7 +33,6 @@ echo "Federated network service server port: $FEDNET_PORT"
 
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
-sudo docker pull $IMAGE_NAME
 
 # Resolving timestamp db
 if [ ! -d $PARENT_PATH/$TIMESTAMP_DB_DIRECTORY ]; then
@@ -66,4 +65,4 @@ FNS_CONF_PATH="src/main/resources/private/fns.conf"
 sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $FNS_CONF_PATH"
 
 # Run FNS
-sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
