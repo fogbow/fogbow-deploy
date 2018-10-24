@@ -63,7 +63,7 @@ sudo docker run -idt \
 # Add build value into fns.conf
 BUILD_FILE_NAME="build"
 FNS_CONF_PATH="src/main/resources/private/fns.conf"
-sudo docker exec cat $BUILD_FILE_NAME >> $FNS_CONF_PATH
+sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $FNS_CONF_PATH"
 
 # Run FNS
-sudo docker exec ./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null
+sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null"

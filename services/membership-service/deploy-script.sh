@@ -32,7 +32,7 @@ sudo docker run -idt --name $CONTAINER_NAME \
 # Add build value into ms.conf
 BUILD_FILE_NAME="build"
 MS_CONF_PATH="./ms.conf"
-sudo docker exec cat $BUILD_FILE_NAME >> $MS_CONF_PATH
+sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $MS_CONF_PATH"
 
 # Run MS
-sudo docker exec ./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null
+sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err || tail -f /dev/null"
