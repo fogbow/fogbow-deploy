@@ -21,6 +21,7 @@ echo "Membership port: $MEMBERSHIP_HOST_PORT"
 
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
+sudo docker pull $IMAGE_NAME:$TAG
 
 sudo docker run -idt --name $CONTAINER_NAME \
 	-p $MEMBERSHIP_HOST_PORT:$MEMBERSHIP_CONTAINER_PORT \

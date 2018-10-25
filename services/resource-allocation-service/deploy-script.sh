@@ -35,6 +35,7 @@ echo "Manager xmpp port: $XMPP_PORT"
 
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
+sudo docker pull $IMAGE_NAME:$TAG
 
 # Resolving timestamp db
 if [ ! -d $PARENT_PATH/$TIMESTAMP_DB_DIRECTORY ]; then
