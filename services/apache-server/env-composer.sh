@@ -94,9 +94,10 @@ INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | a
 
 sed -i "s|$INTERNAL_HOST_IP_PATTERN|http://$INTERNAL_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace dashboard-port
-RAS_CONF="ras.conf"
+GUI_DIR="gui-confs"
+GUI_CONF="gui.conf"
 GUI_PORT_PATTERN="fogbow_gui_server_port"
-GUI_PORT=$(grep $GUI_PORT_PATTERN $CONF_FILES_DIR/$RAS_CONF | awk -F "=" '{print $2}')
+GUI_PORT=$(grep $GUI_PORT_PATTERN $CONF_FILES_DIR/$GUI_DIR/$GUI_CONF | awk -F "=" '{print $2}')
 
 DASHBOARD_PORT_PATTERN="dashboard_port"
 sed -i "s/$DASHBOARD_PORT_PATTERN\b/$GUI_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE

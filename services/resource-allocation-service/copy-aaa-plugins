@@ -1,0 +1,24 @@
+#!/bin/bash
+dir=$(pwd)
+conf_files_dir=$dir/"conf-files"
+gui_conf_dir="gui-confs"
+gui_conf_file="gui.conf"
+target_dir="services/resource-allocation-service/conf-files"
+
+auth_type_pattern="authentication_type"
+auth_type_class=$(grep $auth_type_pattern $conf_files_dir/$gui_conf_dir/$gui_conf_file | awk -F "=" '{print $2}')
+
+openstack_class="openstack"
+cloudstack_class="cloudstack"
+ldap_class="ldap"
+
+if [ $auth_type_class -eq $openstack_class ]; then
+	openstack_path=$conf_files_dir/"local-user-credentials-mapper/keystone-v3-mapper.conf"
+    yes | cp -f $openstack_path $target_dir
+elif [ $auth_type_class -eq $cloudstack_class ]; then
+	cloudstack_path=$conf_files_dir/"local-user-credentials-mapper/cloudstack-mapper.conf"
+    yes | cp -f $cloudstack_path $target_dir
+elif [ $auth_type_class -eq $ldap_class ]; then
+	ldap_path=$conf_files_dir/"token-generator/ldap-token-generator-plugin.conf"
+    yes | cp -f $ldap_path $target_dir
+fi
