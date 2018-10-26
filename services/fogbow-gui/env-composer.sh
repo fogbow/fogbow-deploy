@@ -19,8 +19,11 @@ yes | cp -f $CONF_FILES_DIR/$SERVICES_CONF_FILE $BASE_DIR/$SERVICES_CONF_FILE
 # Setting up local_settings.py
 
 CONF_FILE_NAME="api.config.js"
+AUTH_TYPE_PATTERN="authentication_type"
+AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
+API_CONFIG_FILE_NAME="api.config.js"
 
-yes | cp -f $BASE_DIR/$CONF_FILE_NAME".example" $BASE_DIR/$CONF_FILE_NAME
+yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$API_CONFIG_FILE_NAME $BASE_DIR/$API_CONFIG_FILE_NAME
 
 # Getting internal host ip
 
@@ -54,10 +57,3 @@ XMPP_JID=$(grep $XMPP_JID_PATTERN $CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE | aw
 
 echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
-
-# Setting up Authentication Type
-AUTH_TYPE_PATTERN="authentication_type"
-AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
-API_CONFIG_FILE_NAME="api.config.js"
-
-yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$API_CONFIG_FILE_NAME $BASE_DIR/$API_CONFIG_FILE_NAME
