@@ -1,0 +1,33 @@
+# This playbook must to transfer sensitive datas, always taking care in its permission in remote machine
+- hosts: internal-machine
+  vars:
+    general_conf_path: ../conf-files/general.conf
+    dmz_pk_pattern: dmz_private_key_file_path
+  tasks:
+    - name: Get DMZ private key path
+      shell: grep "{{ dmz_pk_pattern }} {{ general_conf_path }}" | awk -F "=" '{print $2}'
+      register: dmz_pk_path
+    - name: Copying private key to access DMZ to Internal-Machine
+      copy:
+        src: "{{ dmz_pk_path }}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ fednet_dir_name }}/{{ conf_files }}"
+
+- hosts: internal-machine
+  vars:
+    services_path: ../services
+    fednet_dir_name: federated-network-service
+    fogbow_components: ~/fogbow-components
+    conf_files: conf-files
+    private_key_name: dmz-id_rsa # We should get this property dinamically
+  tasks:
+    - name: Copying private key to access DMZ to Internal-Machine
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}/{{ fednet_dir_name }}/{{ conf_files }}"
+        mode: 0600
+      with_items:
+        - "{{ services_path }}/{{ fednet_dir_name }}/{{ conf_files }}/{{ private_key_name }}"
+
