@@ -139,3 +139,40 @@
         src: "{{ ssl_certificate_chain_file_path.stdout }}"
         dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
         mode: 0600
+
+- hosts: internal-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    general_conf_path: ../conf-files/general.conf
+    conf_files: conf-files
+    db_dir_name: fogbow-database
+    fns_dir_name: federated-network-service
+    ras_dir_name: resource-allocation-service
+
+  tasks:
+    - name: Copying general.conf to Internal-Machine
+      copy:
+        src: "{{ general_conf_path}}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ db_dir_name }}/{{ conf_files }}"
+        - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+        - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+
+- hosts: dmz-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    general_conf_path: ../conf-files/general.conf
+    conf_files: conf-files
+    agent_dir_name: federated-network-agent
+
+  tasks:
+    - name: Copying general.conf to Federated Network Agent
+      copy:
+        src: "{{ general_conf_path}}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ agent_dir_name }}/{{ conf_files }}"
+
