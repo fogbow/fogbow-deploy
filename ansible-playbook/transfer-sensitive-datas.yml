@@ -4,8 +4,10 @@
   connection: local
   vars:
     general_conf_path: ../conf-files/general.conf
+    ldap_token_generator_conf_path: ../conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf
     dmz_pk_pattern: dmz_private_key_file_path
     pk_file_pattern: private_key_file_path
+    ldap_file_pattern: private_key_file_path
   tasks:
     - name: Get DMZ private key path
       shell: grep "{{ dmz_pk_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
@@ -13,6 +15,9 @@
     - name: Get encryption private key path
       shell: grep "^{{ pk_file_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
       register: encryption_pk_path
+    - name: Get ldap private key path
+      shell: grep "^{{ ldap_file_pattern }}" {{ ldap_token_generator_conf_path }} | awk -F "=" '{print $2}'
+      register: ldap_pk_path
 
 - hosts: internal-machine
   vars:
@@ -53,3 +58,24 @@
       with_items:
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+
+- hosts: internal-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    conf_files: conf-files
+    ras_dir_name: resource-allocation-service
+  tasks:
+    - name: Retrieve ldap private key path
+      set_fact: 
+        ldap_pk_path: "{{ hostvars['localhost']['ldap_pk_path'] }}"
+      when: hostvars['localhost']['ldap_pk_path'] is defined
+
+    # This task guarantees that will run only if ldap_pk_path.stdout is not an empty string
+    - name: Copying ldap private key to Internal-Machine
+      copy:
+        src: "{{ ldap_pk_path.stdout }}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+      when: hostvars['localhost']['ldap_pk_path'].stdout != ""
