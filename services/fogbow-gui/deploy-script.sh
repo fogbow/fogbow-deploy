@@ -8,9 +8,9 @@ CONF_FILE_NAME="api.config.js"
 CONTAINER_BASE_PATH="/fogbow-gui"
 CONTAINER_CONF_FILE_PATH="src/defaults"
 
-MANAGER_CONF_FILE="ras.conf"
+GUI_CONF_FILE="gui.conf"
 DASHBOARD_PORT_PATTERN="fogbow_gui_server_port"
-DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $MANAGER_CONF_FILE | awk -F "=" '{print $2}')
+DASHBOARD_PORT=$(grep $DASHBOARD_PORT_PATTERN $GUI_CONF_FILE | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf

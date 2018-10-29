@@ -6,6 +6,7 @@ GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
 RAS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
 FNS_CONF_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 APACHE_CONF_PATH=$CONF_FILES_DIR/"apache-confs"
+AAA_PLUGINS_PATH=$CONF_FILES_DIR/"aaa-plugins"
 
 CONTAINER_BASE_PATH="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
@@ -14,7 +15,7 @@ HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
 
 # Moving conf files
 
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -type d \( -path ./$FNS_CONF_PATH -o -path ./$APACHE_CONF_PATH \) -prune -o -print | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -type d \( -path ./$FNS_CONF_PATH -o -path ./$APACHE_CONF_PATH -o -path ./$AAA_PLUGINS_PATH \) -prune -o -print | grep '.conf' | xargs)
 
 mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
 
@@ -24,6 +25,10 @@ for conf_file_path in $CONF_FILES_LIST; do
 	echo "Conf file name: $conf_file_name"
 	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
 done
+
+# Copy aaa-plugins
+COPY_AAA_PLUGINS_SCRIPT_NAME="copy-aaa-plugins"
+bash $BASE_DIR/$COPY_AAA_PLUGINS_SCRIPT_NAME
 
 # RAS application.properties configuration
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
