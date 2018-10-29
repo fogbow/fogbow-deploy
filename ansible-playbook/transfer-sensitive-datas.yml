@@ -5,18 +5,20 @@
   vars:
     general_conf_path: ../conf-files/general.conf
     dmz_pk_pattern: dmz_private_key_file_path
+    pk_file_pattern: private_key_file_path
   tasks:
     - name: Get DMZ private key path
       shell: grep "{{ dmz_pk_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
       register: dmz_pk_path
+    - name: Get encryption private key path
+      shell: grep "^{{ pk_file_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
+      register: encryption_pk_path
 
 - hosts: internal-machine
   vars:
-    general_conf_path: ../conf-files/general.conf
     fogbow_components: ~/fogbow-components
-    fns_dir_name: federated-network-service
     conf_files: conf-files
-    dmz_pk_pattern: dmz_private_key_file_path
+    fns_dir_name: federated-network-service
   tasks:
     - name: Retrieve DMZ private key path
       set_fact: 
@@ -31,23 +33,23 @@
       with_items:
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
 
-# - hosts: internal-machine
-#   vars:
-#     general_conf_path: ../conf-files/general.conf
-#     fogbow_components: ~/fogbow-components
-#     fns_dir_name: federated-network-service
-#     ras_dir_name: resource-allocation-service
-#     conf_files: conf-files
-#     pk_file_pattern: private_key_file_path
-#   tasks:
-#     - name: Get DMZ private key path
-#       shell: grep "{{ pk_file_pattern }} {{ fogbow_components }}/{{ conf_files }}" | awk -F "=" '{print $2}'
-#       register: dmz_pk_path
-#     - name: Copying private key to Internal-Machine
-#       copy:
-#         src: "{{ dmz_pk_path.stdout }}"
-#         dest: "{{ item }}"
-#         mode: 0600
-#       with_items:
-#         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
-#         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+- hosts: internal-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    conf_files: conf-files
+    fns_dir_name: federated-network-service
+    ras_dir_name: resource-allocation-service
+  tasks:
+    - name: Retrieve encryption private key path
+      set_fact: 
+        encryption_pk_path: "{{ hostvars['localhost']['encryption_pk_path'] }}"
+      when: hostvars['localhost']['encryption_pk_path'] is defined
+
+    - name: Copying encryption private key to Internal-Machine
+      copy:
+        src: "{{ encryption_pk_path.stdout }}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+        - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
