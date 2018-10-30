@@ -16,7 +16,8 @@ HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
 
 # Moving conf files
 
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -type d \( -path ./$FNS_CONF_PATH -o -path ./$APACHE_CONF_PATH -o -path ./$AAA_PLUGINS_PATH \) -prune -o  \( ! -iname $GENERAL_CONF_NAME \) -print | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -type d \( -path ./$FNS_CONF_PATH -o -path ./$APACHE_CONF_PATH -o -path ./$AAA_PLUGINS_PATH \) -prune -o \
+  \( ! -iname $GENERAL_CONF_NAME \) -print | grep '\.conf' | xargs)
 
 mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
 

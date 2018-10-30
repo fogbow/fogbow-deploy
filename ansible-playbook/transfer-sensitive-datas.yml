@@ -170,46 +170,30 @@
   vars:
     fogbow_components: ~/fogbow-components
     general_conf_path: ../conf-files/general.conf
-    conf_files: conf-files
     agent_dir_name: federated-network-agent
-
-  tasks:
-    - name: Copying general.conf to Federated Network Agent
-      copy:
-        src: "{{ general_conf_path }}"
-        dest: "{{ item }}"
-        mode: 0600
-      with_items:
-        - "{{ fogbow_components }}/{{ agent_dir_name }}"
-
-
-- hosts: dmz-machine
-  vars:
-    fogbow_components: ~/fogbow-components
     prosody_conf_path: ../services/xmpp-server/prosody.cfg.lua
     xmpp_dir_name: xmpp-server
-
-  tasks:
-    - name: Copying prosody.cfg.lua to XMPP server
-      copy:
-        src: "{{ prosody_conf_path }}"
-        dest: "{{ item }}"
-        mode: 0600
-      with_items:
-        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
-
-
-- hosts: dmz-machine
-  vars:
-    fogbow_components: ~/fogbow-components
     ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
     fn_agent_dir_name: federated-network-agent
 
   tasks:
-    - name: Copying ipsec.conf to Federated Network Agent
-      copy:
-        src: "{{ ipsec_conf_path }}"
-        dest: "{{ item }}"
-        mode: 0600
+    - name: Copying general, prosody and ipsec confs to DMZ machine
+      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
-        - "{{ fogbow_components }}/{{ fn_agent_dir_name }}"
+        - { src: '{{ general_conf_path }}', dest: '{{ fogbow_components }}/{{ agent_dir_name }}' }
+        - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
+        - { src: '{{ ipsec_conf_path }}', dest: '{{ fogbow_components }}/{{ fn_agent_dir_name }}' }
+
+
+- hosts: internal-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    intercomponent_conf_path: ../services/resource-allocation-service/conf-files/intercomponent.conf
+    ras_dir_name: resource-allocation-service
+
+  tasks:
+    - name: Copying intercomponent.conf to Internal-Machine
+      copy:
+        src: "{{ intercomponent_conf_path }}"
+        dest: "{{ fogbow_components }}/{{ ras_dir_name }}"
+        mode: 0600
