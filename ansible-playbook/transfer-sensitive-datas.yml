@@ -172,22 +172,25 @@
     general_conf_path: ../conf-files/general.conf
     agent_dir_name: federated-network-agent
     prosody_conf_path: ../services/xmpp-server/prosody.cfg.lua
+    intercomponent_conf_path: ../conf-files/intercomponent.conf
     xmpp_dir_name: xmpp-server
     ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
     fn_agent_dir_name: federated-network-agent
 
   tasks:
-    - name: Copying general, prosody and ipsec confs to DMZ machine
+    - name: Copying general, prosody, intercomponent and ipsec confs to DMZ machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: '{{ general_conf_path }}', dest: '{{ fogbow_components }}/{{ agent_dir_name }}' }
         - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
+        - { src: '{{ intercomponent_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
         - { src: '{{ ipsec_conf_path }}', dest: '{{ fogbow_components }}/{{ fn_agent_dir_name }}' }
 
 
 - hosts: internal-machine
   vars:
     fogbow_components: ~/fogbow-components
+    conf_files: conf-files
     intercomponent_conf_path: ../services/resource-allocation-service/conf-files/intercomponent.conf
     ras_dir_name: resource-allocation-service
 
@@ -195,5 +198,5 @@
     - name: Copying intercomponent.conf to Internal-Machine
       copy:
         src: "{{ intercomponent_conf_path }}"
-        dest: "{{ fogbow_components }}/{{ ras_dir_name }}"
+        dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
         mode: 0600
