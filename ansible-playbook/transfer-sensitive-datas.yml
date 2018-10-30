@@ -38,6 +38,7 @@
       shell: grep "^{{ ssl_certificate_chain_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
       register: ssl_certificate_chain_file_path
 
+
 - hosts: internal-machine
   vars:
     fogbow_components: ~/fogbow-components
@@ -56,6 +57,7 @@
         mode: 0600
       with_items:
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+
 
 - hosts: internal-machine
   vars:
@@ -78,6 +80,7 @@
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
 
+
 - hosts: internal-machine
   vars:
     fogbow_components: ~/fogbow-components
@@ -98,6 +101,7 @@
       with_items:
         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
       when: hostvars['localhost']['ldap_pk_path'].stdout != ""
+
 
 - hosts: internal-machine
   vars:
@@ -140,6 +144,7 @@
         dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
         mode: 0600
 
+
 - hosts: internal-machine
   vars:
     fogbow_components: ~/fogbow-components
@@ -152,13 +157,14 @@
   tasks:
     - name: Copying general.conf to Internal-Machine
       copy:
-        src: "{{ general_conf_path}}"
+        src: "{{ general_conf_path }}"
         dest: "{{ item }}"
         mode: 0600
       with_items:
         - "{{ fogbow_components }}/{{ db_dir_name }}/{{ conf_files }}"
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+
 
 - hosts: dmz-machine
   vars:
@@ -170,9 +176,40 @@
   tasks:
     - name: Copying general.conf to Federated Network Agent
       copy:
-        src: "{{ general_conf_path}}"
+        src: "{{ general_conf_path }}"
         dest: "{{ item }}"
         mode: 0600
       with_items:
-        - "{{ fogbow_components }}/{{ agent_dir_name }}/{{ conf_files }}"
+        - "{{ fogbow_components }}/{{ agent_dir_name }}"
 
+
+- hosts: dmz-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    prosody_conf_path: ../services/xmpp-server/prosody.cfg.lua
+    xmpp_dir_name: xmpp-server
+
+  tasks:
+    - name: Copying prosody.cfg.lua to XMPP server
+      copy:
+        src: "{{ prosody_conf_path }}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
+
+
+- hosts: dmz-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
+    fn_agent_dir_name: federated-network-agent
+
+  tasks:
+    - name: Copying ipsec.conf to Federated Network Agent
+      copy:
+        src: "{{ ipsec_conf_path }}"
+        dest: "{{ item }}"
+        mode: 0600
+      with_items:
+        - "{{ fogbow_components }}/{{ fn_agent_dir_name }}"
