@@ -33,6 +33,9 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $C2S_PORT:$C2S_CONTAINER_PORT \
 	-p $S2S_PORT:$S2S_CONTAINER_PORT \
 	-p $C2C_PORT:$C2C_CONTAINER_PORT \
-	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME:ro \
 	$IMAGE_NAME
 
+sudo docker cp $DIR_PATH/$CONF_FILE_NAME $CONTAINER_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME
+
+sudo docker exec $CONTAINER_NAME /bin/bash -c "chmod 644 $CONTAINER_BASE_PATH/$CONF_FILE_NAME"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "service prosody restart"
