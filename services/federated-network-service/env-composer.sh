@@ -41,6 +41,7 @@ GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
 
 GENERAL_PRIVATE_KEY_PATH=$(grep $GENERAL_PRIVATE_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
 GENERAL_PUBLIC_KEY_PATH=$(grep $GENERAL_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+yes | cp -f $GENERAL_PUBLIC_KEY_PATH $BASE_CONF_FILES_DIR
 
 # Filling manager keys
 echo "Fill keys path"
