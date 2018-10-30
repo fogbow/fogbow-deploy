@@ -161,7 +161,7 @@
         dest: "{{ item }}"
         mode: 0600
       with_items:
-        - "{{ fogbow_components }}/{{ db_dir_name }}/{{ conf_files }}"
+        - "{{ fogbow_components }}/{{ db_dir_name }}"
         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
 
