@@ -21,24 +21,33 @@ yes | cp -f $CONF_FILES_DIR/$SERVICES_CONF_FILE $BASE_DIR/$SERVICES_CONF_FILE
 CONF_FILE_NAME="api.config.js"
 AUTH_TYPE_PATTERN="authentication_type"
 AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
-API_CONFIG_FILE_NAME="api.config.js"
 
-yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$API_CONFIG_FILE_NAME $BASE_DIR/$API_CONFIG_FILE_NAME
+yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$CONF_FILE_NAME $BASE_DIR/$CONF_FILE_NAME
 
 # Getting internal host ip
 
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
+# Getting resource allocation service ip and port 
+
+echo "Retrieving RAS ip and port"
+DOMAIN_NAME_FILE="domain-names.conf"
+RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
+RAS_DOMAIN_NAME=$(grep $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+RAS_DOMAIN_BASENAME=$(basename $RAS_DOMAIN_NAME)
+
+echo "Federated network service domain name: $RAS_DOMAIN_NAME"
+sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+
 # Getting federated network service ip and port 
 
-echo "Using Federated network service"
-DOMAIN_NAME_FILE="domain-names.conf"
+echo "Retrieving FNS ip and port"
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
 FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
 FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
 
-echo "Federated network service domain name: $FEDNET_DOMAIN_NAME"
+echo "Federated network service domain name: $FNS_DOMAIN_NAME"
 sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership port

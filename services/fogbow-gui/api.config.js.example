@@ -1,5 +1,0 @@
-export const env = {
-    fns: 'http://10.11.4.192:8082',
-    ms: 'http://10.11.4.192:8081',
-    local: 'naf1.lsd.ufcg.edu.br',
-    refreshTime: 5000,
