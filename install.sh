@@ -43,3 +43,7 @@ sed -i "s#.*$REMOTE_HOSTS_USER_CFG_PATTERN = .*#$REMOTE_HOSTS_USER_CFG_PATTERN =
 DEPLOY_FOGBOW_FILE_PATH="deploy-fogbow.yml"
 
 (cd ansible-playbook && ansible-playbook $DEPLOY_FOGBOW_FILE_PATH)
+
+chmod -R 600 conf-files
+chmod -R 600 services
+
