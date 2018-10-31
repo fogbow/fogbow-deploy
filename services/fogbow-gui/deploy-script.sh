@@ -5,7 +5,7 @@ IMAGE_NAME="fogbow/fogbow-gui"
 CONTAINER_NAME="fogbow-gui"
 CONF_FILE_NAME="api.config.js"
 
-CONTAINER_BASE_PATH="/fogbow-gui"
+CONTAINER_BASE_PATH="/root/fogbow-gui"
 CONTAINER_CONF_FILE_PATH="src/defaults"
 
 GUI_CONF_FILE="gui.conf"
