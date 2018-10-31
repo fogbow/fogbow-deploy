@@ -44,6 +44,6 @@ DEPLOY_FOGBOW_FILE_PATH="deploy-fogbow.yml"
 
 (cd ansible-playbook && ansible-playbook $DEPLOY_FOGBOW_FILE_PATH)
 
-chmod -R 600 conf-files
-chmod -R 600 services
+chmod -R go-rw conf-files
+chmod -R go-rw services
 
