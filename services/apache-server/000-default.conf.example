@@ -15,6 +15,14 @@
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 <VirtualHost *:80>
+    ServerName ras_basename
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+    Redirect permanent / ras_domain_name
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+<VirtualHost *:80>
     ServerName ms_basename
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
@@ -61,6 +69,25 @@
         ProxyPreserveHost on
         ProxyPass / internal_host_private_ip:fns_port/
         ProxyPassReverse / internal_host_private_ip:fns_port/
+    </VirtualHost>
+    <VirtualHost *:443>
+        ServerName ras_basename
+        ServerAdmin webmaster@localhost
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        LogLevel info
+        SSLEngine On
+        SSLCertificateFile /etc/ssl/private/lsd.crt
+        SSLCertificateKeyFile /etc/ssl/private/lsd.key
+        SSLCertificateChainFile /etc/ssl/private/lsd.pem
+        <Location />
+            Order allow,deny
+            Allow from all 
+        </Location>
+        ProxyPreserveHost on
+        ProxyPass / internal_host_private_ip:ras_port/
+        ProxyPassReverse / internal_host_private_ip:ras_port/
     </VirtualHost>
     <VirtualHost *:443>
         ServerName ms_basename
