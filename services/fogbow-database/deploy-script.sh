@@ -19,7 +19,15 @@ DB_DATA_DIR=$DIR_PATH/"data"
 mkdir -p $DB_DATA_DIR
 CONTAINER_DATA_DIR="/var/lib/postgresql/data"
 
-sudo docker pull $IMAGE_NAME
+SERVICES_CONF=$DIR_PATH/"services.conf"
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
+sudo docker pull $IMAGE_NAME:$TAG
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
@@ -30,5 +38,4 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-e DB_NAME=$RAS_DB_NAME \
 	-e DB2_NAME=$FEDNET_DB_NAME \
 	-v $DB_DATA_DIR:$CONTAINER_DATA_DIR \
-	$IMAGE_NAME
-
+	$IMAGE_NAME:$TAG

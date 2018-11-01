@@ -33,3 +33,9 @@ sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CON
 # Adding component password
 COMPONENT_PASSWORD="\ \ \ \ \ \ \ \ component_secret = \"$XMPP_PASSWORD\""
 sed -i "/$COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
+
+# Copying service.conf file
+echo "Copying services.conf to service directory"
+SERVICES_FILE="services.conf"
+
+yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $XMPP_SERVER_DIR/$SERVICES_FILE

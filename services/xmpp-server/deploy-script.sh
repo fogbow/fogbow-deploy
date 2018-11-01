@@ -21,7 +21,15 @@ C2C_PORT_PATTERN="xmpp_c2c_port"
 C2C_PORT=$(grep $C2C_PORT_PATTERN $INTERCOMPONENT_FILE_PATH | awk -F "=" '{print $2}')
 C2C_CONTAINER_PORT="5347"
 
-sudo docker pull $IMAGE_NAME
+SERVICES_CONF=$DIR_PATH/"services.conf"
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
+sudo docker pull $IMAGE_NAME:$TAG
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
@@ -33,7 +41,7 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $C2S_PORT:$C2S_CONTAINER_PORT \
 	-p $S2S_PORT:$S2S_CONTAINER_PORT \
 	-p $C2C_PORT:$C2C_CONTAINER_PORT \
-	$IMAGE_NAME
+	$IMAGE_NAME:$TAG
 
 chmod 644 $DIR_PATH/$CONF_FILE_NAME
 
