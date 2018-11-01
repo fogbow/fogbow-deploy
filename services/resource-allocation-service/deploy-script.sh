@@ -31,6 +31,10 @@ SERVICES_CONF=$CONF_FILES_DIR/"services.conf"
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
 echo "Manager xmpp port: $XMPP_PORT"
 
 sudo docker stop $CONTAINER_NAME

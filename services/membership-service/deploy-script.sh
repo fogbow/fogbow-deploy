@@ -17,6 +17,10 @@ IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
 echo "Membership port: $MEMBERSHIP_HOST_PORT"
 
 sudo docker stop $CONTAINER_NAME

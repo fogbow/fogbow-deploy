@@ -29,6 +29,10 @@ IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf
 TAG=$(grep $IMAGE_BASE_NAME $CONF_FILES_DIR_PATH/$SERVICES_CONF | awk -F "=" '{print $2}')
 
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
 echo "Federated network service server port: $FEDNET_PORT"
 
 sudo docker stop $CONTAINER_NAME

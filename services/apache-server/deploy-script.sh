@@ -30,9 +30,13 @@ SERVICES_CONF=$DIR_PATH/"services.conf"
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
 
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
-sudo docker pull $IMAGE_NAME
+sudo docker pull $IMAGE_NAME:$TAG
 
 sudo docker run -tdi --name $CONTAINER_NAME \
 	-p $SECURE_PORT:$SECURE_PORT \
