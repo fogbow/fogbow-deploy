@@ -2,6 +2,9 @@
 DIR=$(pwd)
 BASE_DIR="services/federated-network-agent"
 
+GENERAL_CONF_FILE_NAME="general.conf"
+CONF_FILES_DIR=$DIR/"conf-files"
+
 # Get Manager public key file
 DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
 DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $CONF_FILES_DIR/$GENERAL_CONF_FILE_NAME | awk -F "=" '{print $2}')
