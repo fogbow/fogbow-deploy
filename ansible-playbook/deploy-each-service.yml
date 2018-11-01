@@ -4,7 +4,7 @@
     xmpp_dir_name: xmpp-server
     fednet_agent_dir_name: federated-network-agent
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: sh deploy-script.sh
+    deploy_script_runner: bash deploy-script.sh
   tasks:
     - name: Deploying services in DMZ Machine
       shell: "{{ deploy_script_runner }}"
@@ -24,7 +24,7 @@
     fednet_dir_name: federated-network-service
     database_dir_name: fogbow-database
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: sh deploy-script.sh
+    deploy_script_runner: bash deploy-script.sh
   tasks:
     - name: Deploying services in Internal Machine
       shell: "{{ deploy_script_runner }}"
