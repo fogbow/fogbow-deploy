@@ -12,6 +12,7 @@ auth_type_class=$(grep $auth_type_pattern $conf_files_dir/$gui_conf_dir/$gui_con
 openstack_class="openstack"
 cloudstack_class="cloudstack"
 ldap_class="ldap"
+shibboleth_class="shibboleth"
 
 if [ $auth_type_class = $openstack_class ]; then
 	openstack_path=$aaa_plugins_dir/"local-user-credentials-mapper/keystone-v3-mapper.conf"
@@ -22,4 +23,7 @@ elif [ $auth_type_class = $cloudstack_class ]; then
 elif [ $auth_type_class = $ldap_class ]; then
 	ldap_path=$aaa_plugins_dir/"token-generator/ldap-token-generator-plugin.conf"
     yes | cp -f $ldap_path $target_dir
+elif [ $auth_type_class = $shibboleth_class ]; then
+	shibboleth_path=$aaa_plugins_dir/"shibboleth.conf"
+    yes | cp -f $shibboleth_path $target_dir    
 fi
