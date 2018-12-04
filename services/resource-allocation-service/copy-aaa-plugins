@@ -11,6 +11,7 @@ auth_type_class=$(grep $auth_type_pattern $conf_files_dir/$gui_conf_dir/$gui_con
 
 openstack_class="openstack"
 cloudstack_class="cloudstack"
+opennebula_class="opennebula"
 ldap_class="ldap"
 
 if [ $auth_type_class = $openstack_class ]; then
@@ -19,6 +20,9 @@ if [ $auth_type_class = $openstack_class ]; then
 elif [ $auth_type_class = $cloudstack_class ]; then
 	cloudstack_path=$aaa_plugins_dir/"local-user-credentials-mapper/cloudstack-mapper.conf"
     yes | cp -f $cloudstack_path $target_dir
+elif [ $auth_type_class = $opennebula_class ]; then
+	opennebula_path=$aaa_plugins_dir/"local-user-credentials-mapper/opennebula-mapper.conf"
+    yes | cp -f $opennebula_path $target_dir
 elif [ $auth_type_class = $ldap_class ]; then
 	ldap_path=$aaa_plugins_dir/"token-generator/ldap-token-generator-plugin.conf"
     yes | cp -f $ldap_path $target_dir
