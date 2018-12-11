@@ -18,8 +18,7 @@ INTERCOMPONENT_CONF_FILE_NAME="intercomponent.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE_NAME
 
 # Moving conf files
-CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH -type d \
-  \( -path ./$CLOUDS_DIR_PATH \) -prune -print | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH -path $CLOUDS_DIR_PATH -prune -o -print | grep '.conf' | xargs)
 
 BASE_CONF_FILES_DIR=$DIR/$BASE_DIR/"conf-files"
 mkdir -p $BASE_CONF_FILES_DIR
