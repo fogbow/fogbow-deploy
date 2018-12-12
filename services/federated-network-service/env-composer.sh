@@ -8,7 +8,7 @@ GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 FNS_CONF_FILES_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 CONTAINER_BASE_DIR="/root/federated-network-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
-CLOUDS_DIR_PATH=$FNS_CONF_FILES_PATH/"clouds"
+CLOUDS_DIR_PATH=$CONF_FILES_DIR/"clouds"
 
 mkdir -p $EXTRA_FILES_DIR
 
@@ -18,7 +18,7 @@ INTERCOMPONENT_CONF_FILE_NAME="intercomponent.conf"
 INTERCOMPONENT_CONF_FILE=$CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE_NAME
 
 # Moving conf files
-CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH -path $CLOUDS_DIR_PATH -prune -o -print | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find $FNS_CONF_FILES_PATH | grep '.conf' | xargs)
 
 BASE_CONF_FILES_DIR=$DIR/$BASE_DIR/"conf-files"
 mkdir -p $BASE_CONF_FILES_DIR
@@ -31,6 +31,8 @@ done
 
 # Moving clouds directory
 yes | cp -fr $CLOUDS_DIR_PATH $BASE_CONF_FILES_DIR
+CLOUDS_CONF_FILE=clouds.conf
+yes | cp -fr $CONF_FILES_DIR/$CLOUDS_CONF_FILE $BASE_CONF_FILES_DIR/$CLOUDS_CONF_FILE
 
 # Moving RAS aaa.conf
 AAA_FILE="aaa.conf"
