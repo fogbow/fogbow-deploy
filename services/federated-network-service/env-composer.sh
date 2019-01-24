@@ -8,7 +8,6 @@ GENERAL_CONF_FILE_PATH=$CONF_FILES_DIR/"general.conf"
 FNS_CONF_FILES_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
 CONTAINER_BASE_DIR="/root/federated-network-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
-CLOUDS_DIR_PATH=$CONF_FILES_DIR/"clouds"
 FEDNET_FILE_NAME="fns.conf"
 FEDNET_CONF_FILE=$FNS_CONF_FILES_PATH/$FEDNET_FILE_NAME
 
@@ -30,11 +29,6 @@ for conf_file_path in $CONF_FILES_LIST; do
 	conf_file_name=$(basename $conf_file_path)
 	yes | cp -f $conf_file_path $BASE_CONF_FILES_DIR/$conf_file_name
 done
-
-# Moving clouds directory
-yes | cp -fr $CLOUDS_DIR_PATH $BASE_CONF_FILES_DIR
-CLOUDS_CONF_FILE=clouds.conf
-yes | cp -fr $CONF_FILES_DIR/$CLOUDS_CONF_FILE $BASE_CONF_FILES_DIR/$CLOUDS_CONF_FILE
 
 # Moving RAS aaa.conf
 AAA_FILE="aaa.conf"
