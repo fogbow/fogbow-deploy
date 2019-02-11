@@ -1,39 +1,20 @@
 #!/bin/bash
 DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
-CONF_FILES_DIR="conf-files"
-GENERAL_CONF_NAME="general.conf"
-GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
-RAS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"ras.conf"
-FNS_CONF_PATH=$CONF_FILES_DIR/"ras-confs-to-fns"
-APACHE_CONF_PATH=$CONF_FILES_DIR/"apache-confs"
-AAA_PLUGINS_PATH=$CONF_FILES_DIR/"aaa-plugins"
-CLOUDS_PATH=$CONF_FILES_DIR/"clouds"
+RAS_CONF_NAME="ras.conf"
+CONF_FILES_DIR_NAME="conf-files"
+RAS_CONF_FILE=$CONF_FILES_PATH/$RAS_CONF_NAME
+HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
+CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
+CLOUDS_PATH=$CONF_FILES_DIR_NAME/"clouds"
+SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
 
-CONTAINER_BASE_PATH="/root/resource-allocation-service"
-CONTAINER_CONF_FILES_DIR="src/main/resources/private"
-
-HOSTS_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"hosts.conf"
-
-# Moving conf files
-
-CONF_FILES_LIST=$(find ./$CONF_FILES_DIR -type d \
-  \( -path ./$FNS_CONF_PATH -o -path ./$APACHE_CONF_PATH -o -path ./$AAA_PLUGINS_PATH -o -path ./$CLOUDS_PATH \) \
-  -prune -o \( ! -iname $GENERAL_CONF_NAME \) -print | grep '\.conf' | xargs)
-
-mkdir -p ./$BASE_DIR/$CONF_FILES_DIR
-
-for conf_file_path in $CONF_FILES_LIST; do
-	conf_file_name=$(basename $conf_file_path)
-	echo "Conf file path: $conf_file_path"
-	echo "Conf file name: $conf_file_name"
-	yes | cp -f $conf_file_path ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
-done
-
-# Copy clouds directory 
+# Copy ras.conf to base dir
+yes | cp -f $CONF_FILES_DIR/$RAS_CONF_NAME ./$RAS_CONF_FILE
+# Copy clouds directory
 yes | cp -fr $CLOUDS_PATH ./$BASE_DIR/$CLOUDS_PATH
 
-# RAS application.properties configuration
+# Configuring application.properties file
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
@@ -45,77 +26,29 @@ RAS_DB_ENDPOINT="ras"
 
 DB_URL_PROPERTY="spring.datasource.url"
 DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
-sed -i "s#.*$DB_URL_PROPERTY=.*#$DB_URL_PROPERTY=$DB_URL#" $APPLICATION_CONF_FILE
+echo "$DB_URL_PROPERTY=$DB_URL" >> $APPLICATION_CONF_FILE
 
 DB_USERNAME="fogbow"
 DB_USERNAME_PATTERN="spring.datasource.username"
-sed -i "s#.*$DB_USERNAME_PATTERN=.*#$DB_USERNAME_PATTERN=$DB_USERNAME#" $APPLICATION_CONF_FILE
+echo "$DB_USERNAME_PATTERN=$DB_USERNAME" >> $APPLICATION_CONF_FILE
 
-GENERAL_PASSWORD_PATTERN="^password"
-DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+GENERAL_PASSWORD_PATTERN="^db_password"
+DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $SECRETS_FILE | awk -F "=" '{print $2}')
 DB_PASSWORD_PATTERN="spring.datasource.password"
-sed -i "s#.*$DB_PASSWORD_PATTERN=.*#$DB_PASSWORD_PATTERN=$DB_PASSWORD#" $APPLICATION_CONF_FILE
+echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
 
-echo "RAS JDBC database url: $DB_URL"
-echo "Fogbow database username: $DB_USERNAME"
-echo "Fogbow database password: $DB_PASSWORD"
+# Configuring ras.conf file
+PRIVATE_KEY_PATH=$CONF_FILES_PATH/"id_rsa"
+PUBLIC_KEY_PATH=$CONF_FILES_PATH/"id_rsa.pub"
+RSA_KEY_PATH=$CONF_FILES_PATH/"rsa_key.pem"
 
-# Checking manager keys
+openssl genrsa -out $RSA_KEY_PATH 2048
+openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
+openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
+chmod 600 $PRIVATE_KEY_PATH
+rm $RSA_KEY_PATH
 
-echo "Fill keys path"
-
-GENERAL_PRIVATE_KEY_PATTERN="private_key_file_path"
-GENERAL_PUBLIC_KEY_PATTERN="public_key_file_path"
-
-GENERAL_PRIVATE_KEY_PATH=$(grep "^"$GENERAL_PRIVATE_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
-GENERAL_PUBLIC_KEY_PATH=$(grep "^"$GENERAL_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
-
-MANAGER_PRIVATE_KEY_PATTERN="ras_private_key_file_path"
-MANAGER_PUBLIC_KEY_PATTERN="ras_public_key_file_path"
-
-echo "$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH"
-echo "$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH"
-
-sed -i "s#.*$MANAGER_PRIVATE_KEY_PATTERN=.*#$MANAGER_PRIVATE_KEY_PATTERN=$GENERAL_PRIVATE_KEY_PATH#" $RAS_CONF_FILE
-sed -i "s#.*$MANAGER_PUBLIC_KEY_PATTERN=.*#$MANAGER_PUBLIC_KEY_PATTERN=$GENERAL_PUBLIC_KEY_PATH#" $RAS_CONF_FILE
-
-# Copying files from conf files specification
-
-echo "Copying files specified in conf files to manager-core directory"
-
-CONF_FILES_LIST=$(ls ./$BASE_DIR/$CONF_FILES_DIR)
-
-SUFFIX_FILE_PATH="path"
-
-for conf_file_name in $CONF_FILES_LIST; do
-
-	file_path_values=$(grep $SUFFIX_FILE_PATH ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name | awk -F "=" '{print $2}')
-	
-	for file_path_value in $file_path_values; do
-		if [ -n "$file_path_value" ]; then
-			echo "Moving $file_path_value to manager-core directory"
-			file_name_value=$(basename $file_path_value)
-			yes | cp -f $file_path_value ./$BASE_DIR/$CONF_FILES_DIR/$file_name_value
-			echo "Replacing files path properties in conf files"
-			sed -i "s#$file_path_value#$CONTAINER_BASE_PATH/$CONTAINER_CONF_FILES_DIR/$file_name_value#" ./$BASE_DIR/$CONF_FILES_DIR/$conf_file_name
-		fi
-	done
-done
-
-# Adding xmpp server ip
-DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
-DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
-INTERCOMPONENT_CONF_FILE=$BASE_DIR/$CONF_FILES_DIR/"intercomponent.conf"
-XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
-sed -i "s#$XMPP_SERVER_IP_PATTERN=#$XMPP_SERVER_IP_PATTERN=$DMZ_HOST_PRIVATE_IP#" $INTERCOMPONENT_CONF_FILE
-
-XMPP_MANAGER_PORT_PATTERN="xmpp_c2s_port"
-XMPP_MANAGER_PORT=$(grep $XMPP_MANAGER_PORT_PATTERN $INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
-XMPP_MANAGER_PORT_PROPERTY="xmpp_c2s_port"
-echo "" >> $INTERCOMPONENT_CONF_FILE
-echo "$XMPP_MANAGER_PORT_PROPERTY=$XMPP_MANAGER_PORT" >> $INTERCOMPONENT_CONF_FILE
-
-XMPP_PASSWORD_PATTERN="xmpp_password"
-XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
-sed -i "s#.*$XMPP_PASSWORD_PATTERN=.*#$XMPP_PASSWORD_PATTERN=$XMPP_PASSWORD#" $INTERCOMPONENT_CONF_FILE
+PUBLIC_KEY_PROPERTY="public_key_file_path"
+PRIVATE_KEY_PROPERTY="private_key_file_path"
+echo "$PRIVATE_KEY_PROPERTY=$PRIVATE_KEY_PATH" >> $CONF_FILE_PATH
+echo "$PUBLIC_KEY_PROPERTY=$PUBLIC_KEY_PATH" >> $CONF_FILE_PATH
