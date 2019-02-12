@@ -1,37 +1,50 @@
 #!/bin/bash
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
-CONF_FILE_PATH=$CONF_FILES_DIR/"secrets"
+SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
 SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
 
 VPN_PASSWORD_PROPERTY="vpn_password"
 XMPP_PASSWORD_PROPERTY="xmpp_password"
 DB_PASSWORD_PROPERTY="db_password"
 
-touch $CONF_FILE_PATH
-chmod 600 $CONF_FILE_PATH
+touch $SECRETS_FILE_PATH
+chmod 600 $SECRETS_FILE_PATH
 
 # Fill passwords
 GENERATED_PASSWORD=$(pwgen 10 1)
-echo "$DB_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $CONF_FILE_PATH
+echo "$DB_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $SECRETS_FILE_PATH
 
 GENERATED_PASSWORD=$(pwgen 10 1)
-echo "$VPN_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $CONF_FILE_PATH
+echo "$VPN_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $SECRETS_FILE_PATH
 
 GENERATED_PASSWORD=$(pwgen 10 1)
-echo "$XMPP_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $CONF_FILE_PATH
+echo "$XMPP_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $SECRETS_FILE_PATH
 
-# Fill XMPP ports
+# Create DMZ key pair
+DMZ_PRIVATE_KEY_PATH=$DIR/"dmz-id_rsa"
+DMZ_PUBLIC_KEY_PATH=$DIR/"dmz-id_rsa.pub"
+
+ssh-keygen -f $DMZ_PRIVATE_KEY_PATH -t rsa -b 4096 -C "internal-communication-key" -N ""
+
+DMZ_PRIVATE_KEY_NEW_PATH="federated-network-service"/"conf-files"/"dmz-id_rsa"
+DMZ_PUBLIC_KEY_NEW_PATH="federated-network-agent"/"conf-files"/"dmz-id_rsa.pub"
+
+mkdir -p $(dirname $DMZ_PRIVATE_KEY_NEW_PATH)
+mkdir -p $(dirname $DMZ_PUBLIC_KEY_NEW_PATH)
+
+mv $DMZ_PRIVATE_KEY_PATH $DMZ_PRIVATE_KEY_NEW_PATH
+mv $DMZ_PUBLIC_KEY_PATH $DMZ_PUBLIC_KEY_NEW_PATH
+
+echo "dmz_private_key_path=$DMZ_PRIVATE_KEY_NEW_PATH#" >> $SHARED_INFO_FILE
+echo "dmz_public_key_path=$DMZ_PUBLIC_KEY_NEW_PATH#" >> $SHARED_INFO_FILE
+chmod 600 $DMZ_PRIVATE_KEY_NEW_PATH
+
+# Services port
+# Fill Fogbow services ports
 echo "" >> $SHARED_INFO_FILE
-
-xmpp_s2s_port_key="xmpp_s2s_port"
-xmpp_s2s_port_value=5269
-echo "$xmpp_s2s_port_key=$xmpp_s2s_port_key" >> $SHARED_INFO_FILE
-
-xmpp_c2s_port_key="xmpp_c2s_port"
-xmpp_c2s_port_value=5222
-echo "$xmpp_c2s_port_key=$xmpp_c2s_port_key" >> $SHARED_INFO_FILE
-
-xmpp_c2c_port_key="xmpp_c2c_port"
-xmpp_c2c_port_value=5347
-echo "$xmpp_c2c_port_key=$xmpp_c2c_port_key" >> $SHARED_INFO_FILE
+echo "as_port=8080" >> $SHARED_INFO_FILE
+echo "fns_port=8081" >> $SHARED_INFO_FILE
+echo "ras_port=8082" >> $SHARED_INFO_FILE
+echo "ms_port=8083" >> $SHARED_INFO_FILE
+echo "gui_port=8084" >> $SHARED_INFO_FILE
