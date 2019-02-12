@@ -21,19 +21,21 @@ INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" 
 
 # Fill AS infos
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-echo "as_port=8080" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+AS_PORT=$(grep as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+echo "as_port=$AS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Fill RAS infos
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-echo "ras_port=8081" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "ras_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+RAS_PORT=$(grep ras_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+echo "ras_port=$RAS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Fill xmpp jid
 XMPP_JID_PATTERN="xmpp_jid"
 XMPP_JID=$(grep $XMPP_JID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
-echo ""
-echo "xmpp_jid=$XMPP_JID"
+echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "xmpp_jid=$XMPP_JID" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Create key pair
 echo ""
@@ -67,11 +69,12 @@ AGENT_PUBLIC_IP=$(grep $AGENT_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{
 echo "federated_network_agent_address=$AGENT_PUBLIC_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 VPN_PASSWORD_KEY="vpn_password"
-VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE_PATH | awk -F "=" '{print $2}')
+VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $SECRETS_FILE | awk -F "=" '{print $2}')
 echo "federated_network_agent_pre_shared_key=$VPN_PASSWORD" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 DEFAULT_AGENT_SCRIPTS_PATH='~'/"fogbow-components"/"federated-network-agent"
 CREATE_SCRIPT_NAME="create-federated-network"
 DELETE_SCRIPT_NAME="delete-federated-network"
+echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "add_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "remove_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME" >> $CONF_FILES_PATH/$FNS_CONF_NAME
