@@ -1,9 +1,9 @@
 #!/bin/bash
 DIR=$(pwd)
 BASE_DIR="services/federated-network-agent"
+CONF_FILES_DIR=$DIR/"conf-files"
 SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
 
-CONF_FILES_DIR=$DIR/"conf-files"
 
 # Copy hosts.conf file
 HOSTS_CONF_FILE_PATH=$CONF_FILES_DIR/"hosts.conf"

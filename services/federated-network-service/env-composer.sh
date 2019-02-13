@@ -25,7 +25,7 @@ INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" 
 # Fill AS infos
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-AS_PORT=$(grep as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "as_port=$AS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Fill RAS infos
