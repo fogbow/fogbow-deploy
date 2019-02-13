@@ -6,6 +6,10 @@ CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
 SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
 
+# Copy as.conf
+mkdir -p $CONF_FILES_PATH
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$AS_CONF_NAME $CONF_FILES_PATH/$AS_CONF_NAME
+
 # Fill xmpp jid
 XMPP_JID_PATTERN="xmpp_jid"
 XMPP_JID=$(grep $XMPP_JID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
@@ -13,7 +17,7 @@ echo "" >> $CONF_FILES_PATH/$AS_CONF_NAME
 echo "xmpp_jid=$XMPP_JID" >> $CONF_FILES_PATH/$AS_CONF_NAME
 
 # Create key pair
-echo ""
+echo "" >> $CONF_FILES_PATH/$AS_CONF_NAME
 PRIVATE_KEY_PATH=$CONF_FILES_PATH/"id_rsa"
 PUBLIC_KEY_PATH=$CONF_FILES_PATH/"id_rsa.pub"
 RSA_KEY_PATH=$CONF_FILES_PATH/"rsa_key.pem"
