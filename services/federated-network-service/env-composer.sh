@@ -15,6 +15,9 @@ yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$FNS_CONF_NAME $CONF_FILES_PATH/$FNS_CONF_
 # Copy services file
 SERVICES_FILE="services.conf"
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE $CONF_FILES_PATH/$SERVICES_FILE
+# Copy shared file
+SHARED_INFO="shared.info"
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
 
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')

@@ -5,8 +5,10 @@ RAS_CONF_NAME="ras.conf"
 CLOUDS_FILE_NAME="clouds"
 CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
+CONF_FILE_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME
 HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
 SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
+SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
 
 # Copy ras.conf
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME ./$CONF_FILES_PATH/$RAS_CONF_NAME
@@ -15,6 +17,9 @@ yes | cp -fr $DIR/$CONF_FILES_DIR_NAME/$CLOUDS_FILE_NAME ./$CONF_FILES_PATH/$CLO
 # Copy services file
 SERVICES_FILE="services.conf"
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE ./$CONF_FILES_PATH/$SERVICES_FILE
+# Copy shared file
+SHARED_INFO="shared.info"
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
 
 # Configuring application.properties file
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
@@ -41,6 +46,7 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
 
 # Configuring ras.conf file
 # Create key pair
+echo "" >> $CONF_FILE_PATH
 PRIVATE_KEY_PATH=$CONF_FILES_PATH/"id_rsa"
 PUBLIC_KEY_PATH=$CONF_FILES_PATH/"id_rsa.pub"
 RSA_KEY_PATH=$CONF_FILES_PATH/"rsa_key.pem"
@@ -64,19 +70,15 @@ DMZ_PUBLIC_IP_PATTERN="dmz_host_public_ip"
 DMZ_PUBLIC_IP=$(grep $DMZ_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 echo "xmpp_server_ip=$DMZ_PUBLIC_IP" >> $CONF_FILE_PATH
 
-DMZ_PUBLIC_IP_PATTERN="dmz_host_public_ip"
-DMZ_PUBLIC_IP=$(grep $DMZ_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-echo "xmpp_server_ip=$DMZ_PUBLIC_IP" >> $CONF_FILE_PATH
-
 XMPP_PASSWORD_KEY="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_KEY $SECRETS_FILE | awk -F "=" '{print $2}')
 echo "xmpp_password=$XMPP_PASSWORD" >> $CONF_FILE_PATH
 
 # Fill AS infos
-echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "" >> $CONF_FILE_PATH
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
-echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-AS_PORT=$(grep as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
-echo "as_port=$AS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILE_PATH
+AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+echo "as_port=$AS_PORT" >> $CONF_FILE_PATH
