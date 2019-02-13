@@ -1,22 +1,17 @@
 #!/bin/bash
 DIR=$(pwd)
 BASE_DIR="services/federated-network-agent"
+SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
 
-GENERAL_CONF_FILE_NAME="general.conf"
 CONF_FILES_DIR=$DIR/"conf-files"
 
-# Get Manager public key file
-DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
-DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $CONF_FILES_DIR/$GENERAL_CONF_FILE_NAME | awk -F "=" '{print $2}')
-DMZ_PUBLIC_KEY_NAME=$(basename $DMZ_PUBLIC_KEY_PATH)
-
-echo "Copying $DMZ_PUBLIC_KEY_NAME to $BASE_DIR/$DMZ_PUBLIC_KEY_NAME"
-yes | cp -f $DMZ_PUBLIC_KEY_NAME $BASE_DIR/$DMZ_PUBLIC_KEY_NAME
-
-# Get hosts.conf file
+# Copy hosts.conf file
 HOSTS_CONF_FILE_PATH=$CONF_FILES_DIR/"hosts.conf"
 echo "Copying $HOSTS_CONF_FILE_PATH to $BASE_DIR directory"
 yes | cp -f $HOSTS_CONF_FILE_PATH $BASE_DIR
+
+# Copy shared info
+yes | cp -f $SHARED_INFO_FILE $BASE_DIR
 
 # Download Agent scripts
 echo "Downloading agent scripts"

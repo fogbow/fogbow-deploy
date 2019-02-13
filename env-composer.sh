@@ -27,8 +27,8 @@ DMZ_PUBLIC_KEY_PATH=$DIR/"dmz-id_rsa.pub"
 
 ssh-keygen -f $DMZ_PRIVATE_KEY_PATH -t rsa -b 4096 -C "internal-communication-key" -N ""
 
-DMZ_PRIVATE_KEY_NEW_PATH="federated-network-service"/"conf-files"/"dmz-id_rsa"
-DMZ_PUBLIC_KEY_NEW_PATH="federated-network-agent"/"conf-files"/"dmz-id_rsa.pub"
+DMZ_PRIVATE_KEY_NEW_PATH="services"/"federated-network-service"/"conf-files"/"dmz-id_rsa"
+DMZ_PUBLIC_KEY_NEW_PATH="services"/"federated-network-agent"/"dmz-id_rsa.pub"
 
 mkdir -p $(dirname $DMZ_PRIVATE_KEY_NEW_PATH)
 mkdir -p $(dirname $DMZ_PUBLIC_KEY_NEW_PATH)
