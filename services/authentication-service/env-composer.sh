@@ -9,6 +9,8 @@ SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
 # Copy as.conf
 mkdir -p $CONF_FILES_PATH
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$AS_CONF_NAME $CONF_FILES_PATH/$AS_CONF_NAME
+# Copy shared info
+yes | cp -f $SHARED_INFO_FILE $CONF_FILES_PATH/"shared.info"
 
 # Fill xmpp jid
 XMPP_JID_PATTERN="xmpp_jid"

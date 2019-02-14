@@ -4,19 +4,18 @@ HOSTS_CONF_FILE="hosts.conf"
 REMOTE_HOST_USER_PATTERN="remote_hosts_user"
 REMOTE_HOST_USER=$(grep $REMOTE_HOST_USER_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
-GENERAL_CONF_FILE="general.conf"
-
-echo "Installing Strongswan"
+SECRETS_FILE="secrets"
+SHARED_INFO_FILE="shared.info"
 
 VPN_PASSWORD_KEY="vpn_password"
-VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
+VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $SECRETS_FILE | awk -F "=" '{print $2}')
 
 STRONGSWAN_INSTALLATION_SCRIPT="strongswan-installation"
 sudo bash $STRONGSWAN_INSTALLATION_SCRIPT $VPN_PASSWORD
 
 # key to provide access from internal host to dmz host
-DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_file_path"
-DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $GENERAL_CONF_FILE | awk -F "=" '{print $2}')
+DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_path"
+DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 DMZ_PUBLIC_KEY_NAME=$(basename $DMZ_PUBLIC_KEY_PATH)
 
 DMZ_PUBLIC_KEY=$(cat $DMZ_PUBLIC_KEY_NAME)
