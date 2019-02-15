@@ -47,5 +47,4 @@ DEPLOY_FOGBOW_FILE_PATH="deploy-fogbow.yml"
 chmod -R go-rw conf-files
 chmod -R go-rw services
 
-CONF_FILE_PATH=$DIR_PATH/"conf-files"/"secrets"
-rm $CONF_FILE_PATH
+find ./* -type f -name "secrets" -exec rm {} \;

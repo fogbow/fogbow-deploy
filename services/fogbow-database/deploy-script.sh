@@ -2,7 +2,7 @@
 DIR_PATH=$(pwd)
 CONF_FILES_DIR="conf-files"
 GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
-SHARED_INFO="shared.info"
+SECRETS="secrets"
 
 IMAGE_NAME="fogbow/database"
 CONTAINER_NAME="fogbow-database"
@@ -10,7 +10,7 @@ CONTAINER_NAME="fogbow-database"
 CONTAINER_PORT="5432"
 
 DB_USER="fogbow"
-DB_PASSWORD=$(grep ^db_password $SHARED_INFO | awk -F "=" '{print $2}')
+DB_PASSWORD=$(grep ^db_password $SECRETS | awk -F "=" '{print $2}')
 
 RAS_DB_NAME=ras
 FEDNET_DB_NAME=fns

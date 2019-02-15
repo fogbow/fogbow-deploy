@@ -3,7 +3,7 @@ DIR=$(pwd)
 BASE_DIR="services/federated-network-agent"
 CONF_FILES_DIR=$DIR/"conf-files"
 SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
-
+SECRETS=$CONF_FILES_DIR/"secrets"
 
 # Copy hosts.conf file
 HOSTS_CONF_FILE_PATH=$CONF_FILES_DIR/"hosts.conf"
@@ -12,6 +12,8 @@ yes | cp -f $HOSTS_CONF_FILE_PATH $BASE_DIR
 
 # Copy shared info
 yes | cp -f $SHARED_INFO_FILE $BASE_DIR
+# Copy secrets
+yes | cp -f $SECRETS $BASE_DIR
 
 # Download Agent scripts
 echo "Downloading agent scripts"
