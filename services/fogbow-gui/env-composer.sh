@@ -38,7 +38,7 @@ AS_DOMAIN_NAME=$(grep $AS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES
 AS_DOMAIN_BASENAME=$(basename $AS_DOMAIN_NAME)
 
 echo "Federated network service domain name: $AS_DOMAIN_NAME"
-sed -i "s#.*as:.*#	as: 'https://$AS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*\<as\>:.*#	as: 'https://$AS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting resource allocation service endpoint
 

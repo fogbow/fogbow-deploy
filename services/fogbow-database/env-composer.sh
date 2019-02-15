@@ -9,5 +9,5 @@ SERVICES_FILE="services.conf"
 yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
 
 # Copy shared file
-SHARED_INFO="shared.info"
-yes | cp -f $CONF_FILES_DIR/$SHARED_INFO $BASE_DIR/$SHARED_INFO
+SECRETS="secrets"
+yes | cp -f $CONF_FILES_DIR/$SECRETS $BASE_DIR/$SECRETS

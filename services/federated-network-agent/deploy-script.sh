@@ -14,11 +14,7 @@ STRONGSWAN_INSTALLATION_SCRIPT="strongswan-installation"
 sudo bash $STRONGSWAN_INSTALLATION_SCRIPT $VPN_PASSWORD
 
 # key to provide access from internal host to dmz host
-DMZ_PUBLIC_KEY_PATTERN="dmz_public_key_path"
-DMZ_PUBLIC_KEY_PATH=$(grep $DMZ_PUBLIC_KEY_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
-DMZ_PUBLIC_KEY_NAME=$(basename $DMZ_PUBLIC_KEY_PATH)
-
-DMZ_PUBLIC_KEY=$(cat $DMZ_PUBLIC_KEY_NAME)
+DMZ_PUBLIC_KEY=$(cat dmz-id_rsa.pub)
 
 AUTHORIZED_KEYS_FILE_PATH=/"home"/$REMOTE_HOST_USER/".ssh"/"authorized_keys"
 grep "$DMZ_PUBLIC_KEY" $AUTHORIZED_KEYS_FILE_PATH
