@@ -1,0 +1,200 @@
+# This playbook must to transfer sensitive datas, always taking care in its permission in remote machine
+
+- hosts: localhost
+  connection: local
+  vars:
+    ssl_certificate_file_pattern: SSL_certificate_file_path
+    ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
+    ssl_certificate_chain_file_pattern: SSL_certificate_chain_file_path
+    # general_conf_path: ../conf-files/general.conf
+    # ldap_token_generator_conf_path: ../conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf
+    certificates_conf_path: ../conf-files/apache-confs/certificate-files.conf
+
+    # dmz_pk_pattern: dmz_private_key_file_path
+    # pk_file_pattern: private_key_file_path
+
+    # ldap_file_pattern: private_key_file_path
+  tasks:
+    - name: Get SSL certificate file path
+      shell: grep "^{{ ssl_certificate_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
+      register: ssl_certificate_file_path
+    - name: Get SSL certificate key file path
+      shell: grep "^{{ ssl_certificate_key_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
+      register: ssl_certificate_key_file_path
+    - name: Get SSL certificate chainfile path
+      shell: grep "^{{ ssl_certificate_chain_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
+      register: ssl_certificate_chain_file_path
+    # - name: Get DMZ private key path
+    #   shell: grep "{{ dmz_pk_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
+    #   register: dmz_pk_path
+
+    # - name: Get encryption private key path
+    #   shell: grep "^{{ pk_file_pattern }}" {{ general_conf_path }} | awk -F "=" '{print $2}'
+    #   register: encryption_pk_path
+
+    # - name: Get ldap private key path
+    #   shell: grep "^{{ ldap_file_pattern }}" {{ ldap_token_generator_conf_path }} | awk -F "=" '{print $2}'
+    #   register: ldap_pk_path
+
+
+# - hosts: internal-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     conf_files: conf-files
+#     fns_dir_name: federated-network-service
+#   tasks:
+#     - name: Retrieve DMZ private key path
+#       set_fact: 
+#         remote_pk: "{{ hostvars['localhost']['dmz_pk_path'] }}"
+#       when: hostvars['localhost']['dmz_pk_path'] is defined
+
+#     - name: Copying private key to access DMZ to Internal-Machine
+#       copy:
+#         src: "{{ remote_pk.stdout }}"
+#         dest: "{{ item }}"
+#         mode: 0600
+#       with_items:
+#         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+
+
+# - hosts: internal-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     conf_files: conf-files
+#     fns_dir_name: federated-network-service
+#     ras_dir_name: resource-allocation-service
+#   tasks:
+#     - name: Retrieve encryption private key path
+#       set_fact: 
+#         encryption_pk_path: "{{ hostvars['localhost']['encryption_pk_path'] }}"
+#       when: hostvars['localhost']['encryption_pk_path'] is defined
+
+#     - name: Copying encryption private key to Internal-Machine
+#       copy:
+#         src: "{{ encryption_pk_path.stdout }}"
+#         dest: "{{ item }}"
+#         mode: 0600
+#       with_items:
+#         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+#         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+
+
+# - hosts: internal-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     conf_files: conf-files
+#     ras_dir_name: resource-allocation-service
+#   tasks:
+#     - name: Retrieve ldap private key path
+#       set_fact: 
+#         ldap_pk_path: "{{ hostvars['localhost']['ldap_pk_path'] }}"
+#       when: hostvars['localhost']['ldap_pk_path'] is defined
+
+#     # This task guarantees that will run only if ldap_pk_path.stdout is not an empty string
+#     - name: Copying ldap private key to Internal-Machine
+#       copy:
+#         src: "{{ ldap_pk_path.stdout }}"
+#         dest: "{{ item }}"
+#         mode: 0600
+#       with_items:
+#         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+#       when: hostvars['localhost']['ldap_pk_path'].stdout != ""
+
+
+- hosts: internal-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    apache_dir_name: apache-server
+  tasks:
+    - name: Retrieve certificates path
+      set_fact: 
+        ssl_certificate_file_path: "{{ hostvars['localhost']['ssl_certificate_file_path'] }}"
+        ssl_certificate_key_file_path: "{{ hostvars['localhost']['ssl_certificate_key_file_path'] }}"
+        ssl_certificate_chain_file_path: "{{ hostvars['localhost']['ssl_certificate_chain_file_path'] }}"
+
+    # This task guarantees that will run only if ssl_certificate_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_file_path'].stdout == ""
+    - name: Copying SSL certificate file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
+        mode: 0600
+
+    # This task guarantees that will run only if ssl_certificate_key_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_key_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_key_file_path'].stdout == ""
+    - name: Copying SSL certificate key file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_key_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
+        mode: 0600
+
+    # This task guarantees that will run only if ssl_certificate_chain_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_chain_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_chain_file_path'].stdout == ""
+    - name: Copying SSL certificate chain file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_chain_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
+        mode: 0600
+
+
+# - hosts: internal-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     general_conf_path: ../conf-files/general.conf
+#     conf_files: conf-files
+#     db_dir_name: fogbow-database
+#     fns_dir_name: federated-network-service
+#     ras_dir_name: resource-allocation-service
+
+#   tasks:
+#     - name: Copying general.conf to Internal-Machine
+#       copy:
+#         src: "{{ general_conf_path }}"
+#         dest: "{{ item }}"
+#         mode: 0600
+#       with_items:
+#         - "{{ fogbow_components }}/{{ db_dir_name }}"
+#         - "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}"
+#         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+
+
+# - hosts: dmz-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     general_conf_path: ../conf-files/general.conf
+#     agent_dir_name: federated-network-agent
+#     prosody_conf_path: ../services/xmpp-server/prosody.cfg.lua
+#     intercomponent_conf_path: ../conf-files/intercomponent.conf
+#     xmpp_dir_name: xmpp-server
+#     ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
+#     fn_agent_dir_name: federated-network-agent
+
+#   tasks:
+#     - name: Copying general, prosody, intercomponent and ipsec confs to DMZ machine
+#       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
+#       with_items:
+#         - { src: '{{ general_conf_path }}', dest: '{{ fogbow_components }}/{{ agent_dir_name }}' }
+#         - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
+#         - { src: '{{ intercomponent_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
+#         - { src: '{{ ipsec_conf_path }}', dest: '{{ fogbow_components }}/{{ fn_agent_dir_name }}' }
+
+
+# - hosts: internal-machine
+#   vars:
+#     fogbow_components: ~/fogbow-components
+#     conf_files: conf-files
+#     intercomponent_conf_path: ../services/resource-allocation-service/conf-files/intercomponent.conf
+#     ras_dir_name: resource-allocation-service
+
+#   tasks:
+#     - name: Copying intercomponent.conf to Internal-Machine
+#       copy:
+#         src: "{{ intercomponent_conf_path }}"
+#         dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
+#         mode: 0600
