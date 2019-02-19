@@ -82,3 +82,7 @@ INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" 
 echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILE_PATH
 AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "as_port=$AS_PORT" >> $CONF_FILE_PATH
+
+# Timestamp Database URL
+echo "" >> $CONF_FILE_PATH
+echo "jdbc_database_url=jdbc:sqlite:/root/resource-allocation-service/ras.db" >> $CONF_FILE_PATH

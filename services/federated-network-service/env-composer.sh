@@ -7,17 +7,43 @@ FNS_CONF_NAME="fns.conf"
 CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
 HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
-SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
 SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
 
 # Copy fns.conf
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$FNS_CONF_NAME $CONF_FILES_PATH/$FNS_CONF_NAME
-# Copy services file
+# Copy services
 SERVICES_FILE="services.conf"
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE $CONF_FILES_PATH/$SERVICES_FILE
-# Copy shared file
+# Copy secrets
+SECRETS="secrets"
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SECRETS $CONF_FILES_PATH/$SECRETS
+# Copy shared.info
 SHARED_INFO="shared.info"
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
+# Copy application.properties
+APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
+yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
+
+# Configure applicatio.properties
+INTERNAL_HOST_PRIVATE_IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_PRIVATE_IP=$(grep $INTERNAL_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+JDBC_PREFIX="jdbc:postgresql:"
+DB_PORT="5432"
+FNS_DB_ENDPOINT="fns"
+
+DB_URL_PROPERTY="spring.datasource.url"
+DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$FNS_DB_ENDPOINT
+echo "$DB_URL_PROPERTY=$DB_URL" >> $APPLICATION_CONF_FILE
+
+DB_USERNAME="fogbow"
+DB_USERNAME_PATTERN="spring.datasource.username"
+echo "$DB_USERNAME_PATTERN=$DB_USERNAME" >> $APPLICATION_CONF_FILE
+
+GENERAL_PASSWORD_PATTERN="^db_password"
+SECRETS_FILE=$BASE_DIR/$CONF_FILES_DIR_NAME/$SECRETS
+DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $SECRETS_FILE | awk -F "=" '{print $2}')
+DB_PASSWORD_PATTERN="spring.datasource.password"
+echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
 
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
@@ -81,3 +107,7 @@ DELETE_SCRIPT_NAME="delete-federated-network"
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "add_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$CREATE_SCRIPT_NAME" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 echo "remove_federated_network_script_path=$DEFAULT_AGENT_SCRIPTS_PATH/$DELETE_SCRIPT_NAME" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+
+# Timestamp Database URL
+echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "jdbc_database_url=jdbc:sqlite:/root/federated-network-service/fns.db" >> $CONF_FILES_PATH/$FNS_CONF_NAME
