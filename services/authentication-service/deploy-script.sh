@@ -13,7 +13,7 @@ IMAGE_NAME="fogbow/authentication-service"
 CONTAINER_NAME="authentication-service"
 
 SERVER_PORT_PATTERN="as_port"
-AS_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR_PATH/$SHARED_INFO_FILE | awk -F "=" '{print $2}')
+AS_PORT=$(grep $SERVER_PORT_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf
