@@ -11,6 +11,9 @@ mkdir -p $CONF_FILES_PATH
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$AS_CONF_NAME $CONF_FILES_PATH/$AS_CONF_NAME
 # Copy shared info
 yes | cp -f $SHARED_INFO_FILE $CONF_FILES_PATH/"shared.info"
+# Copy services file
+SERVICES_FILE="services.conf"
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE $CONF_FILES_PATH/$SERVICES_FILE
 
 # Fill xmpp jid
 XMPP_JID_PATTERN="xmpp_jid"
