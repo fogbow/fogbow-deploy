@@ -33,6 +33,7 @@ FNS_DB_ENDPOINT="fns"
 
 DB_URL_PROPERTY="spring.datasource.url"
 DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$FNS_DB_ENDPOINT
+echo "" >> $APPLICATION_CONF_FILE
 echo "$DB_URL_PROPERTY=$DB_URL" >> $APPLICATION_CONF_FILE
 
 DB_USERNAME="fogbow"
@@ -78,8 +79,8 @@ openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
 chmod 600 $PRIVATE_KEY_PATH
 rm $RSA_KEY_PATH
 
-echo "public_key_file_path=$PUBLIC_KEY_PATH" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-echo "private_key_file_path=$PRIVATE_KEY_PATH" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Strong Swan agent configurations
 FEDNET_PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"dmz-id_rsa"

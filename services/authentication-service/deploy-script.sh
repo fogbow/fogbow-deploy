@@ -12,7 +12,7 @@ LOG4F_FILE_NAME="log4j.properties"
 IMAGE_NAME="fogbow/authentication-service"
 CONTAINER_NAME="authentication-service"
 
-SERVER_PORT_PATTERN="as_port"
+SERVER_PORT_PATTERN="^as_port"
 AS_PORT=$(grep $SERVER_PORT_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)

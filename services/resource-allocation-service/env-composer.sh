@@ -1,6 +1,8 @@
 #!/bin/bash
 DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
+CONTAINER_BASE_DIR="/root/resource-allocation-service"
+CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 RAS_CONF_NAME="ras.conf"
 CLOUDS_FILE_NAME="clouds"
 CONF_FILES_DIR_NAME="conf-files"
@@ -33,6 +35,7 @@ RAS_DB_ENDPOINT="ras"
 
 DB_URL_PROPERTY="spring.datasource.url"
 DB_URL=$JDBC_PREFIX"//"$INTERNAL_HOST_PRIVATE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
+echo "" >> $APPLICATION_CONF_FILE
 echo "$DB_URL_PROPERTY=$DB_URL" >> $APPLICATION_CONF_FILE
 
 DB_USERNAME="fogbow"
@@ -57,8 +60,8 @@ openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
 chmod 600 $PRIVATE_KEY_PATH
 rm $RSA_KEY_PATH
 
-echo "private_key_file_path=$PRIVATE_KEY_PATH" >> $CONF_FILE_PATH
-echo "public_key_file_path=$PUBLIC_KEY_PATH" >> $CONF_FILE_PATH
+echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_PATH
+echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_PATH
 
 # Fill xmpp properties
 XMPP_JID_PATTERN="xmpp_jid"
