@@ -49,15 +49,17 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
+PROTOCOL="http://"
+
 # Fill AS infos
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-echo "as_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "as_url=$PROTOCOL$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "as_port=$AS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
 # Fill RAS infos
 echo "" >> $CONF_FILES_PATH/$FNS_CONF_NAME
-echo "ras_url=$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
+echo "ras_url=$PROTOCOL$INTERNAL_HOST_IP" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 RAS_PORT=$(grep ras_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "ras_port=$RAS_PORT" >> $CONF_FILES_PATH/$FNS_CONF_NAME
 
