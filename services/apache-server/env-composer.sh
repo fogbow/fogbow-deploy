@@ -9,6 +9,9 @@ APACHE_CONF_FILES_DIR="apache-confs"
 echo "Copying services.conf to service directory"
 SERVICES_FILE="services.conf"
 yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
+# Copy shared file
+SHARED_INFO="shared.info"
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
 # Moving apache conf files
 
@@ -57,22 +60,27 @@ DOMAIN_NAME_CONF_FILE="domain-names.conf"
 
 # replace dashboard-domain-name
 DASHBOARD_DOMAIN_NAME_PATTERN="dashboard_domain_name"
-DASHBOARD_DOMAIN_NAME=$(grep $DASHBOARD_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+DASHBOARD_DOMAIN_NAME=$(grep -w $DASHBOARD_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
 
 sed -i "s|$DASHBOARD_DOMAIN_NAME_PATTERN|$DASHBOARD_DOMAIN_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace fns-domain-name
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
-FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+FNS_DOMAIN_NAME=$(grep -w $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
 
 sed -i "s|$FNS_DOMAIN_NAME_PATTERN|$FNS_DOMAIN_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace ras-domain-name
 RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
-RAS_DOMAIN_NAME=$(grep $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+RAS_DOMAIN_NAME=$(grep -w $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
 
 sed -i "s|$RAS_DOMAIN_NAME_PATTERN|$RAS_DOMAIN_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
+# replace as-domain-name
+AS_DOMAIN_NAME_PATTERN="as_domain_name"
+AS_DOMAIN_NAME=$(grep -w $AS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+
+sed -i "s|$AS_DOMAIN_NAME_PATTERN|$AS_DOMAIN_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace ms-domain-name
 MS_DOMAIN_NAME_PATTERN="ms_domain_name"
-MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+MS_DOMAIN_NAME=$(grep -w $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
 
 sed -i "s|$MS_DOMAIN_NAME_PATTERN|$MS_DOMAIN_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
@@ -88,6 +96,10 @@ sed -i "s/$FNS_BASENAME_PATTERN\b/$FNS_BASENAME/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 RAS_BASENAME_PATTERN="ras_basename"
 RAS_BASENAME=$(basename $RAS_DOMAIN_NAME)
 sed -i "s/$RAS_BASENAME_PATTERN\b/$RAS_BASENAME/g" $BASE_DIR/$VIRTUAL_HOST_FILE
+# replace as-basename
+AS_BASENAME_PATTERN="as_basename"
+AS_BASENAME=$(basename $AS_DOMAIN_NAME)
+sed -i "s/\<$AS_BASENAME_PATTERN\>/$AS_BASENAME/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 # replace ms-basename
 MS_BASENAME_PATTERN="ms_basename"
 MS_BASENAME=$(basename $MS_DOMAIN_NAME)
@@ -99,34 +111,24 @@ INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | awk -F "=" '{print $2}')
 
 sed -i "s|$INTERNAL_HOST_IP_PATTERN|http://$INTERNAL_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
-# replace dashboard-port
-GUI_DIR="gui-confs"
-GUI_CONF="gui.conf"
-GUI_PORT_PATTERN="fogbow_gui_server_port"
-GUI_PORT=$(grep $GUI_PORT_PATTERN $CONF_FILES_DIR/$GUI_DIR/$GUI_CONF | awk -F "=" '{print $2}')
 
+# Get and replace services port
+GUI_PORT=$(grep ^gui_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 DASHBOARD_PORT_PATTERN="dashboard_port"
 sed -i "s/$DASHBOARD_PORT_PATTERN\b/$GUI_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
-SERVER_PORT_PATTERN="server_port"
-# replace fns-port
-FNS_CONFS_DIR="ras-confs-to-fns"
-FNS_CONF="fns.conf"
-FNS_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR/$FNS_CONFS_DIR/$FNS_CONF | awk -F "=" '{print $2}')
-
+FNS_PORT=$(grep ^fns_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 FNS_PORT_PATTERN="fns_port"
 sed -i "s/$FNS_PORT_PATTERN\b/$FNS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
-# replace ras-port
-RAS_CONF="ras.conf"
-RAS_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR/$RAS_CONF | awk -F "=" '{print $2}')
+AS_PORT=$(grep ^as_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
+AS_PORT_PATTERN="as_port"
+sed -i "s/\<$AS_PORT_PATTERN\>/$AS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
+RAS_PORT=$(grep ^ras_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 RAS_PORT_PATTERN="ras_port"
 sed -i "s/$RAS_PORT_PATTERN\b/$RAS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
-# replace ms-port
-MS_CONF="ms.conf"
-MS_PORT=$(grep $SERVER_PORT_PATTERN $CONF_FILES_DIR/$MS_CONF | awk -F "=" '{print $2}')
-
+MS_PORT=$(grep ^ms_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 MS_PORT_PATTERN="ms_port"
 sed -i "s/$MS_PORT_PATTERN\b/$MS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE

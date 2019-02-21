@@ -29,10 +29,11 @@
 - hosts: internal-machine
   vars:
     services_path: ../services
-    manager_dir_name: resource-allocation-service
-    membership_dir_name: membership-service
+    ras_dir_name: resource-allocation-service
+    as_dir_name: authentication-service
+    ms_dir_name: membership-service
     dashboard_dir_name: fogbow-gui
-    fednet_dir_name: federated-network-service
+    fns_dir_name: federated-network-service
     database_dir_name: fogbow-database
     apache_dir_name: apache-server
     fogbow_components: ~/fogbow-components/
@@ -42,9 +43,10 @@
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"
       with_items:
-        - "{{ services_path }}/{{ manager_dir_name }}"
-        - "{{ services_path }}/{{ membership_dir_name }}"
+        - "{{ services_path }}/{{ ras_dir_name }}"
+        - "{{ services_path }}/{{ as_dir_name }}"
+        - "{{ services_path }}/{{ ms_dir_name }}"
         - "{{ services_path }}/{{ dashboard_dir_name }}"
-        - "{{ services_path }}/{{ fednet_dir_name }}"
+        - "{{ services_path }}/{{ fns_dir_name }}"
         - "{{ services_path }}/{{ database_dir_name }}"
         - "{{ services_path }}/{{ apache_dir_name }}"

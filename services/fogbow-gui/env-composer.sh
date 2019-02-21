@@ -26,9 +26,22 @@ yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$CONF_FILE_NAME $BA
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
-# Getting resource allocation service ip and port 
+# Copy shared file
+SHARED_INFO="shared.info"
+yes | cp -f $CONF_FILES_DIR/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
-echo "Retrieving RAS ip and port"
+# Getting authentication service endpoint
+
+DOMAIN_NAME_FILE="domain-names.conf"
+AS_DOMAIN_NAME_PATTERN="^as_domain_name"
+AS_DOMAIN_NAME=$(grep $AS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+AS_DOMAIN_BASENAME=$(basename $AS_DOMAIN_NAME)
+
+echo "Federated network service domain name: $AS_DOMAIN_NAME"
+sed -i "s#.*\<as\>:.*#	as: 'https://$AS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+
+# Getting resource allocation service endpoint
+
 DOMAIN_NAME_FILE="domain-names.conf"
 RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
 RAS_DOMAIN_NAME=$(grep $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
@@ -37,9 +50,8 @@ RAS_DOMAIN_BASENAME=$(basename $RAS_DOMAIN_NAME)
 echo "Federated network service domain name: $RAS_DOMAIN_NAME"
 sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
-# Getting federated network service ip and port 
+# Getting federated network service endpoint
 
-echo "Retrieving FNS ip and port"
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
 FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
 FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
@@ -47,7 +59,7 @@ FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
 echo "Federated network service domain name: $FNS_DOMAIN_NAME"
 sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
 
-# Getting membership port
+# Getting membership endpoint
 
 MS_DOMAIN_NAME_PATTERN="ms_domain_name"
 MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
@@ -59,8 +71,7 @@ sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAM
 # Getting XMPP JID
 
 XMPP_JID_PATTERN="xmpp_jid"
-INTERCOMPONENT_CONF_FILE="intercomponent.conf"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_JID_PATTERN $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 
 echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
