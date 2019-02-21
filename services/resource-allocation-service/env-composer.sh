@@ -11,6 +11,7 @@ CONF_FILE_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME
 HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
 SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
 SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
+DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-server"/"domain-names.conf"
 
 # Copy ras.conf
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME ./$CONF_FILES_PATH/$RAS_CONF_NAME
@@ -21,7 +22,7 @@ SERVICES_FILE="services.conf"
 yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE ./$CONF_FILES_PATH/$SERVICES_FILE
 # Copy shared file
 SHARED_INFO="shared.info"
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
+yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
 
 # Configuring application.properties file
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
@@ -65,7 +66,7 @@ echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_r
 
 # Fill xmpp properties
 XMPP_JID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 echo "" >> $CONF_FILE_PATH
 echo "xmpp_jid=$XMPP_JID" >> $CONF_FILE_PATH
 

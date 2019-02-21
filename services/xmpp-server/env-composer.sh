@@ -2,14 +2,14 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
-SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
+DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"domain-names.conf"
 
 XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
 PROSODY_CONF_FILE="prosody.cfg.lua"
 
 XMPP_ID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_ID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_ID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 
 XMPP_PASSWORD_PATTERN="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{print $2}')

@@ -37,12 +37,3 @@ mv $DMZ_PRIVATE_KEY_PATH $DMZ_PRIVATE_KEY_NEW_PATH
 mv $DMZ_PUBLIC_KEY_PATH $DMZ_PUBLIC_KEY_NEW_PATH
 
 chmod 600 $DMZ_PRIVATE_KEY_NEW_PATH
-
-# Services port
-# Fill Fogbow services ports
-echo "" >> $SHARED_INFO_FILE
-echo "as_port=8080" >> $SHARED_INFO_FILE
-echo "fns_port=8081" >> $SHARED_INFO_FILE
-echo "ras_port=8082" >> $SHARED_INFO_FILE
-echo "ms_port=8083" >> $SHARED_INFO_FILE
-echo "gui_port=8084" >> $SHARED_INFO_FILE

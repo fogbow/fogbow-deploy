@@ -27,8 +27,9 @@ IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
 # Copy shared file
+SHARED_INFO_PATH=$DIR/"services"/"conf-files"
 SHARED_INFO="shared.info"
-yes | cp -f $CONF_FILES_DIR/$SHARED_INFO $BASE_DIR/$SHARED_INFO
+yes | cp -f $SHARED_INFO_PATH/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
 # Getting authentication service endpoint
 
@@ -70,8 +71,9 @@ sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAM
 
 # Getting XMPP JID
 
+DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"domain-names.conf"
 XMPP_JID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 
 echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME

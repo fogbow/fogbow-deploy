@@ -6,7 +6,8 @@ CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 AS_CONF_NAME="as.conf"
 CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
-SHARED_INFO_FILE=$DIR/$CONF_FILES_DIR_NAME/"shared.info"
+SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared.info"
+DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-server"/"domain-names.conf"
 
 # Copy as.conf
 mkdir -p $CONF_FILES_PATH
@@ -22,7 +23,7 @@ yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
 # Fill xmpp jid
 XMPP_JID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 echo "" >> $CONF_FILES_PATH/$AS_CONF_NAME
 echo "xmpp_jid=$XMPP_JID" >> $CONF_FILES_PATH/$AS_CONF_NAME
 
