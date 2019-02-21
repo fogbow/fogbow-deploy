@@ -69,9 +69,9 @@ XMPP_JID=$(grep $XMPP_JID_PATTERN $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "" >> $CONF_FILE_PATH
 echo "xmpp_jid=$XMPP_JID" >> $CONF_FILE_PATH
 
-DMZ_PUBLIC_IP_PATTERN="dmz_host_public_ip"
-DMZ_PUBLIC_IP=$(grep $DMZ_PUBLIC_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-echo "xmpp_server_ip=$DMZ_PUBLIC_IP" >> $CONF_FILE_PATH
+DMZ_PRIVATE_IP_PATTERN="dmz_host_private_ip"
+DMZ_PRIVATE_IP=$(grep $DMZ_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+echo "xmpp_server_ip=$DMZ_PRIVATE_IP" >> $CONF_FILE_PATH
 
 XMPP_PASSWORD_KEY="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_KEY $SECRETS_FILE | awk -F "=" '{print $2}')
