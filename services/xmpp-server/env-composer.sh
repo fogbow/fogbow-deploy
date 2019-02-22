@@ -2,7 +2,7 @@
 DIR=$(pwd)
 CONF_FILES_DIR=$DIR/"conf-files"
 SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
-DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"domain-names.conf"
+DOMAIN_NAMES_FILE=$CONF_FILES_DIR/"apache-confs"/"domain-names.conf"
 
 XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"

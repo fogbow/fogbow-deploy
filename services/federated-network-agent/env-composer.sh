@@ -2,7 +2,7 @@
 DIR=$(pwd)
 BASE_DIR="services/federated-network-agent"
 CONF_FILES_DIR=$DIR/"conf-files"
-SHARED_INFO_FILE=$CONF_FILES_DIR/"shared.info"
+SHARED_INFO_FILE="services"/"conf-files"/"shared.info"
 SECRETS=$CONF_FILES_DIR/"secrets"
 
 # Copy hosts.conf file

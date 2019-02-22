@@ -71,7 +71,7 @@ sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAM
 
 # Getting XMPP JID
 
-DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"domain-names.conf"
+DOMAIN_NAMES_FILE=$CONF_FILES_DIR/"apache-confs"/"domain-names.conf"
 XMPP_JID_PATTERN="xmpp_jid"
 XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 

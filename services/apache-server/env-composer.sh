@@ -11,7 +11,7 @@ SERVICES_FILE="services.conf"
 yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
 # Copy shared file
 SHARED_INFO="shared.info"
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_INFO
+yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
 # Moving apache conf files
 

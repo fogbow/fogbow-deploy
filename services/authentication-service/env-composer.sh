@@ -7,7 +7,7 @@ AS_CONF_NAME="as.conf"
 CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
 SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared.info"
-DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-server"/"domain-names.conf"
+DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-confs"/"domain-names.conf"
 
 # Copy as.conf
 mkdir -p $CONF_FILES_PATH
