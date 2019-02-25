@@ -4,4 +4,7 @@
 - import_playbook: remove-previous-installation.yml
 - import_playbook: transfer-services.yml
 - import_playbook: transfer-sensitive-data.yml
+  vars:
+    clouds:
+      - stub-cloud
 - import_playbook: deploy-each-service.yml

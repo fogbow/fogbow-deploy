@@ -8,18 +8,6 @@
     ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
     ssl_certificate_chain_file_pattern: SSL_certificate_chain_file_path
 
-    private_key_as_path: ../services/authentication-service/conf-files/id_rsa
-    private_key_fns_to_dmz_path: ../services/federated-network-service/conf-files/dmz-id_rsa
-    private_key_fns_path: ../services/federated-network-service/conf-files/id_rsa
-    private_key_ras_path: ../services/resource-allocation-service/conf-files/id_rsa
-
-    secrets_db: ../services/fogbow-database/secrets
-    secrets_fns: ../services/federated-network-service/conf-files/secrets
-    secrets_agent: ../services/federated-network-agent/secrets
-
-    ras_conf: ../services/resource-allocation-service/ras.conf
-    fns_conf: ../services/federated-network-service/fns.conf
-
     # ldap_token_generator_conf_path: ../conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf
     # ldap_file_pattern: private_key_file_path
   tasks:
@@ -44,10 +32,21 @@
     as_dir_name: authentication-service
     fns_dir_name: federated-network-service
     ras_dir_name: resource-allocation-service
+    db_dir_name: fogbow-database
+
+    private_key_as_path: ../services/authentication-service/conf-files/id_rsa
+    private_key_fns_to_dmz_path: ../services/federated-network-service/conf-files/dmz-id_rsa
+    private_key_fns_path: ../services/federated-network-service/conf-files/id_rsa
+    private_key_ras_path: ../services/resource-allocation-service/conf-files/id_rsa
+
+    secrets_db: ../services/fogbow-database/secrets
+    secrets_fns: ../services/federated-network-service/conf-files/secrets
+
+    ras_conf: ../services/resource-allocation-service/conf-files/ras.conf
+    fns_conf: ../services/federated-network-service/conf-files/fns.conf
   tasks:
     - name: Copy private keys to internal machine
-      copy: src={{ item.src }} dest={{ item.dest }}
-      mode: 0600
+      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ private_key_as_path }}", dest: "{{ fogbow_components }}/{{ as_dir_name }}/{{ conf_files }}" }
         - { src: "{{ private_key_fns_to_dmz_path }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
@@ -55,15 +54,13 @@
         - { src: "{{ private_key_ras_path }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
 
     - name: Copy secrets file to internal machine
-      copy: src={{ item.src }} dest={{ item.dest }}
-      mode: 0600
+      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ secrets_db }}", dest: "{{ fogbow_components }}/{{ db_dir_name }}" }
         - { src: "{{ secrets_fns }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
 
     - name: Copy service specific configuration file to internal machine
-      copy: src={{ item.src }} dest={{ item.dest }}
-      mode: 0600
+      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ ras_conf }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
         - { src: "{{ fns_conf }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
@@ -76,15 +73,13 @@
     xmpp_dir_name: xmpp-server
     ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
     fn_agent_dir_name: federated-network-agent
+
+    secrets_agent: ../services/federated-network-agent/secrets
   tasks:
-    - name: Copy secrets file to DMZ machine
-      copy: src={{ item.src }} dest={{ item.dest }}
-      mode: 0600
-      with_items:
-        - { src: "{{ secrets_agent }}", dest: "{{ fogbow_components }}/{{ agent_dir_name }}" }
-    - name: Copy prosody and ipsec confs to DMZ machine
+    - name: Copy secrets, prosody and ipsec confs to DMZ machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
+        - { src: "{{ secrets_agent }}", dest: "{{ fogbow_components }}/{{ agent_dir_name }}" }
         - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
         - { src: '{{ ipsec_conf_path }}', dest: '{{ fogbow_components }}/{{ fn_agent_dir_name }}' }
 
@@ -149,3 +144,17 @@
         src: "{{ ssl_certificate_chain_file_path.stdout }}"
         dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
         mode: 0600
+
+
+- hosts: internal-machine
+  vars:
+    clouds_directory: ../conf-files/clouds
+    fogbow_components: ~/fogbow-components
+    ras_dir_name: resource-allocation-service
+  tasks:
+    - name: Copy mapper.conf files to internal host
+      copy:
+        src: "{{ clouds_directory }}/{{ item }}"
+        dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ item }}"
+      with_items:
+        - "{{ clouds }}"
