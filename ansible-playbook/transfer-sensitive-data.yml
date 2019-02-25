@@ -3,6 +3,8 @@
 - hosts: localhost
   connection: local
   vars:
+    clouds_directory: ../conf-files/clouds
+
     certificates_conf_path: ../conf-files/apache-confs/certificate-files.conf
     ssl_certificate_file_pattern: SSL_certificate_file_path
     ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
@@ -11,6 +13,10 @@
     # ldap_token_generator_conf_path: ../conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf
     # ldap_file_pattern: private_key_file_path
   tasks:
+    - name: Get all clouds directory
+      shell: "ls {{ clouds_directory }}"
+      register: clouds_dir_out
+
     - name: Get SSL certificate file path
       shell: grep "^{{ ssl_certificate_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
       register: ssl_certificate_file_path
@@ -151,10 +157,17 @@
     clouds_directory: ../conf-files/clouds
     fogbow_components: ~/fogbow-components
     ras_dir_name: resource-allocation-service
+    mapper_file: mapper.conf
+    conf_fils_dirname: conf-files
+    clouds_dirname: clouds
   tasks:
+    - name: Retrieve clouds dir output
+      set_fact:
+        clouds_dir: "{{ hostvars['localhost']['clouds_dir_out'] }}"
     - name: Copy mapper.conf files to internal host
       copy:
-        src: "{{ clouds_directory }}/{{ item }}"
-        dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ item }}"
+        src: "{{ clouds_directory }}/{{ item }}/{{ mapper_file }}"
+        dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_fils_dirname }}/{{ clouds_dirname }}/{{ item }}/{{ mapper_file }}"
+        mode: 0600
       with_items:
-        - "{{ clouds }}"
+        - "{{ clouds_dir.stdout_lines }}"
