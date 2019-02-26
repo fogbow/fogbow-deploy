@@ -1,6 +1,14 @@
 #!/bin/bash
-#
-# /etc/init.d/start-services-on-dmz-after-startup
+### BEGIN INIT INFO
+# Provides:          start-services-on-dmz-after-startup
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     
+# Default-Stop:      
+# Short-Description: Start fogbow services after machine startup
+# Description:       Start all fogbow services in case of machine
+#                    reboot, right after startup
+### END INIT INFO
 
 CONTAINERS_ID=$(docker ps -a | awk 'NR>1 {print $1}')
 for id in $CONTAINERS_ID; do sudo docker start $id; done

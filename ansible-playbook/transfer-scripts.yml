@@ -5,11 +5,13 @@
     target_dir: /etc/init.d
   tasks:
     - name: Copy script to internal-machine
+      become: yes
       copy: 
         src: "{{ source_dir }}/{{ script_name }}"
         dest: "{{ target_dir }}/{{ script_name }}"
-        mode: 0600
+        mode: 0755
     - name: Add script as a service in internal-machine
+      become: yes
       command: update-rc.d "{{ script_name }}" defaults
   
 - hosts: dmz-machine
@@ -19,10 +21,12 @@
     target_dir: /etc/init.d
   tasks:
     - name: Copy script to dmz-machine
+      become: yes
       copy: 
         src: "{{ source_dir }}/{{ script_name }}"
         dest: "{{ target_dir }}/{{ script_name }}"
-        mode: 0600
+        mode: 0755
     - name: Add script as a service in dmz-machine
+      become: yes
       command: update-rc.d "{{ script_name }}" defaults
   
