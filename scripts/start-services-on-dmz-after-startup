@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# /etc/init.d/start-services-on-dmz-after-startup
+
+CONTAINERS_ID=$(docker ps -a | awk 'NR>1 {print $1}')
+for id in $CONTAINERS_ID; do sudo docker start $id; done
+
+ipsec restart # since strongswan isn't inside a container, we made (re)start hard coded

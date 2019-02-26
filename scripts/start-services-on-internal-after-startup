@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# /etc/init.d/start-services-on-internal-after-startup
+
+CONTAINERS_ID=$(docker ps -a | awk 'NR>1 {print $1}')
+for id in $CONTAINERS_ID; do sudo docker start $id; done
