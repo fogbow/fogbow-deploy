@@ -9,9 +9,6 @@
     ssl_certificate_file_pattern: SSL_certificate_file_path
     ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
     ssl_certificate_chain_file_pattern: SSL_certificate_chain_file_path
-
-    # ldap_token_generator_conf_path: ../conf-files/aaa-plugins/token-generator/ldap-token-generator-plugin.conf
-    # ldap_file_pattern: private_key_file_path
   tasks:
     - name: Get all clouds directory
       shell: "ls {{ clouds_directory }}"
@@ -26,10 +23,6 @@
     - name: Get SSL certificate chainfile path
       shell: grep "^{{ ssl_certificate_chain_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
       register: ssl_certificate_chain_file_path
-
-    # - name: Get ldap private key path
-    #   shell: grep "^{{ ldap_file_pattern }}" {{ ldap_token_generator_conf_path }} | awk -F "=" '{print $2}'
-    #   register: ldap_pk_path
 
 - hosts: internal-machine
   vars:
@@ -89,27 +82,6 @@
         - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }
         - { src: '{{ ipsec_conf_path }}', dest: '{{ fogbow_components }}/{{ fn_agent_dir_name }}' }
 
-# - hosts: internal-machine
-#   vars:
-#     fogbow_components: ~/fogbow-components
-#     conf_files: conf-files
-#     ras_dir_name: resource-allocation-service
-#   tasks:
-#     - name: Retrieve ldap private key path
-#       set_fact: 
-#         ldap_pk_path: "{{ hostvars['localhost']['ldap_pk_path'] }}"
-#       when: hostvars['localhost']['ldap_pk_path'] is defined
-
-#     # This task guarantees that will run only if ldap_pk_path.stdout is not an empty string
-#     - name: Copying ldap private key to Internal-Machine
-#       copy:
-#         src: "{{ ldap_pk_path.stdout }}"
-#         dest: "{{ item }}"
-#         mode: 0600
-#       with_items:
-#         - "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}"
-#       when: hostvars['localhost']['ldap_pk_path'].stdout != ""
-
 - hosts: internal-machine
   vars:
     fogbow_components: ~/fogbow-components
@@ -150,7 +122,6 @@
         src: "{{ ssl_certificate_chain_file_path.stdout }}"
         dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
         mode: 0600
-
 
 - hosts: internal-machine
   vars:
