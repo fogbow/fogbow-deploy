@@ -62,7 +62,8 @@
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ ras_conf }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
-        - { src: "{{ fns_conf }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
+        - { src: "{{ fns_conf }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
+        - { src: "{{ ras_conf }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
 
 - hosts: dmz-machine
   vars:

@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR_PATH=$(pwd)
 CONTAINER_BASE_PATH="/root/membership-service"
-PROJECT_RESOURCES_PATH="src/main/resources"
+PROJECT_RESOURCES_PATH="src/main/resources/private"
 
 LOG4J_FILE_NAME="log4j.properties"
 CONF_FILE_NAME="ms.conf"
