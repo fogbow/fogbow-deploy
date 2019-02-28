@@ -25,7 +25,6 @@ echo "Xmpp C2C port: $C2C_PORT"
 
 sudo docker run -tdi --name $CONTAINER_NAME \
 	-p 5269:5269 \
-	-p 5222:5222 \
 	-p 5347:5347 \
 	$IMAGE_NAME:$TAG
 
