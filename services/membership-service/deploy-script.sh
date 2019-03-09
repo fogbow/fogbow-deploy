@@ -34,7 +34,7 @@ sudo docker run -idt --name $CONTAINER_NAME \
 
 # Add build value into ms.conf
 BUILD_FILE_NAME="build"
-MS_CONF_PATH="./ms.conf"
+MS_CONF_PATH="src/main/resources/private/ms.conf"
 sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $MS_CONF_PATH"
 
 # Run MS
