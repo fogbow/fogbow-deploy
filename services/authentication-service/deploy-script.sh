@@ -37,10 +37,10 @@ sudo docker run -idt \
 	-v $DIR_PATH/$APPLICATION_CONF_FILE:$CONTAINER_RESOURCES_PATH/$APPLICATION_CONF_FILE \
 	$IMAGE_NAME:$TAG
 
-# Add build value into fns.conf
+# Add build value into as.conf
 BUILD_FILE_NAME="build"
-FNS_CONF_PATH="src/main/resources/private/fns.conf"
-sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $FNS_CONF_PATH"
+AS_CONF_PATH="src/main/resources/private/as.conf"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $AS_CONF_PATH"
 
 # Run FNS
 sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
