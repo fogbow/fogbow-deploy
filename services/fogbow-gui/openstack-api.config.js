@@ -17,10 +17,6 @@ export const env = {
         domain: {
             type: 'text',
             label: 'Domain'
-        },
-        projectname: {
-            type: 'text',
-            label: 'Project Name'
         }
     }
 };
