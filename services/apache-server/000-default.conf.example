@@ -32,8 +32,8 @@
 	    ProxyPassReverse    /as     http://internal_host_private_ip:as_port/as
 	    ProxyPass           /fns    http://internal_host_private_ip:fns_port/fns
 	    ProxyPassReverse    /fns    http://internal_host_private_ip:fns_port/fns
-        ProxyPass           /ras    http://internal_host_private_ip:ras_port/ras
-        ProxyPassReverse    /ras    http://internal_host_private_ip:ras_port/ras
+	    ProxyPass           /ras    http://internal_host_private_ip:ras_port/ras
+	    ProxyPassReverse    /ras    http://internal_host_private_ip:ras_port/ras
 	    ProxyPass           /ms     http://internal_host_private_ip:ms_port/ms
 	    ProxyPassReverse    /ms     http://internal_host_private_ip:ms_port/ms
 	    ProxyPass           /       http://internal_host_private_ip:gui_port/
