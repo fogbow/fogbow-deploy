@@ -25,18 +25,18 @@
         SSLCertificateFile      /etc/ssl/private/crt_file
         SSLCertificateKeyFile   /etc/ssl/private/key_file
         SSLCertificateChainFile /etc/ssl/private/chain_file
-	ProxyPreserveHost	on
-	ProxyPass		    /doc	http://localhost:8079/
-	ProxyPassReverse	/doc	http://localhost:8079/
-	ProxyPass		    /as	    http://internal_host_private_ip:as_port/as
-	ProxyPassReverse 	/as  	http://internal_host_private_ip:as_port/as
-	ProxyPass		    /fns	http://internal_host_private_ip:fns_port/fns
-	ProxyPassReverse	/fns	http://internal_host_private_ip:fns_port/fns
-    ProxyPass 		    /ras 	http://internal_host_private_ip:ras_port/ras
-    ProxyPassReverse 	/ras 	http://internal_host_private_ip:ras_port/ras
-	ProxyPass		    /ms	    http://internal_host_private_ip:ms_port/ms
-	ProxyPassReverse	/ms	    http://internal_host_private_ip:ms_port/ms
-	ProxyPass		    /	    http://internal_host_private_ip:gui_port/
-	ProxyPassReverse	/	    http://internal_host_private_ip:gui_port/
+	    ProxyPreserveHost on
+	    ProxyPass           /doc    http://localhost:8079/
+	    ProxyPassReverse    /doc    http://localhost:8079/
+	    ProxyPass           /as     http://internal_host_private_ip:as_port/as
+	    ProxyPassReverse    /as     http://internal_host_private_ip:as_port/as
+	    ProxyPass           /fns    http://internal_host_private_ip:fns_port/fns
+	    ProxyPassReverse    /fns    http://internal_host_private_ip:fns_port/fns
+        ProxyPass           /ras    http://internal_host_private_ip:ras_port/ras
+        ProxyPassReverse    /ras    http://internal_host_private_ip:ras_port/ras
+	    ProxyPass           /ms     http://internal_host_private_ip:ms_port/ms
+	    ProxyPassReverse    /ms     http://internal_host_private_ip:ms_port/ms
+	    ProxyPass           /       http://internal_host_private_ip:gui_port/
+	    ProxyPassReverse    /       http://internal_host_private_ip:gui_port/
     </VirtualHost>
 </IfModule>
