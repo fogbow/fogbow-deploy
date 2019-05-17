@@ -1,138 +1,43 @@
 <VirtualHost *:80>
-    ServerName dashboard_basename
+    ServerName internal_machine_name
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-    Redirect permanent / dashboard_domain_name
+    Redirect permanent / https://internal_machine_name/
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
-<VirtualHost *:80>
-    ServerName fns_basename
+
+<VirtualHost *:8079>
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-    Redirect permanent / fns_domain_name
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-<VirtualHost *:80>
-    ServerName ras_basename
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html
-    Redirect permanent / ras_domain_name
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-<VirtualHost *:80>
-    ServerName as_basename
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html
-    Redirect permanent / as_domain_name
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-<VirtualHost *:80>
-    ServerName ms_basename
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html
-    Redirect permanent / ms_domain_name
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 
 <IfModule mod_ssl.c>
     <VirtualHost *:443>
-        ServerName dashboard_basename
+        ServerName internal_machine_name
         ServerAdmin webmaster@localhost
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        LogLevel info
+        LogLevel debug
         SSLEngine On
-        SSLCertificateFile /etc/ssl/private/lsd.crt
-        SSLCertificateKeyFile /etc/ssl/private/lsd.key
-        SSLCertificateChainFile /etc/ssl/private/lsd.pem
-        <Location />
-            Order allow,deny
-            Allow from all
-        </Location>
-        ProxyPreserveHost on
-        ProxyPass / internal_host_private_ip:dashboard_port/
-        ProxyPassReverse / internal_host_private_ip:dashboard_port/
-    </VirtualHost>
-    <VirtualHost *:443>
-        ServerName fns_basename
-        ServerAdmin webmaster@localhost
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        LogLevel info
-        SSLEngine On
-        SSLCertificateFile /etc/ssl/private/lsd.crt
-        SSLCertificateKeyFile /etc/ssl/private/lsd.key
-        SSLCertificateChainFile /etc/ssl/private/lsd.pem
-        <Location />
-            Order allow,deny
-            Allow from all
-        </Location>
-        ProxyPreserveHost on
-        ProxyPass / internal_host_private_ip:fns_port/
-        ProxyPassReverse / internal_host_private_ip:fns_port/
-    </VirtualHost>
-    <VirtualHost *:443>
-        ServerName ras_basename
-        ServerAdmin webmaster@localhost
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        LogLevel info
-        SSLEngine On
-        SSLCertificateFile /etc/ssl/private/lsd.crt
-        SSLCertificateKeyFile /etc/ssl/private/lsd.key
-        SSLCertificateChainFile /etc/ssl/private/lsd.pem
-        <Location />
-            Order allow,deny
-            Allow from all 
-        </Location>
-        ProxyPreserveHost on
-        ProxyPass / internal_host_private_ip:ras_port/
-        ProxyPassReverse / internal_host_private_ip:ras_port/
-    </VirtualHost>
-    <VirtualHost *:443>
-        ServerName as_basename
-        ServerAdmin webmaster@localhost
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        LogLevel info
-        SSLEngine On
-        SSLCertificateFile /etc/ssl/private/lsd.crt
-        SSLCertificateKeyFile /etc/ssl/private/lsd.key
-        SSLCertificateChainFile /etc/ssl/private/lsd.pem
-        <Location />
-            Order allow,deny
-            Allow from all 
-        </Location>
-        ProxyPreserveHost on
-        ProxyPass / internal_host_private_ip:as_port/
-        ProxyPassReverse / internal_host_private_ip:as_port/
-    </VirtualHost>
-    <VirtualHost *:443>
-        ServerName ms_basename
-        ServerAdmin webmaster@localhost
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        LogLevel info
-        SSLEngine On
-        SSLCertificateFile /etc/ssl/private/lsd.crt
-        SSLCertificateKeyFile /etc/ssl/private/lsd.key
-        SSLCertificateChainFile /etc/ssl/private/lsd.pem
-        <Location />
-            Order allow,deny
-            Allow from all
-        </Location>
-        ProxyPreserveHost on
-        ProxyPass / internal_host_private_ip:ms_port/
-        ProxyPassReverse / internal_host_private_ip:ms_port/
+        SSLCertificateFile /etc/ssl/private/crt_file
+        SSLCertificateKeyFile /etc/ssl/private/key_file
+        SSLCertificateChainFile /etc/ssl/private/chain_file
+	ProxyPreserveHost	on
+	ProxyPass		    /doc	http://localhost:8079/
+	ProxyPassReverse	/doc	http://localhost:8079/
+	ProxyPass		    /as	    http://internal_host_private_ip:as_port/as
+	ProxyPassReverse 	/as  	http://internal_host_private_ip:as_port/as
+	ProxyPass		    /fns	http://internal_host_private_ip:fns_port/fns
+	ProxyPassReverse	/fns	http://internal_host_private_ip:fns_port/fns
+    ProxyPass 		    /ras 	http://internal_host_private_ip:ras_port/ras
+    ProxyPassReverse 	/ras 	http://internal_host_private_ip:ras_port/ras
+	ProxyPass		    /ms	    http://internal_host_private_ip:ms_port/ms
+	ProxyPassReverse	/ms	    http://internal_host_private_ip:ms_port/ms
+	ProxyPass		    /	    http://internal_host_private_ip:gui_port/
+	ProxyPassReverse	/	    http://internal_host_private_ip:gui_port/
     </VirtualHost>
 </IfModule>

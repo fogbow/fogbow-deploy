@@ -24,7 +24,11 @@ CERTIFICATE_CHAIN_FILE_NAME=$(basename $CERTIFICATE_CHAIN_FILE_PATH)
 
 SSL_DIR="/etc/ssl/private"
 VIRTUAL_HOST_DIR="/etc/apache2/sites-enabled"
+ROOT_DIR="/var/www/html"
+CONF_DIR="/etc/apache2"
 VIRTUAL_HOST_FILE="000-default.conf"
+INDEX_FILE="index.html"
+PORTS_FILE="ports.conf"
 
 SERVICES_CONF=$DIR_PATH/"services.conf"
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
@@ -47,6 +51,8 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	$IMAGE_NAME:$TAG
 
 sudo docker cp $VIRTUAL_HOST_FILE $CONTAINER_NAME:$VIRTUAL_HOST_DIR/$VIRTUAL_HOST_FILE
+sudo docker cp $INDEX_FILE $CONTAINER_NAME:$ROOT_DIR
+sudo docker cp $PORTS_FILE $CONTAINER_NAME:$CONF_DIR
 
 ENABLE_MODULES_SCRIPT="enable-modules"
 

@@ -31,43 +31,40 @@ SHARED_INFO_PATH=$DIR/"services"/"conf-files"
 SHARED_INFO="shared.info"
 yes | cp -f $SHARED_INFO_PATH/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
-# Getting authentication service endpoint
-
+# Getting endpoints
 DOMAIN_NAME_FILE="domain-names.conf"
+
+# Getting authentication service endpoint
 AS_DOMAIN_NAME_PATTERN="^as_domain_name"
 AS_DOMAIN_NAME=$(grep $AS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-AS_DOMAIN_BASENAME=$(basename $AS_DOMAIN_NAME)
+AS_DOMAIN_BASENAME=$(basename $(dirname $AS_DOMAIN_NAME))
 
-echo "Federated network service domain name: $AS_DOMAIN_NAME"
-sed -i "s#.*\<as\>:.*#	as: 'https://$AS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Authentication service domain name: $AS_DOMAIN_NAME"
+sed -i "s#.*\<as\>:.*#	as: 'https://$AS_DOMAIN_BASENAME/as',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting resource allocation service endpoint
-
-DOMAIN_NAME_FILE="domain-names.conf"
 RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
 RAS_DOMAIN_NAME=$(grep $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-RAS_DOMAIN_BASENAME=$(basename $RAS_DOMAIN_NAME)
+RAS_DOMAIN_BASENAME=$(basename $(dirname $RAS_DOMAIN_NAME))
 
-echo "Federated network service domain name: $RAS_DOMAIN_NAME"
-sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Resource allocation service domain name: $RAS_DOMAIN_NAME"
+sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME/ras',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting federated network service endpoint
-
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
 FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
+FNS_DOMAIN_BASENAME=$(basename $(dirname $FNS_DOMAIN_NAME))
 
 echo "Federated network service domain name: $FNS_DOMAIN_NAME"
-sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME/fns',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting membership endpoint
-
 MS_DOMAIN_NAME_PATTERN="ms_domain_name"
 MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-MS_DOMAIN_BASENAME=$(basename $MS_DOMAIN_NAME)
+MS_DOMAIN_BASENAME=$(basename $(dirname $MS_DOMAIN_NAME))
 
 echo "Membership domain name: $MS_DOMAIN_NAME"
-sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME/ms',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 

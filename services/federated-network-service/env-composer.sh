@@ -28,7 +28,7 @@ SHARED_INFO_FILE=$CONF_FILES_PATH/$SHARED_INFO
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
-# Configure applicatio.properties
+# Configure application.properties
 INTERNAL_HOST_PRIVATE_IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_PRIVATE_IP=$(grep $INTERNAL_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 JDBC_PREFIX="jdbc:postgresql:"
