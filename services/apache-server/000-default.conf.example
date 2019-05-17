@@ -1,8 +1,8 @@
 <VirtualHost *:80>
-    ServerName internal_machine_name
+    ServerName internal_host_name
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-    Redirect permanent / https://internal_machine_name/
+    Redirect permanent / https://internal_host_name/
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
@@ -16,15 +16,14 @@
 
 <IfModule mod_ssl.c>
     <VirtualHost *:443>
-        ServerName internal_machine_name
+        ServerName internal_host_name
         ServerAdmin webmaster@localhost
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        LogLevel debug
+        LogLevel info
         SSLEngine On
-        SSLCertificateFile /etc/ssl/private/crt_file
-        SSLCertificateKeyFile /etc/ssl/private/key_file
+        SSLCertificateFile      /etc/ssl/private/crt_file
+        SSLCertificateKeyFile   /etc/ssl/private/key_file
         SSLCertificateChainFile /etc/ssl/private/chain_file
 	ProxyPreserveHost	on
 	ProxyPass		    /doc	http://localhost:8079/
