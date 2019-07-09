@@ -1,0 +1,15 @@
+#!/bin/bash
+
+/usr/sbin/service apache2 start
+/usr/sbin/a2enmod ssl_load
+/usr/sbin/a2enmod proxy.load
+/usr/sbin/a2enmod proxy_http.load
+
+/usr/sbin/a2enmod shib2.load
+/usr/sbin/a2enmod ssl.load
+/usr/sbin/a2enmod rewrite.load
+/usr/sbin/a2enmod headers.load
+/usr/sbin/a2enmod proxy_http.load
+
+/usr/sbin/service apache2 restart
+/usr/sbin/service shibd restart

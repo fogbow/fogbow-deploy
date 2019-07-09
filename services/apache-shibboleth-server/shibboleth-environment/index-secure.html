@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>Homologacao</title> 
+  </head>
+  <body>
+    <H2>Homologa&ccedil;&atilde;o de atributos</H2>
+    <BR />
+
+      <?php
+      //Drop this into a directory where sessions are required
+      //or where you are already authenticated and then simply
+      //access it to see the mapping.
+      while(list($index, $data) = each($_SERVER))
+      {
+        switch  ($index) {
+                case "Shib-Application-ID":
+                case "Shib-Session-ID":
+                case "Shib-Identity-Provider":
+                case "Shib-Authentication-Instant":
+                case "Shib-Authentication-Method":
+                case "Shib-AuthnContext-Class":
+                        echo "$index -> $data<br>";
+                        break;
+                case "Shib-eduPerson-eduPersonPrincipalName":
+                case "Shib-eduPerson-eduPersonAffiliation":
+                case "Shib-brPerson-brPersonCPF":
+                case "Shib-brPerson-brPersonPassport":
+                case "Shib-inetOrgPerson-cn":
+                case "Shib-inetOrgPerson-sn":
+                case "Shib-inetOrgPerson-mail":
+                case "Shib-brEduPerson-brEduAffiliationType":
+                        echo "<b>$index -> $data</b><br>";
+                        break;
+        }
+      }
+      ?>
+
+    <BR />
+  </body>
+</html>
