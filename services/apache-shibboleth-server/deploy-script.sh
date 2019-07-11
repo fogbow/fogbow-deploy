@@ -2,7 +2,7 @@
 DIR_PATH=$(pwd)
 
 # TODO create new image
-IMAGE_NAME="*****************"
+IMAGE_NAME="fogbow/apache-shibboleth-server"
 CONTAINER_NAME="apache-shibboleth-server"
 
 INSECURE_PORT="80"

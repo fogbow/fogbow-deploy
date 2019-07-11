@@ -10,7 +10,7 @@ RUN \
   apt-get upgrade -y && \
   apt-get install -y byobu curl git htop man unzip vim nano wget && \
   apt-get install -y net-tools iputils-ping && \
-  apt-get install -y apache2 \ 
+  apt-get install -y apache2 && \ 
   apt-get install -y libapache2-mod-php5 libapache2-mod-shib2
 
 # Set the correct time 
@@ -18,7 +18,10 @@ RUN apt-get install -y ntp ntpdate && \
   service ntp restart
 
 # Install Shibboleth Authentication Application
-RUN apt-get install -y openjdk-8-jdk maven git
+RUN apt-get -y install software-properties-common && \
+  add-apt-repository ppa:openjdk-r/ppa && \ 
+  apt-get update -y && \
+  apt-get install -y openjdk-8-jdk maven git
 
 WORKDIR /home/ubuntu/
 
