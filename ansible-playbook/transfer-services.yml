@@ -36,6 +36,7 @@
     fns_dir_name: federated-network-service
     database_dir_name: fogbow-database
     apache_dir_name: apache-server
+    shibboleth_dir_name: apache-shibboleth-server
     fogbow_components: ~/fogbow-components/
   tasks:
     - name: Copying services to Internal-Machine
@@ -49,4 +50,5 @@
         - "{{ services_path }}/{{ dashboard_dir_name }}"
         - "{{ services_path }}/{{ fns_dir_name }}"
         - "{{ services_path }}/{{ database_dir_name }}"
-        - "{{ services_path }}/{{ apache_dir_name }}"
+        # - "{{ services_path }}/{{ apache_dir_name }}"
+        - "{{ fogbow_components }}/{{ apache-shibboleth_dir_name }}"

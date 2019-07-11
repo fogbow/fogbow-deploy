@@ -87,6 +87,7 @@
   vars:
     fogbow_components: ~/fogbow-components
     apache_dir_name: apache-server
+    shibboleth_dir_name: apache-shibboleth-server
   tasks:
     - name: Retrieve certificates path
       set_fact: 
@@ -123,6 +124,36 @@
         src: "{{ ssl_certificate_chain_file_path.stdout }}"
         dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
         mode: 0600
+
+        # This task guarantees that will run only if ssl_certificate_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_file_path'].stdout == ""
+    - name: Copying SSL certificate file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ shibboleth_dir_name }}"
+        mode: 0600
+
+    # This task guarantees that will run only if ssl_certificate_key_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_key_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_key_file_path'].stdout == ""
+    - name: Copying SSL certificate key file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_key_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ shibboleth_dir_name }}"
+        mode: 0600
+
+    # This task guarantees that will run only if ssl_certificate_chain_file_path.stdout is not an empty string
+    - name: Test empty value in ssl_certificate_chain_file_path property
+      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
+      when: hostvars['localhost']['ssl_certificate_chain_file_path'].stdout == ""
+    - name: Copying SSL certificate chain file to Internal-Machine
+      copy:
+        src: "{{ ssl_certificate_chain_file_path.stdout }}"
+        dest: "{{ fogbow_components }}/{{ shibboleth_dir_name }}"
+        mode: 0600        
 
 - hosts: internal-machine
   vars:
