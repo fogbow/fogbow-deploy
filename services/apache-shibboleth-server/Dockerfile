@@ -34,9 +34,6 @@ RUN git clone https://github.com/fogbow/shibboleth-authentication-application.gi
 
 WORKDIR /home/ubuntu/shibboleth-authentication-application
 
-RUN git pull
-RUN git checkout bug-fixes-07-2019
-
 RUN mvn install -DskipTests
 
 EXPOSE 80 443
