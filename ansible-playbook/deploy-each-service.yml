@@ -18,7 +18,6 @@
 - hosts: internal-machine
   vars:
     apache_dir_name: apache-server
-    apache-shibboleth_dir_name: apache-shibboleth-server
     as_dir_name: authentication-service
     fns_dir_name: federated-network-service
     membership_dir_name: membership-service
@@ -40,5 +39,4 @@
         - "{{ fogbow_components }}/{{ fns_dir_name }}"
         - "{{ fogbow_components }}/{{ membership_dir_name }}"
         - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
-        # - "{{ fogbow_components }}/{{ apache_dir_name }}"
-        - "{{ fogbow_components }}/{{ apache-shibboleth_dir_name }}"
+        - "{{ fogbow_components }}/{{ apache_dir_name }}"
