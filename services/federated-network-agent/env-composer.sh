@@ -21,9 +21,10 @@ RENAMED_CREATE_FEDNET_SCRIPT="create-federated-network"
 RENAMED_DELETE_FEDNET_SCRIPT="delete-federated-network"
 RENAMED_STRONGSWAN_INSTALLATION_SCRIPT="strongswan-installation"
 RENAMED_CREATE_TUNNEL_SCRIPT="create-tunnel-from-agent-to-compute.sh"
+RENAMED_CREATE_FEDNET_SCRIPT="create-fednet-tunnels.sh"
 
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-create-federated-network -O $BASE_DIR/$RENAMED_CREATE_FEDNET_SCRIPT
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/config-delete-federated-network -O $BASE_DIR/$RENAMED_DELETE_FEDNET_SCRIPT
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/master/bin/agent-scripts/ipsec-installation -O $BASE_DIR/$RENAMED_STRONGSWAN_INSTALLATION_SCRIPT
 wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/dfns-implementation/bin/dfns-agent-scripts/create-tunnel-from-agent-to-compute.sh -O $BASE_DIR/$RENAMED_CREATE_TUNNEL_SCRIPT
-
+wget -q https://raw.githubusercontent.com/fogbow/federated-network-service/dfns-implementation/bin/dfns-agent-scripts/create-fednet-tunnels.sh -O $BASE_DIR/$RENAMED_CREATE_FEDNET_SCRIPT
