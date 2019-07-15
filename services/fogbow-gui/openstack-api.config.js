@@ -5,6 +5,8 @@ export const env = {
     ms: , // Auto-generated value
     local: , // Auto-generated value
     refreshTime: 5000,
+    remoteCredentialsUrl: '',
+    authenticationPlugin: 'KeystoneV3',
     credentialFields: {
         username: {
             type: 'text',
@@ -18,5 +20,6 @@ export const env = {
             type: 'text',
             label: 'Domain'
         }
-    }
+    },
+    fnsModes: ['vanilla', 'dfns']
 };

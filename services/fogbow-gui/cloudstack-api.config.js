@@ -5,6 +5,8 @@ export const env = {
     ms: , // Auto-generated value
     local: , // Auto-generated value
     refreshTime: 5000,
+    remoteCredentialsUrl: '',
+    authenticationPlugin: 'Cloudstack',
     credentialFields: {
         username: {
             type: 'text',
@@ -17,6 +19,7 @@ export const env = {
         domain: {
             type: 'text',
             label: 'Domain'
-        },
-    }
+        }
+    },
+    fnsModes: ['vanilla', 'dfns']
 };
