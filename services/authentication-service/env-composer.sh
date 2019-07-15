@@ -5,6 +5,7 @@ CONTAINER_BASE_DIR="/root/authentication-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 AS_CONF_NAME="as.conf"
 CONF_FILES_DIR_NAME="conf-files"
+CONF_FILES_DIR=$DIR/$CONF_FILES_DIR_NAME
 CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
 SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared.info"
 DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-confs"/"domain-names.conf"
@@ -51,7 +52,11 @@ AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CON
 # SHIBBOLETH SCENARY
 if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
   ## Adding in the shared folder because the shibboleth authentication application needs
-  SHARED_FOLDER_DIR=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared-folder"
+  SHARED_FOLDER_NAME="shared-folder"
+  SHARED_FOLDER_DIR=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_FOLDER_NAME
   AS_PUBLIC_KEY_NAME="as_public_key.pem"
-  cp $CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub $SHARED_FOLDER_DIR/$AS_PUBLIC_KEY_NAME
+  yes | cp -f $PUBLIC_KEY_PATH $SHARED_FOLDER_DIR/$AS_PUBLIC_KEY_NAME
+
+  # Copy shared folder
+  yes | cp -f $SHARED_FOLDER_DIR $CONF_FILES_PATH/$SHARED_FOLDER_NAME
 fi

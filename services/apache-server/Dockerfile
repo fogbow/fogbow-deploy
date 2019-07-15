@@ -35,8 +35,9 @@ WORKDIR /home/ubuntu/
 
 RUN git clone https://github.com/fogbow/shibboleth-authentication-application.git
 
+RUN mkdir /home/ubuntu/shared-folder
+
 WORKDIR /home/ubuntu/shibboleth-authentication-application
-WORKDIR /home/ubuntu/shared-folder
 
 RUN mvn install -DskipTests
 

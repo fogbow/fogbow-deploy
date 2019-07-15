@@ -76,12 +76,11 @@ echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Shibboleth
-if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
+if [ $AUTH_TYPE_CLASS == "shibboleth" ]; then  
   SHIBBOLETH_CONF='shibboleth.conf'
-  SERVICE_PROVIDER_DOMAIN_NAME_PATTERN=""
+  SERVICE_PROVIDER_DOMAIN_NAME_PATTERN="domain_service_provider"
   SERVICE_PROVIDER_DOMAIN_NAME=$(grep $SERVICE_PROVIDER_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$SHIBBOLETH_CONF | awk -F "=" '{print $2}')
-  SERVICE_PROVIDER_DOMAIN_BASENAME=$(basename $(dirname $SERVICE_PROVIDER_DOMAIN_NAME))
 
   echo "Service Provider domain name: $SERVICE_PROVIDER_DOMAIN_NAME"
-  sed -i "s#.*\<cafeEndpoint\>:.*#	cafeEndpoint: 'https://$SERVICE_PROVIDER_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+  sed -i "s#.*\<cafeEndpoint\>:.*#	cafeEndpoint: 'https://$SERVICE_PROVIDER_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
 fi
