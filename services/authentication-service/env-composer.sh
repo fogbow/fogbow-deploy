@@ -58,5 +58,5 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
   yes | cp -f $PUBLIC_KEY_PATH $SHARED_FOLDER_DIR/$AS_PUBLIC_KEY_NAME
 
   # Copy shared folder
-  yes | cp -f $SHARED_FOLDER_DIR $CONF_FILES_PATH/$SHARED_FOLDER_NAME
+  yes | cp -f -r $SHARED_FOLDER_DIR $CONF_FILES_PATH/$SHARED_FOLDER_NAME
 fi

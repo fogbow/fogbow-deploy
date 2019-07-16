@@ -11,17 +11,28 @@ RUN \
   apt-get install -y byobu curl git htop man unzip vim nano wget && \
   apt-get install -y net-tools iputils-ping && \
   apt-get install -y apache2 && \ 
-  apt-get install -y libapache2-mod-php5 libapache2-mod-shib2
+  apt-get install -y libapache2-mod-php5 libapache2-mod-shib2 maven
 
 # Set the correct time 
 RUN apt-get install -y ntp ntpdate && \ 
   service ntp restart
 
 # Install Shibboleth Authentication Application
-RUN apt-get -y install software-properties-common && \
-  add-apt-repository ppa:openjdk-r/ppa && \ 
-  apt-get update -y && \
-  apt-get install -y openjdk-8-jdk maven git
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+# RUN apt-get update && \
+#     add-apt-repository ppa:openjdk-r/ppa -y && \
+#     apt-get update && \
+#     apt-get install -y --no-install-recommends openjdk-8-jdk && \
+#     rm -rf /var/lib/apt/lists/*
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository ppa:openjdk-r/ppa 
+RUN apt-get update 
+RUN apt-get install -y --no-install-recommends openjdk-8-jdk 
+RUN rm -rf /var/lib/apt/lists/* 
+RUN apt-get install -y git
+
+RUN update-java-alternatives --set /usr/lib/jvm/java-1.8.0-openjdk-amd64
 
 WORKDIR /home/ubuntu/
 

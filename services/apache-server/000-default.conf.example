@@ -1,4 +1,12 @@
 <VirtualHost *:80>
+    ServerAdmin webroot@localhost
+    DocumentRoot /var/www/html
+
+    ErrorLog ${APACHE_LOG_DIR}/default-error.log
+    CustomLog ${APACHE_LOG_DIR}/default-access.log combined
+</VirtualHost>
+
+<VirtualHost *:80>
     ServerName internal_host_name
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
