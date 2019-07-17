@@ -59,4 +59,5 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
 
   # Copy shared folder
   yes | cp -f -r $SHARED_FOLDER_DIR $CONF_FILES_PATH/$SHARED_FOLDER_NAME
+  echo "shib_public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/$SHARED_FOLDER_NAME/$AS_PUBLIC_KEY_NAME >> $CONF_FILES_PATH/$AS_CONF_NAME
 fi
