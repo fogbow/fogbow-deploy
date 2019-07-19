@@ -82,5 +82,5 @@ if [ $AUTH_TYPE_CLASS == "shibboleth" ]; then
   SERVICE_PROVIDER_DOMAIN_NAME=$(grep $SERVICE_PROVIDER_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$SHIBBOLETH_CONF | awk -F "=" '{print $2}')
 
   echo "Service Provider domain name: $SERVICE_PROVIDER_DOMAIN_NAME"
-  sed -i "s#.*\<cafeEndpoint\>:.*#cafeEndpoint: 'https://$SERVICE_PROVIDER_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
+  sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$SERVICE_PROVIDER_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
 fi

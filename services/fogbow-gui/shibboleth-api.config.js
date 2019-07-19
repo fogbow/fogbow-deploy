@@ -6,5 +6,5 @@ export const env = {
     local: , // Auto-generated value
     refreshTime: 5000,
     credentialFields: { },
-    cafeEndpoint: ,
+    remoteCredentialsUrl: ,
 };
