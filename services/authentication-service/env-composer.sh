@@ -59,6 +59,6 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
 
   # Copy shared folder
   SHIB_PUBLIC_KEY_NAME="shibboleth_authentication_application_public_key.pem"
-  yes | cp -f -r $SHARED_FOLDER_DIR/$SHIB_PUBLIC_KEY_NAME $CONF_FILES_PATH
+  yes | cp -f $SHARED_FOLDER_DIR/$SHIB_PUBLIC_KEY_NAME $CONF_FILES_PATH
   echo "shib_public_key_file_name="$SHIB_PUBLIC_KEY_NAME >> $CONF_FILES_PATH/$AS_CONF_NAME
 fi
