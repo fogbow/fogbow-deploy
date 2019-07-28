@@ -5,14 +5,17 @@ export const env = {
     ms: , // Auto-generated value
     local: , // Auto-generated value
     refreshTime: 5000,
+    remoteCredentialsUrl: '',
+    authenticationPlugin: 'LDAP',
     credentialFields: {
         username: {
             type: 'text',
-            label: 'Username'
+            label: 'User Name'
         },
         password: {
             type: 'password',
             label: 'Password'
         }
-    }
+    },
+    fnsModes: ['vanilla', 'dfns']
 };

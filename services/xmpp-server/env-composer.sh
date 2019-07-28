@@ -26,12 +26,19 @@ COMPONENT_COMMENT="-- Manager Component"
 sed -i "/$INSERT_LINE_PATTERN/a $COMPONENT_COMMENT" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Adding component domain
-COMPONENT_DOMAIN="Component $COMPONENT_DOMAIN_PREFIX\"$XMPP_JID\""
+COMPONENT_DOMAIN="Component \"$XMPP_JID\""
 sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Adding component password
 COMPONENT_PASSWORD="\ \ \ \ \ \ \ \ component_secret = \"$XMPP_PASSWORD\""
 sed -i "/$COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
+
+# Adding component domain
+FNS_COMPONENT_DOMAIN="Component \"fns-$XMPP_JID\""
+sed -i "/$COMPONENT_PASSWORD/a $FNS_COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
+
+# Adding component password
+sed -i "/$FNS_COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Copying service.conf file
 echo "Copying services.conf to service directory"
