@@ -64,3 +64,10 @@ XMPP_JID=$(grep $XMPP_JID_PATTERN $CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE | aw
 
 echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
+
+# Shibboleth
+REMOTE_ENDPOINT_PATTERN="remote_endpoint"
+REMOTE_ENDPOINT=$(grep $REMOTE_ENDPOINT_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
+if [ ! -z "${REMOTE_ENDPOINT// }" ]; then
+    sed -i "s#.*remoteEndpoint:.*# remoteEndpoint: '$REMOTE_ENDPOINT',#" $BASE_DIR/$CONF_FILE_NAME    
+fi
