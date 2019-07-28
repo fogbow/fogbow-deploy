@@ -1,0 +1,6 @@
+# Services port
+as_port=8080
+fns_port=8081
+gui_port=8084
+ms_port=8083
+ras_port=8082

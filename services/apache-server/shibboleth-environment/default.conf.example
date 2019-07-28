@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+       ServerName _HOSTNAME_
+       ServerSignature Off
+       # Redirecionamento para SSL
+       RewriteEngine on
+       RewriteCond %{REQUEST_URI} !^/Shibboleth.sso/GetAssertion
+       RewriteCond %{HTTPS} !=on
+       RewriteRule ^(.*) https://%{SERVER_NAME} [R,L]
+       DocumentRoot /var/www
+       <Directory /var/www>
+               Options Indexes FollowSymLinks MultiViews
+               AllowOverride None
+               Order allow,deny
+               allow from all
+       </Directory>
+       # Parametros que podem ser usados: debug, info, notice, 
+       # warn, error, crit, alert, emerg.
+       LogLevel info
+       ErrorLog /var/log/apache2/sp-error-80.log
+       CustomLog /var/log/apache2/sp-access-80.log combined
+</VirtualHost>

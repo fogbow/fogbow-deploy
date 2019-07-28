@@ -1,0 +1,32 @@
+<VirtualHost *:443>
+        ServerName      _HOSTNAME_
+        ServerSignature Off
+        SSLEngine               on
+	SSLProtocol -all +TLSv1.2
+        SSLCertificateFile      /etc/ssl/certs/_HOSTNAME_.crt
+        SSLCertificateKeyFile   /etc/ssl/private/_HOSTNAME_.key
+
+        DocumentRoot /var/www
+        <Directory /var/www>
+                Options -Indexes -FollowSymLinks -MultiViews
+                AllowOverride None
+                Order deny,allow
+                Allow from all
+        </Directory>
+        <Location />
+                AuthType shibboleth
+                ShibRequireSession On
+                require valid-user
+                Order allow,deny
+                allow from all             
+                RequestHeader set Shib-Assertion %{Shib-Assertion-01}e
+         </Location>
+
+        ProxyPass / http://_ADDRESS_SHIBBOLETH_AUTH_APPLICATION_/
+        ProxyPassReverse / http://_ADDRESS_SHIBBOLETH_AUTH_APPLICATION_/ 
+        # Parametros que podem ser usados: debug, info, notice, 
+        # warn, error, crit, alert, emerg.
+        LogLevel info
+        ErrorLog /var/log/apache2/sp-error-443.log
+        CustomLog /var/log/apache2/sp-access-443.log combined
+</VirtualHost>

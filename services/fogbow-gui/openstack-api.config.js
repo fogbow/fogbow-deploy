@@ -1,4 +1,5 @@
 export const env = {
+    as: , // Auto-generated value
     ras: , // Auto-generated value
     fns: , // Auto-generated value
     ms: , // Auto-generated value
@@ -16,10 +17,6 @@ export const env = {
         domain: {
             type: 'text',
             label: 'Domain'
-        },
-        projectname: {
-            type: 'text',
-            label: 'Project Name'
         }
     }
 };

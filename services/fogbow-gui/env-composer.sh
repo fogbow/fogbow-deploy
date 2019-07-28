@@ -19,55 +19,75 @@ CONF_FILE_NAME="api.config.js"
 AUTH_TYPE_PATTERN="authentication_type"
 AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
 
-yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$AUTH_TYPE_CLASS"-"$CONF_FILE_NAME $BASE_DIR/$CONF_FILE_NAME
+yes | cp -f $BASE_DIR/$AUTH_TYPE_CLASS"-"$CONF_FILE_NAME $BASE_DIR/$CONF_FILE_NAME
 
 # Getting internal host ip
 
 IP_PATTERN="internal_host_private_ip"
 INTERNAL_HOST_IP=$(grep $IP_PATTERN $CONF_FILES_DIR/"hosts.conf" | awk -F "=" '{print $2}')
 
-# Getting resource allocation service ip and port 
+# Copy shared file
+SHARED_INFO_PATH=$DIR/"services"/"conf-files"
+SHARED_INFO="shared.info"
+yes | cp -f $SHARED_INFO_PATH/$SHARED_INFO $BASE_DIR/$SHARED_INFO
 
-echo "Retrieving RAS ip and port"
+# Getting endpoints
 DOMAIN_NAME_FILE="domain-names.conf"
+
+# Getting authentication service endpoint
+AS_DOMAIN_NAME_PATTERN="^as_domain_name"
+AS_DOMAIN_NAME=$(grep $AS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
+AS_DOMAIN_BASENAME=$(basename $(dirname $AS_DOMAIN_NAME))
+
+echo "Authentication service domain name: $AS_DOMAIN_NAME"
+sed -i "s#.*\<as\>:.*#	as: 'https://$AS_DOMAIN_BASENAME/as',#" $BASE_DIR/$CONF_FILE_NAME
+
+# Getting resource allocation service endpoint
 RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
 RAS_DOMAIN_NAME=$(grep $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-RAS_DOMAIN_BASENAME=$(basename $RAS_DOMAIN_NAME)
+RAS_DOMAIN_BASENAME=$(basename $(dirname $RAS_DOMAIN_NAME))
 
-echo "Federated network service domain name: $RAS_DOMAIN_NAME"
-sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+echo "Resource allocation service domain name: $RAS_DOMAIN_NAME"
+sed -i "s#.*ras:.*#	ras: 'https://$RAS_DOMAIN_BASENAME/ras',#" $BASE_DIR/$CONF_FILE_NAME
 
-# Getting federated network service ip and port 
-
-echo "Retrieving FNS ip and port"
+# Getting federated network service endpoint
 FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
 FNS_DOMAIN_NAME=$(grep $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-FNS_DOMAIN_BASENAME=$(basename $FNS_DOMAIN_NAME)
+FNS_DOMAIN_BASENAME=$(basename $(dirname $FNS_DOMAIN_NAME))
 
 echo "Federated network service domain name: $FNS_DOMAIN_NAME"
-sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*fns:.*#	fns: 'https://$FNS_DOMAIN_BASENAME/fns',#" $BASE_DIR/$CONF_FILE_NAME
 
-# Getting membership port
-
+# Getting membership endpoint
 MS_DOMAIN_NAME_PATTERN="ms_domain_name"
 MS_DOMAIN_NAME=$(grep $MS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_FILE | awk -F "=" '{print $2}')
-MS_DOMAIN_BASENAME=$(basename $MS_DOMAIN_NAME)
+MS_DOMAIN_BASENAME=$(basename $(dirname $MS_DOMAIN_NAME))
 
 echo "Membership domain name: $MS_DOMAIN_NAME"
-sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME',#" $BASE_DIR/$CONF_FILE_NAME
+sed -i "s#.*ms:.*#	ms: 'https://$MS_DOMAIN_BASENAME/ms',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Getting XMPP JID
 
+DOMAIN_NAMES_FILE=$CONF_FILES_DIR/"apache-confs"/"domain-names.conf"
 XMPP_JID_PATTERN="xmpp_jid"
-INTERCOMPONENT_CONF_FILE="intercomponent.conf"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $CONF_FILES_DIR/$INTERCOMPONENT_CONF_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 
 echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Shibboleth
+<<<<<<< HEAD
 REMOTE_ENDPOINT_PATTERN="remote_endpoint"
 REMOTE_ENDPOINT=$(grep $REMOTE_ENDPOINT_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
 if [ ! -z "${REMOTE_ENDPOINT// }" ]; then
     sed -i "s#.*remoteEndpoint:.*# remoteEndpoint: '$REMOTE_ENDPOINT',#" $BASE_DIR/$CONF_FILE_NAME    
+=======
+if [ $AUTH_TYPE_CLASS == "shibboleth" ]; then  
+  SHIBBOLETH_CONF='shibboleth.conf'
+  SERVICE_PROVIDER_DOMAIN_NAME_PATTERN="domain_service_provider"
+  SERVICE_PROVIDER_DOMAIN_NAME=$(grep $SERVICE_PROVIDER_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$SHIBBOLETH_CONF | awk -F "=" '{print $2}')
+
+  echo "Service Provider domain name: $SERVICE_PROVIDER_DOMAIN_NAME"
+  sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$SERVICE_PROVIDER_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
+>>>>>>> develop
 fi

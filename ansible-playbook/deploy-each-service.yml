@@ -18,10 +18,11 @@
 - hosts: internal-machine
   vars:
     apache_dir_name: apache-server
-    manager_dir_name: resource-allocation-service
+    as_dir_name: authentication-service
+    fns_dir_name: federated-network-service
     membership_dir_name: membership-service
+    ras_dir_name: resource-allocation-service
     dashboard_dir_name: fogbow-gui
-    fednet_dir_name: federated-network-service
     database_dir_name: fogbow-database
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash deploy-script.sh
@@ -33,8 +34,9 @@
         chdir: "{{ item }}"
       with_items:
         - "{{ fogbow_components }}/{{ database_dir_name }}"
-        - "{{ fogbow_components }}/{{ apache_dir_name }}"
-        - "{{ fogbow_components }}/{{ manager_dir_name }}"
-        - "{{ fogbow_components }}/{{ fednet_dir_name }}"
+        - "{{ fogbow_components }}/{{ ras_dir_name }}"
+        - "{{ fogbow_components }}/{{ as_dir_name }}"
+        - "{{ fogbow_components }}/{{ fns_dir_name }}"
         - "{{ fogbow_components }}/{{ membership_dir_name }}"
         - "{{ fogbow_components }}/{{ dashboard_dir_name }}"
+        - "{{ fogbow_components }}/{{ apache_dir_name }}"

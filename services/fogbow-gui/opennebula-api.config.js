@@ -1,4 +1,5 @@
 export const env = {
+    as: , // Auto-generated value
     ras: , // Auto-generated value
     fns: , // Auto-generated value
     ms: , // Auto-generated value
@@ -7,7 +8,7 @@ export const env = {
     credentialFields: {
         username: {
             type: 'text',
-            label: 'Username'
+            label: 'User Name'
         },
         password: {
             type: 'password',
