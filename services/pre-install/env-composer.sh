@@ -16,6 +16,7 @@ AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CON
 if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
   SHARED_FOLDER_NAME="shared-folder"
   SHARED_FOLDER_DIR=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_FOLDER_NAME
+  mkdir -p $SHARED_FOLDER_DIR
 
   SHIB_RAS_PEM_NAME="rsa_key_shibboleth.pem"
   SHIB_PRIVATE_KEY_NAME="shibboleth_authentication_application_private_key.pem"
