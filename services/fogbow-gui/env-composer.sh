@@ -76,12 +76,6 @@ echo "XMPP JID: $XMPP_JID"
 sed -i "s#.*local:.*#	local: '$XMPP_JID',#" $BASE_DIR/$CONF_FILE_NAME
 
 # Shibboleth
-<<<<<<< HEAD
-REMOTE_ENDPOINT_PATTERN="remote_endpoint"
-REMOTE_ENDPOINT=$(grep $REMOTE_ENDPOINT_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
-if [ ! -z "${REMOTE_ENDPOINT// }" ]; then
-    sed -i "s#.*remoteEndpoint:.*# remoteEndpoint: '$REMOTE_ENDPOINT',#" $BASE_DIR/$CONF_FILE_NAME    
-=======
 if [ $AUTH_TYPE_CLASS == "shibboleth" ]; then  
   SHIBBOLETH_CONF='shibboleth.conf'
   SERVICE_PROVIDER_DOMAIN_NAME_PATTERN="domain_service_provider"
@@ -89,5 +83,4 @@ if [ $AUTH_TYPE_CLASS == "shibboleth" ]; then
 
   echo "Service Provider domain name: $SERVICE_PROVIDER_DOMAIN_NAME"
   sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$SERVICE_PROVIDER_DOMAIN_NAME',#" $BASE_DIR/$CONF_FILE_NAME
->>>>>>> develop
 fi
