@@ -1,0 +1,38 @@
+#!/bin/bash
+DIR=$(pwd)/..
+CONF_FILES_DIR=$DIR/"conf-files"
+AS_CONF_FILE_PATH=$CONF_FILES_DIR/"as.conf"
+SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
+
+VPN_PASSWORD_PROPERTY="vpn_password"
+DB_PASSWORD_PROPERTY="db_password"
+
+touch $SECRETS_FILE_PATH
+chmod 600 $SECRETS_FILE_PATH
+
+# Fill passwords
+GENERATED_PASSWORD=$(pwgen 10 1)
+echo "$DB_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $SECRETS_FILE_PATH
+
+GENERATED_PASSWORD=$(pwgen 10 1)
+echo "$VPN_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $SECRETS_FILE_PATH
+
+# SHIBBOLETH SCENARY
+SHIB_PUBLIC_KEY_FILE_PATH_KEY="shib_public_key_file_path"
+SHIB_PUBLIC_KEY_FILE_PATH=$(grep $SHIB_PUBLIC_KEY_FILE_PATH_KEY $AS_CONF_FILE_PATH | awk -F "=" '{print $2}')
+
+if [ "SHIB_PUBLIC_KEY_FILE_PATH" != "" ]; then
+  SHARED_FOLDER_NAME="shared-folder"
+  SHARED_FOLDER_DIR=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_FOLDER_NAME
+  mkdir -p $SHARED_FOLDER_DIR
+
+  SHIB_RAS_PEM_NAME="rsa_key_shibboleth.pem"
+  SHIB_PRIVATE_KEY_NAME="shibboleth_authentication_application_private_key.pem"
+  SHIB_PUBLIC_KEY_NAME="shibboleth_authentication_application_public_key.pem"
+
+  openssl genrsa -out $SHARED_FOLDER_DIR/$SHIB_RAS_PEM_NAME 1024
+  openssl pkcs8 -topk8 -in $SHARED_FOLDER_DIR/$SHIB_RAS_PEM_NAME -out $SHARED_FOLDER_DIR/$SHIB_PRIVATE_KEY_NAME -nocrypt
+  openssl rsa -in $SHARED_FOLDER_DIR/$SHIB_PRIVATE_KEY_NAME -outform PEM -pubout -out $SHARED_FOLDER_DIR/$SHIB_PUBLIC_KEY_NAME
+  chmod 600 $SHARED_FOLDER_DIR/$SHIB_PRIVATE_KEY_NAME
+  rm $SHARED_FOLDER_DIR/$SHIB_RAS_PEM_NAME
+fi
