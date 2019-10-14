@@ -25,7 +25,7 @@ echo "" >> $ANSIBLE_HOSTS_FILE
 echo "[basic-site-machine]" >> $ANSIBLE_HOSTS_FILE
 echo $BASIC_SITE_HOST_IP >> $ANSIBLE_HOSTS_FILE
 echo "[basic-site-machine:vars]" >> $ANSIBLE_HOSTS_FILE
-echo "ansible_ssh_private_key_file=$BASIC_SITE_PRIVATE_KEY_FILE" >> $ANSIBLE_HOSTS_FILE
+echo "ansible_ssh_private_key_file=$BASIC_SITE_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE
 
 # Generate content of Ansible ansible.cfg file
