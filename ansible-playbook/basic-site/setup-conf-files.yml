@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
-    script_runner: sh start-basic-site-env-composers.sh
+    script_runner: sh start-env-composers.sh
     script_path: ../../basic-site
   tasks:
     - name: Setting up configuration files
