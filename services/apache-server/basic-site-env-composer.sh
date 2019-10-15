@@ -57,7 +57,7 @@ sed -i "s#$CERTIFICATE_CHAIN_PATTERN.*#$CERTIFICATE_CHAIN_PATTERN $CERTS_DIR/$CE
 
 # Fill redirects and proxy configurations in vhost file
 
-# replace internal-host-ip
+# replace internal_host_private_ip
 HOST_CONF="hosts.conf"
 BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
 BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | awk -F "=" '{print $2}')
@@ -65,7 +65,7 @@ BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF
 INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
 sed -i "s|$INTERNAL_HOST_IP_PATTERN|$BASIC_SITE_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
-# replace internal-host-name
+# replace internal_host_name
 INTERNAL_HOST_NAME_PATTERN="internal_host_name"
 BASIC_SITE_DOMAIN_NAME_PATTERN="ras_domain_name"
 DOMAIN_NAME_CONF_FILE="domain-names.conf"
@@ -98,7 +98,7 @@ sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 DOCUMENTATION_FILE_TEMPLATE="basic-site-index.html"
 DOCUMENTATION_FILE="index.html"
 
-yes | cp $BASE_DIR/$DOCUMENTATION_TEMPLATE_FILE $BASE_DIR/$DOCUMENTATION_FILE
+yes | cp -f $BASE_DIR/$DOCUMENTATION_TEMPLATE_FILE $BASE_DIR/$DOCUMENTATION_FILE
 
 sed -i "s|$INTERNAL_HOST_IP_PATTERN|$BASIC_SITE_HOST_IP|g" $BASE_DIR/$DOCUMENTATION_FILE
 sed -i "s|$INTERNAL_HOST_NAME_PATTERN|$DOMAIN_BASENAME|g" $BASE_DIR/$DOCUMENTATION_FILE
