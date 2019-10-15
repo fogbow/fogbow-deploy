@@ -22,11 +22,18 @@ yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE $CONF_FILES_PATH/$SERVICES_
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
-# Fill xmpp jid
-XMPP_JID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
+# Fill local_member_id properties (xmpp_jid)
+BASIC_SITE_DOMAIN_NAME_PATTERN="ras_domain_name"
+APACHE_CONF_FILES_DIR="apache-confs"
+DOMAIN_NAME_CONF_FILE="domain-names.conf"
+DOMAIN_NAME=$(grep -w $BASIC_SITE_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+DOMAIN_BASENAME=`basename $(dirname $DOMAIN_NAME)`
+
+#XMPP_JID_PATTERN="xmpp_jid"
+#XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
 echo "" >> $CONF_FILES_PATH/$AS_CONF_NAME
-echo "xmpp_jid=$XMPP_JID" >> $CONF_FILES_PATH/$AS_CONF_NAME
+#echo "xmpp_jid=$XMPP_JID" >> $CONF_FILES_PATH/$AS_CONF_NAME
+echo "xmpp_jid=$DOMAIN_BASENAME" >> $CONF_FILES_PATH/$AS_CONF_NAME
 
 # Create key pair
 echo "" >> $CONF_FILES_PATH/$AS_CONF_NAME
