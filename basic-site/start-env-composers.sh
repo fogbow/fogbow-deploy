@@ -13,11 +13,9 @@ echo "Running basic-site/env-composer.sh"
 bash env-composer.sh
 cd ..
 
-SERVICES_LIST="$DATABASE_SERVICE_DIR $AUTHENTICATION_SERVICE_DIR $RESOURCE_ALLOCATION_SERVICE_DIR"
+SERVICES_LIST="$APACHE_SERVICE_DIR"
 
 for service in $SERVICES_LIST; do
-    echo "current dir:" $(pwd)
 	echo "Running $service/basic-site-env-composer.sh"
 	bash $service/"basic-site-env-composer.sh"
-	echo "current dir:" $(pwd)
 done
