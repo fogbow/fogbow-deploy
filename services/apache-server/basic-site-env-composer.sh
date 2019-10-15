@@ -15,7 +15,7 @@ yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_
 
 # Moving apache conf files
 
-CONF_FILES_LIST=$(find $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR | grep '.conf' | xargs)
+CONF_FILES_LIST=$(find $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR -name \*.conf | xargs)
 
 for conf_file_path in $CONF_FILES_LIST; do
 	conf_file_name=$(basename $conf_file_path)
@@ -95,11 +95,8 @@ sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
 # Update documentation file
-DOCUMENTATION_FILE_TEMPLATE="basic-site-index.html"
+DOCUMENTATION_TEMPLATE_FILE="basic-site-index.html"
 DOCUMENTATION_FILE="index.html"
-
-echo "apache-server env-composer current dir:"$(pwd)
-echo "cp -f "$BASE_DIR/$DOCUMENTATION_TEMPLATE_FILE" "$BASE_DIR/$DOCUMENTATION_FILE
 
 yes | cp -f $BASE_DIR/$DOCUMENTATION_TEMPLATE_FILE $BASE_DIR/$DOCUMENTATION_FILE
 

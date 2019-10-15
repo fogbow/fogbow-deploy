@@ -13,7 +13,7 @@ echo "Running basic-site/env-composer.sh"
 bash env-composer.sh
 cd ..
 
-SERVICES_LIST="$APACHE_SERVICE_DIR"
+SERVICES_LIST="$DATABASE_SERVICE_DIR $AUTHENTICATION_SERVICE_DIR $RESOURCE_ALLOCATION_SERVICE_DIR $APACHE_SERVICE_DIR"
 
 for service in $SERVICES_LIST; do
 	echo "Running $service/basic-site-env-composer.sh"
