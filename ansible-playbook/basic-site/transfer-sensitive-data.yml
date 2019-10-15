@@ -13,7 +13,6 @@
     - name: Get all clouds directory
       shell: "ls {{ clouds_directory }}"
       register: clouds_dir_out
-
     - name: Get SSL certificate file path
       shell: grep "^{{ ssl_certificate_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
       register: ssl_certificate_file_path
@@ -32,12 +31,12 @@
     ras_dir_name: resource-allocation-service
     db_dir_name: fogbow-database
 
-    private_key_as_path: ../services/authentication-service/conf-files/id_rsa
-    private_key_ras_path: ../services/resource-allocation-service/conf-files/id_rsa
+    private_key_as_path: ../../services/authentication-service/conf-files/id_rsa
+    private_key_ras_path: ../../services/resource-allocation-service/conf-files/id_rsa
 
-    secrets_db: ../services/fogbow-database/secrets
+    secrets_db: ../../services/fogbow-database/secrets
 
-    ras_conf: ../services/resource-allocation-service/conf-files/ras.conf
+    ras_conf: ../../services/resource-allocation-service/conf-files/ras.conf
   tasks:
     - name: Copy private keys to basic-site machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
