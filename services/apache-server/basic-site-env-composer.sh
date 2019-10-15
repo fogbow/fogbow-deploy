@@ -15,18 +15,14 @@ yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_
 
 # Moving apache conf files
 
-CONF_FILES_LIST=$(find $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR -name \*.conf | xargs)
+CERT_CONF_FILE="certificate-files.conf"
+DOMAIN_NAMES_CONF_FILE="domain-names.conf"
 
-for conf_file_path in $CONF_FILES_LIST; do
-	conf_file_name=$(basename $conf_file_path)
-	echo "Conf file path: $conf_file_path"
-	echo "Conf file name: $conf_file_name"
-	yes | cp -f $conf_file_path ./$BASE_DIR/$conf_file_name
+for conf_file_name in $CERT_CONF_FILE $DOMAIN_NAMES_CONF_FILE; do
+	yes | cp -f $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$conf_file_name ./$BASE_DIR/$conf_file_name
 done
 
 # Resolving certification files for https
-CERT_CONF_FILE="certificate-files.conf"
-
 CERTIFICATE_FILE="SSL_certificate_file_path"
 CERTIFICATE_FILE_PATH=$(grep $CERTIFICATE_FILE $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$CERT_CONF_FILE | awk -F "=" '{print $2}')
 CERTIFICATE_FILE_NAME=$(basename $CERTIFICATE_FILE_PATH)
