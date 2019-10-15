@@ -9,5 +9,6 @@ SERVICES_FILE="services.conf"
 yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
 
 # Copy shared file
+echo "Copying secrets to service directory"
 SECRETS="secrets"
 yes | cp -f $CONF_FILES_DIR/$SECRETS $BASE_DIR/$SECRETS

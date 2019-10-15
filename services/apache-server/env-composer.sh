@@ -6,18 +6,14 @@ BASE_DIR="services/apache-server"
 BASE_CONFIGURATION_DIR=$BASE_DIR/"shibboleth-environment"
 APACHE_CONF_FILES_DIR="apache-confs"
 
-GUI_CONF_DIR="gui-confs"
-GUI_CONF_FILE="gui.conf"
-
 # Copying configuration files
 echo "Copying services.conf to service directory"
 SERVICES_FILE="services.conf"
 yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $BASE_DIR/$SERVICES_FILE
 # Copy shared file
+echo "Copying shared.info to service directory"
 SHARED_INFO="shared.info"
 yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_INFO
-echo "Copying gui.conf to service directory"
-yes | cp -f $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE $BASE_DIR/$GUI_CONF_FILE
 
 # Moving apache conf files
 
@@ -62,18 +58,20 @@ sed -i "s#$CERTIFICATE_CHAIN_PATTERN.*#$CERTIFICATE_CHAIN_PATTERN $CERTS_DIR/$CE
 
 # Fill redirects and proxy configurations in vhost file
 
-# replace internal-host-ip
+# replace basic-site-host-ip
 HOST_CONF="hosts.conf"
-INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
-INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | awk -F "=" '{print $2}')
+BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
+BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $CONF_FILES_DIR/$HOST_CONF | awk -F "=" '{print $2}')
 
-sed -i "s|$INTERNAL_HOST_IP_PATTERN|$INTERNAL_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
+INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
+
+sed -i "s|$INTERNAL_HOST_IP_PATTERN|$BASIC_SITE_HOST_IP|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
 # replace internal-host-name
 INTERNAL_HOST_NAME_PATTERN="internal_host_name"
-FNS_DOMAIN_NAME_PATTERN="fns_domain_name"
+RAS_DOMAIN_NAME_PATTERN="ras_domain_name"
 DOMAIN_NAME_CONF_FILE="domain-names.conf"
-DOMAIN_NAME=$(grep -w $FNS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
+DOMAIN_NAME=$(grep -w $RAS_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
 DOMAIN_BASENAME=`basename $(dirname $DOMAIN_NAME)`
 
 sed -i "s|$INTERNAL_HOST_NAME_PATTERN|$DOMAIN_BASENAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
@@ -89,46 +87,28 @@ sed -i "s|$KEY_FILE_PATTERN|$CERTIFICATE_KEY_FILE_NAME|g" $BASE_DIR/$VIRTUAL_HOS
 CHAIN_FILE_PATTERN="chain_file"
 sed -i "s|$CHAIN_FILE_PATTERN|$CERTIFICATE_CHAIN_FILE_NAME|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
-# Get service ports
-GUI_PORT=$(grep ^gui_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
-GUI_PORT_PATTERN="gui_port"
-
-FNS_PORT=$(grep ^fns_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
-FNS_PORT_PATTERN="fns_port"
-
 AS_PORT=$(grep ^as_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 AS_PORT_PATTERN="as_port"
 
 RAS_PORT=$(grep ^ras_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
 RAS_PORT_PATTERN="ras_port"
 
-MS_PORT=$(grep ^ms_port $BASE_DIR/$SHARED_INFO | awk -F "=" '{print $2}')
-MS_PORT_PATTERN="ms_port"
-#sed -i "s/$MS_PORT_PATTERN\b/$MS_PORT/g" $BASE_DIR/$VIRTUAL_HOST_FILE
-
 sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
-sed -i "s|$MS_PORT_PATTERN|$MS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
-sed -i "s|$FNS_PORT_PATTERN|$FNS_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
-sed -i "s|$GUI_PORT_PATTERN|$GUI_PORT|g" $BASE_DIR/$VIRTUAL_HOST_FILE
 
 # Update documentation file
 DOCUMENTATION_FILE="index.html"
 
-sed -i "s|$INTERNAL_HOST_IP_PATTERN|$INTERNAL_HOST_IP|g" $BASE_DIR/$DOCUMENTATION_FILE
+sed -i "s|$INTERNAL_HOST_IP_PATTERN|$BASIC_SITE_HOST_IP|g" $BASE_DIR/$DOCUMENTATION_FILE
 sed -i "s|$INTERNAL_HOST_NAME_PATTERN|$DOMAIN_BASENAME|g" $BASE_DIR/$DOCUMENTATION_FILE
 sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $BASE_DIR/$DOCUMENTATION_FILE
 sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $BASE_DIR/$DOCUMENTATION_FILE
-sed -i "s|$MS_PORT_PATTERN|$MS_PORT|g" $BASE_DIR/$DOCUMENTATION_FILE
-sed -i "s|$FNS_PORT_PATTERN|$FNS_PORT|g" $BASE_DIR/$DOCUMENTATION_FILE
-sed -i "s|$GUI_PORT_PATTERN|$GUI_PORT|g" $BASE_DIR/$DOCUMENTATION_FILE
 
-CONF_FILE_NAME="api.config.js"
-AUTH_TYPE_PATTERN="authentication_type"
-AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
+# SHIBBOLETH
+SHIB_PUBLIC_KEY_FILE_PATH_KEY="shib_public_key_file_path"
+SHIB_PUBLIC_KEY_FILE_PATH=$(grep $SHIB_PUBLIC_KEY_FILE_PATH_KEY $AS_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
-# SHIBBOLETH SCENARY
-if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
+if [ "SHIB_PUBLIC_KEY_FILE_PATH" != "" ]; then
   SHIBBOLETH_CONF_FILE="shibboleth.conf"
 
   # Fill apache+shibboleth mod 

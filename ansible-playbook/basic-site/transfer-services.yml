@@ -1,7 +1,7 @@
 ---
 - hosts: basic-site-machine
   vars:
-    services_path: ../services
+    services_path: ../../services
     ras_dir_name: resource-allocation-service
     as_dir_name: authentication-service
     database_dir_name: fogbow-database
