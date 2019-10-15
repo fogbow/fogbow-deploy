@@ -5,7 +5,6 @@ CONF_FILES_DIR=$DIR_PATH
 GUI_CONF_DIR="gui-confs"
 GUI_CONF_FILE="gui.conf"
 
-# TODO create new image
 IMAGE_NAME="fogbow/apache-shibboleth-server"
 CONTAINER_NAME="apache-server"
 

@@ -43,11 +43,14 @@ rm $RSA_KEY_PATH
 echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILES_PATH/$AS_CONF_NAME
 echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILES_PATH/$AS_CONF_NAME
 
-# SHIBBOLETH
-SHIB_PUBLIC_KEY_FILE_PATH_KEY="shib_public_key_file_path"
-SHIB_PUBLIC_KEY_FILE_PATH=$(grep $SHIB_PUBLIC_KEY_FILE_PATH_KEY $AS_CONF_FILE_PATH | awk -F "=" '{print $2}')
+CONF_FILE_NAME="api.config.js"
+AUTH_TYPE_PATTERN="authentication_type"
+GUI_CONF_DIR="gui-confs"
+GUI_CONF_FILE="gui.conf"
+AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILES_DIR/$GUI_CONF_DIR/$GUI_CONF_FILE | awk -F "=" '{print $2}')
 
-if [ "SHIB_PUBLIC_KEY_FILE_PATH" != "" ]; then
+# SHIBBOLETH SCENARY
+if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
   ## Adding in the shared folder because the shibboleth authentication application needs
   SHARED_FOLDER_NAME="shared-folder"
   SHARED_FOLDER_DIR=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_FOLDER_NAME

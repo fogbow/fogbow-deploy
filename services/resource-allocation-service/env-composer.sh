@@ -64,13 +64,27 @@ rm $RSA_KEY_PATH
 echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_PATH
 echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_PATH
 
+# Fill xmpp properties
+XMPP_JID_PATTERN="xmpp_jid"
+XMPP_JID=$(grep $XMPP_JID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
+echo "" >> $CONF_FILE_PATH
+echo "xmpp_jid=$XMPP_JID" >> $CONF_FILE_PATH
+
+DMZ_PRIVATE_IP_PATTERN="dmz_host_private_ip"
+DMZ_PRIVATE_IP=$(grep $DMZ_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+echo "xmpp_server_ip=$DMZ_PRIVATE_IP" >> $CONF_FILE_PATH
+
+XMPP_PASSWORD_KEY="xmpp_password"
+XMPP_PASSWORD=$(grep $XMPP_PASSWORD_KEY $SECRETS_FILE | awk -F "=" '{print $2}')
+echo "xmpp_password=$XMPP_PASSWORD" >> $CONF_FILE_PATH
+
 # Fill AS infos
 echo "" >> $CONF_FILE_PATH
-BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
-BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+INTERNAL_HOST_IP_PATTERN="internal_host_private_ip"
+INTERNAL_HOST_IP=$(grep $INTERNAL_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 
 PROTOCOL="http://"
-echo "as_url=$PROTOCOL$BASIC_SITE_HOST_IP" >> $CONF_FILE_PATH
+echo "as_url=$PROTOCOL$INTERNAL_HOST_IP" >> $CONF_FILE_PATH
 AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
 echo "as_port=$AS_PORT" >> $CONF_FILE_PATH
 

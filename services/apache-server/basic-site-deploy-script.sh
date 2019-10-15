@@ -2,6 +2,7 @@
 DIR_PATH=$(pwd)
 CONF_FILES_DIR=$DIR_PATH
 
+IMAGE_NAME="fogbow/apache-shibboleth-server"
 CONTAINER_NAME="apache-server"
 
 INSECURE_PORT="80"
