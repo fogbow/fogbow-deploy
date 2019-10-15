@@ -6,7 +6,7 @@
     ras_dir_name: resource-allocation-service
     database_dir_name: fogbow-database
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: bash deploy-script.sh
+    deploy_script_runner: bash basic-site-deploy-script.sh
   tasks:
     - name: Deploying RAS and AS services in basic-site-machine
       shell: "{{ deploy_script_runner }}"
