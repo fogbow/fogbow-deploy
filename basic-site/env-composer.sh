@@ -1,6 +1,6 @@
 #!/bin/bash
-DIR=$(pwd)/..
-CONF_FILES_DIR=$DIR/"conf-files"
+DIR=$(pwd)
+CONF_FILES_DIR=$DIR/"../conf-files"
 AS_CONF_FILE_PATH=$CONF_FILES_DIR/"as.conf"
 SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
 
