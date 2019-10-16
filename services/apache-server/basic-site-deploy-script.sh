@@ -1,0 +1,66 @@
+#!/bin/bash
+DIR_PATH=$(pwd)
+CONF_FILES_DIR=$DIR_PATH
+
+IMAGE_NAME="fogbow/apache-shibboleth-server"
+CONTAINER_NAME="apache-server"
+
+INSECURE_PORT="80"
+SECURE_PORT="443"
+
+# Certificate files
+## All fogbow environment
+CERT_CONF_FILE="certificate-files.conf"
+
+CERTIFICATE_FILE="SSL_certificate_file_path"
+CERTIFICATE_FILE_PATH=$(grep $CERTIFICATE_FILE $CERT_CONF_FILE | awk -F "=" '{print $2}')
+CERTIFICATE_FILE_NAME=$(basename $CERTIFICATE_FILE_PATH)
+
+CERTIFICATE_KEY_FILE="SSL_certificate_key_file_path"
+CERTIFICATE_KEY_FILE_PATH=$(grep $CERTIFICATE_KEY_FILE $CERT_CONF_FILE | awk -F "=" '{print $2}')
+CERTIFICATE_KEY_FILE_NAME=$(basename $CERTIFICATE_KEY_FILE_PATH)
+
+CERTIFICATE_CHAIN_FILE="SSL_certificate_chain_file_path"
+CERTIFICATE_CHAIN_FILE_PATH=$(grep $CERTIFICATE_CHAIN_FILE $CERT_CONF_FILE | awk -F "=" '{print $2}')
+CERTIFICATE_CHAIN_FILE_NAME=$(basename $CERTIFICATE_CHAIN_FILE_PATH)
+
+CERTS_DIR="/etc/ssl/certs"
+SSL_DIR="/etc/ssl/private"
+VIRTUAL_HOST_DIR="/etc/apache2/sites-enabled"
+ROOT_DIR="/var/www/html"
+CONF_DIR="/etc/apache2"
+INDEX_FILE="index.html"
+PORTS_FILE="ports.conf"
+VIRTUAL_HOST_FILE="000-default.conf"
+
+SERVICES_CONF=$DIR_PATH/"services.conf"
+IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+
+if [ -z ${TAG// } ]; then
+	TAG="latest"
+fi
+
+sudo docker stop $CONTAINER_NAME
+sudo docker rm $CONTAINER_NAME
+sudo docker pull $IMAGE_NAME:$TAG
+
+CONTAINER_BASE_DIR="/home/ubuntu"
+SHARED_FOLDER="shared-folder"
+sudo docker run -tdi --name $CONTAINER_NAME \
+	-p $SECURE_PORT:$SECURE_PORT \
+	-p $INSECURE_PORT:$INSECURE_PORT \
+	-v $DIR_PATH/$CERTIFICATE_FILE_NAME:$CERTS_DIR/$CERTIFICATE_FILE_NAME \
+	-v $DIR_PATH/$CERTIFICATE_KEY_FILE_NAME:$SSL_DIR/$CERTIFICATE_KEY_FILE_NAME \
+	-v $DIR_PATH/$CERTIFICATE_CHAIN_FILE_NAME:$CERTS_DIR/$CERTIFICATE_CHAIN_FILE_NAME \
+	$IMAGE_NAME:$TAG
+
+sudo docker cp $VIRTUAL_HOST_FILE $CONTAINER_NAME:$VIRTUAL_HOST_DIR/$VIRTUAL_HOST_FILE
+sudo docker cp $INDEX_FILE $CONTAINER_NAME:$ROOT_DIR
+sudo docker cp $PORTS_FILE $CONTAINER_NAME:$CONF_DIR
+
+ENABLE_MODULES_SCRIPT="basic-site-enable-modules"
+
+sudo chmod +x $ENABLE_MODULES_SCRIPT
+sudo docker cp $ENABLE_MODULES_SCRIPT $CONTAINER_NAME:$CONTAINER_BASE_PATH/$ENABLE_MODULES_SCRIPT
+sudo docker exec $CONTAINER_NAME $CONTAINER_BASE_PATH/$ENABLE_MODULES_SCRIPT
