@@ -1,4 +1,4 @@
-# This playbook must to transfer sensitive datas, always taking care in its permission in remote machine
+# This playbook transfers sensitive data, taking care of setting its permission in the remote machine accordingly
 
 - hosts: localhost
   connection: local
