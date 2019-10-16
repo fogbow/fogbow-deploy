@@ -11,7 +11,7 @@ APACHE_SERVICE_DIR=$SERVICES_DIR/"apache-server"
 echo ""
 echo "Running basic-site/env-composer.sh"
 bash env-composer.sh
-cd ..
+cd ../..
 
 SERVICES_LIST="$DATABASE_SERVICE_DIR $AUTHENTICATION_SERVICE_DIR $RESOURCE_ALLOCATION_SERVICE_DIR $APACHE_SERVICE_DIR"
 

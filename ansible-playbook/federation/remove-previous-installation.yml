@@ -1,0 +1,15 @@
+---
+- hosts: basic-site-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    ras_dir_name: resource-allocation-service
+    as_dir_name: authentication-service
+  tasks:
+    - name: Removing previously installed RAS and AS if applied
+      become: yes
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ ras_dir_name }}"
+        - "{{ fogbow_components }}/{{ as_dir_name }}"
