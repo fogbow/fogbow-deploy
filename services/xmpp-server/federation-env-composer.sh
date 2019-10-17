@@ -11,15 +11,12 @@ PROSODY_CONF_FILE="prosody.cfg.lua"
 BASIC_SITE_HOST_NAME_PATTERN="basic_site_host_name"
 BASIC_SITE_HOST_NAME=$(grep $BASIC_SITE_HOST_NAME_PATTERN $CONF_FILES_DIR/$HOST_CONF_NAME | awk -F "=" '{print $2}')
 
-XMPP_ID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_ID_PATTERN $BASIC_SITE_HOST_NAME | awk -F "=" '{print $2}')
-
 XMPP_PASSWORD_PATTERN="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{print $2}')
 
 yes | cp -f ./$XMPP_SERVER_DIR/$PROSODY_CONF_TEMPLATE ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
-echo "Manager XMPP ID: $XMPP_JID"
+echo "Manager XMPP ID: $BASIC_SITE_HOST_NAME"
 echo "Manager XMPP Password: $MANAGER_PASSWORD"
 
 # Adding comment to identify component credentials
@@ -29,7 +26,7 @@ COMPONENT_COMMENT="-- Manager Component"
 sed -i "/$INSERT_LINE_PATTERN/a $COMPONENT_COMMENT" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Adding component domain
-COMPONENT_DOMAIN="Component \"$XMPP_JID\""
+COMPONENT_DOMAIN="Component \"$BASIC_SITE_HOST_NAME\""
 sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Adding component password

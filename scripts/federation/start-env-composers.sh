@@ -13,6 +13,6 @@ bash env-composer.sh
 cd ../..
 
 for service in $SERVICES_LIST; do
-	echo "Running $service/basic-site-env-composer.sh"
+	echo "Running $service/federation-env-composer.sh"
 	bash $service/"federation-env-composer.sh"
 done
