@@ -16,12 +16,7 @@ yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO $BASE_DIR/$SHARED_
 
 # Moving apache conf files
 
-CERT_CONF_FILE="certificate-files.conf"
-DOMAIN_NAMES_CONF_FILE="domain-names.conf"
-
-for conf_file_name in $CERT_CONF_FILE $DOMAIN_NAMES_CONF_FILE; do
-	yes | cp -f $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR_NAME/$conf_file_name ./$BASE_DIR/$conf_file_name
-done
+yes | cp -f $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR_NAME/"certificate-files.conf" ./$BASE_DIR/"certificate-files.conf"
 
 # Resolving certification files for https
 CERTIFICATE_FILE="SSL_certificate_file_path"
