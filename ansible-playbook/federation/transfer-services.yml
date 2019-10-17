@@ -1,19 +1,26 @@
 ---
-- hosts: basic-site-machine
+- hosts: xmpp-machine
   vars:
     services_path: ../../services
-    ras_dir_name: resource-allocation-service
-    as_dir_name: authentication-service
-    database_dir_name: fogbow-database
-    apache_dir_name: apache-server
+    xmpp_dir_name: xmpp-server
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying RAS and AS service components
+    - name: Copying xmpp-server to xmpp-machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"
       with_items:
-        - "{{ services_path }}/{{ ras_dir_name }}"
-        - "{{ services_path }}/{{ as_dir_name }}"
-        - "{{ services_path }}/{{ database_dir_name }}"
-        - "{{ services_path }}/{{ apache_dir_name }}"
+        - "{{ services_path }}/{{ xmpp_dir_name }}"
+
+- hosts: basic-site-machine
+  vars:
+    services_path: ../../services
+    ms_dir_name: membership-service
+    fogbow_components: ~/fogbow-components/
+  tasks:
+    - name: Copying MS service components
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+      with_items:
+        - "{{ services_path }}/{{ ms_dir_name }}"

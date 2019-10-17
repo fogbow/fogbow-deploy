@@ -1,20 +1,28 @@
 ---
-- hosts: basic-site-machine
+- hosts: xmpp-machine
   vars:
-    apache_dir_name: apache-server
-    as_dir_name: authentication-service
-    ras_dir_name: resource-allocation-service
-    database_dir_name: fogbow-database
+    xmpp_dir_name: xmpp-server
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: bash basic-site-deploy-script.sh
+    deploy_script_runner: bash federation-deploy-script.sh
   tasks:
-    - name: Deploying RAS and AS services in basic-site-machine
+    - name: Deploying services in XMPP machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:
         chdir: "{{ item }}"
       with_items:
-        - "{{ fogbow_components }}/{{ database_dir_name }}"
-        - "{{ fogbow_components }}/{{ ras_dir_name }}"
-        - "{{ fogbow_components }}/{{ as_dir_name }}"
-        - "{{ fogbow_components }}/{{ apache_dir_name }}"
+        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
+
+- hosts: basic-site-machine
+  vars:
+    membership_dir_name: membership-service
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    deploy_script_runner: bash federation-deploy-script.sh
+  tasks:
+    - name: Deploying services in basic site machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ membership_dir_name }}"

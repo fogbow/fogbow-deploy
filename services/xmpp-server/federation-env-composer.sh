@@ -1,15 +1,18 @@
 #!/bin/bash
 DIR=$(pwd)
+HOST_CONF_NAME="hosts.conf"
 CONF_FILES_DIR=$DIR/"conf-files"
 SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
-DOMAIN_NAMES_FILE=$CONF_FILES_DIR/"apache-confs"/"domain-names.conf"
 
 XMPP_SERVER_DIR="services/xmpp-server"
 PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
 PROSODY_CONF_FILE="prosody.cfg.lua"
 
+BASIC_SITE_HOST_NAME_PATTERN="basic_site_host_name"
+BASIC_SITE_HOST_NAME=$(grep $BASIC_SITE_HOST_NAME_PATTERN $CONF_FILES_DIR/$HOST_CONF_NAME | awk -F "=" '{print $2}')
+
 XMPP_ID_PATTERN="xmpp_jid"
-XMPP_JID=$(grep $XMPP_ID_PATTERN $DOMAIN_NAMES_FILE | awk -F "=" '{print $2}')
+XMPP_JID=$(grep $XMPP_ID_PATTERN $BASIC_SITE_HOST_NAME | awk -F "=" '{print $2}')
 
 XMPP_PASSWORD_PATTERN="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{print $2}')
@@ -32,13 +35,6 @@ sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CON
 # Adding component password
 COMPONENT_PASSWORD="\ \ \ \ \ \ \ \ component_secret = \"$XMPP_PASSWORD\""
 sed -i "/$COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
-
-# Adding component domain
-FNS_COMPONENT_DOMAIN="Component \"fns-$XMPP_JID\""
-sed -i "/$COMPONENT_PASSWORD/a $FNS_COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
-
-# Adding component password
-sed -i "/$FNS_COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 # Copying service.conf file
 echo "Copying services.conf to service directory"

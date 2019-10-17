@@ -1,116 +1,12 @@
 # This playbook transfers sensitive data, taking care of setting its permission in the remote machine accordingly
 
-- hosts: localhost
-  connection: local
-  vars:
-    clouds_directory: ../../conf-files/clouds
-
-    certificates_conf_path: ../../conf-files/apache-confs/certificate-files.conf
-    ssl_certificate_file_pattern: SSL_certificate_file_path
-    ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
-    ssl_certificate_chain_file_pattern: SSL_certificate_chain_file_path
-  tasks:
-    - name: Get all clouds directory
-      shell: "ls {{ clouds_directory }}"
-      register: clouds_dir_out
-    - name: Get SSL certificate file path
-      shell: grep "^{{ ssl_certificate_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
-      register: ssl_certificate_file_path
-    - name: Get SSL certificate key file path
-      shell: grep "^{{ ssl_certificate_key_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
-      register: ssl_certificate_key_file_path
-    - name: Get SSL certificate chainfile path
-      shell: grep "^{{ ssl_certificate_chain_file_pattern }}" {{ certificates_conf_path }} | awk -F "=" '{print $2}'
-      register: ssl_certificate_chain_file_path
-
-- hosts: basic-site-machine
+- hosts: xmpp-machine
   vars:
     fogbow_components: ~/fogbow-components
-    conf_files: conf-files
-    as_dir_name: authentication-service
-    ras_dir_name: resource-allocation-service
-    db_dir_name: fogbow-database
-
-    private_key_as_path: ../../services/authentication-service/conf-files/id_rsa
-    private_key_ras_path: ../../services/resource-allocation-service/conf-files/id_rsa
-
-    secrets_db: ../../services/fogbow-database/secrets
-
-    ras_conf: ../../services/resource-allocation-service/conf-files/ras.conf
+    prosody_conf_path: ../../services/xmpp-server/prosody.cfg.lua
+    xmpp_dir_name: xmpp-server
   tasks:
-    - name: Copy private keys to basic-site machine
+    - name: Copy prosody to XMPP machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
-        - { src: "{{ private_key_as_path }}", dest: "{{ fogbow_components }}/{{ as_dir_name }}/{{ conf_files }}" }
-        - { src: "{{ private_key_ras_path }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
-
-    - name: Copy secrets file to basic-site machine
-      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
-      with_items:
-        - { src: "{{ secrets_db }}", dest: "{{ fogbow_components }}/{{ db_dir_name }}" }
-
-    - name: Copy service specific configuration file to basic-site machine
-      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
-      with_items:
-        - { src: "{{ ras_conf }}", dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_files }}" }
-
-- hosts: basic-site-machine
-  vars:
-    fogbow_components: ~/fogbow-components
-    apache_dir_name: apache-server
-  tasks:
-    - name: Retrieve certificates path
-      set_fact: 
-        ssl_certificate_file_path: "{{ hostvars['localhost']['ssl_certificate_file_path'] }}"
-        ssl_certificate_key_file_path: "{{ hostvars['localhost']['ssl_certificate_key_file_path'] }}"
-        ssl_certificate_chain_file_path: "{{ hostvars['localhost']['ssl_certificate_chain_file_path'] }}"
-
-    # This task guarantees that will run only if ssl_certificate_file_path.stdout is not an empty string
-    - name: Test empty value in ssl_certificate_file_path property
-      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
-      when: hostvars['localhost']['ssl_certificate_file_path'].stdout == ""
-    - name: Copying SSL certificate file to Internal-Machine
-      copy:
-        src: "{{ ssl_certificate_file_path.stdout }}"
-        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
-        mode: 0600
-
-    # This task guarantees that will run only if ssl_certificate_key_file_path.stdout is not an empty string
-    - name: Test empty value in ssl_certificate_key_file_path property
-      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
-      when: hostvars['localhost']['ssl_certificate_key_file_path'].stdout == ""
-    - name: Copying SSL certificate key file to Internal-Machine
-      copy:
-        src: "{{ ssl_certificate_key_file_path.stdout }}"
-        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
-        mode: 0600
-
-    # This task guarantees that will run only if ssl_certificate_chain_file_path.stdout is not an empty string
-    - name: Test empty value in ssl_certificate_chain_file_path property
-      fail: msg="Please, check the certificates conf file. One or more value is probably empty"
-      when: hostvars['localhost']['ssl_certificate_chain_file_path'].stdout == ""
-    - name: Copying SSL certificate chain file to Internal-Machine
-      copy:
-        src: "{{ ssl_certificate_chain_file_path.stdout }}"
-        dest: "{{ fogbow_components }}/{{ apache_dir_name }}"
-        mode: 0600
-
-- hosts: basic-site-machine
-  vars:
-    clouds_directory: ../../conf-files/clouds
-    fogbow_components: ~/fogbow-components
-    ras_dir_name: resource-allocation-service
-    mapper_file: mapper.conf
-    conf_fils_dirname: conf-files
-    clouds_dirname: clouds
-  tasks:
-    - name: Retrieve clouds dir output
-      set_fact:
-        clouds_dir: "{{ hostvars['localhost']['clouds_dir_out'] }}"
-    - name: Copy mapper.conf files to internal host
-      copy:
-        src: "{{ clouds_directory }}/{{ item }}/{{ mapper_file }}"
-        dest: "{{ fogbow_components }}/{{ ras_dir_name }}/{{ conf_fils_dirname }}/{{ clouds_dirname }}/{{ item }}/{{ mapper_file }}"
-        mode: 0600
-      with_items:
-        - "{{ clouds_dir.stdout_lines }}"
+        - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }

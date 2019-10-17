@@ -1,16 +1,14 @@
 #!/bin/bash
-DIR_PATH=$(pwd)
-CONTAINER_BASE_PATH="/root/membership-service"
-PROJECT_RESOURCES_PATH="src/main/resources/private"
-
+DIR=$(pwd)
+CONTAINER_BASE_DIR="/root/membership-service"
+PROJECT_RESOURCES_DIR="src/main/resources/private"
 LOG4J_FILE_NAME="log4j.properties"
 CONF_FILE_NAME="ms.conf"
-SHARED_INFO=$DIR_PATH/"shared.info"
-
+SHARED_INFO_PATH=$DIR/"shared.info"
 IMAGE_NAME="fogbow/membership-service"
 CONTAINER_NAME="membership-service"
 
-MS_PORT=$(grep ^ms_port $SHARED_INFO | awk -F "=" '{print $2}')
+MS_PORT=$(grep ^ms_port $SHARED_INFO_PATH | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 SERVICES_CONF=services.conf
@@ -28,8 +26,8 @@ sudo docker pull $IMAGE_NAME:$TAG
 
 sudo docker run -idt --name $CONTAINER_NAME \
 	-p $MS_PORT:8080 \
-	-v $DIR_PATH/$CONF_FILE_NAME:$CONTAINER_BASE_PATH/$PROJECT_RESOURCES_PATH/$CONF_FILE_NAME \
-	-v $DIR_PATH/$LOG4J_FILE_NAME:$CONTAINER_BASE_PATH/$LOG4J_FILE_NAME:ro \
+	-v $DIR/$CONF_FILE_NAME:$CONTAINER_BASE_DIR/$PROJECT_RESOURCES_DIR/$CONF_FILE_NAME \
+	-v $DIR/$LOG4J_FILE_NAME:$CONTAINER_BASE_DIR/$LOG4J_FILE_NAME:ro \
 	$IMAGE_NAME:$TAG
 
 # Add build value into ms.conf

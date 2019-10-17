@@ -1,15 +1,15 @@
 #!/bin/bash
-DIR_PATH=$(pwd)
-CONTAINER_BASE_PATH="/etc/prosody"
+DIR=$(pwd)
+CONTAINER_BASE_DIR="/etc/prosody"
 
 CONF_FILE_NAME="prosody.cfg.lua"
 
 IMAGE_NAME="fogbow/xmpp-server"
 CONTAINER_NAME="xmpp-server"
 
-SERVICES_CONF=$DIR_PATH/"services.conf"
+SERVICES_CONF_NAME=$DIR/"services.conf"
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
-TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF_NAME | awk -F "=" '{print $2}')
 
 if [ -z ${TAG// } ]; then
 	TAG="latest"
@@ -28,10 +28,10 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-p 5347:5347 \
 	$IMAGE_NAME:$TAG
 
-chmod 644 $DIR_PATH/$CONF_FILE_NAME
+chmod 644 $DIR/$CONF_FILE_NAME
 
-sudo docker cp $DIR_PATH/$CONF_FILE_NAME $CONTAINER_NAME:$CONTAINER_BASE_PATH/$CONF_FILE_NAME
+sudo docker cp $DIR/$CONF_FILE_NAME $CONTAINER_NAME:$CONTAINER_BASE_DIR/$CONF_FILE_NAME
 
-chmod 600 $DIR_PATH/$CONF_FILE_NAME
+chmod 600 $DIR/$CONF_FILE_NAME
 
 sudo docker exec $CONTAINER_NAME /bin/bash -c "service prosody restart"

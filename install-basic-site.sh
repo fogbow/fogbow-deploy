@@ -7,16 +7,13 @@ DIR_PATH=$(pwd)
 CONF_FILES_DIR=$DIR_PATH/"conf-files"
 APACHE_CONF_FILES_DIR="apache-confs"
 HOSTS_CONF_FILE="hosts.conf"
-DOMAIN_NAMES_CONF_FILE="domain-names.conf"
 ANSIBLE_FILES_DIR=$DIR_PATH/"ansible-playbook"/$DEPLOY_DIR
 ANSIBLE_HOSTS_FILE=$ANSIBLE_FILES_DIR/"hosts"
 ANSIBLE_CFG_FILE=$ANSIBLE_FILES_DIR/"ansible.cfg"
 
-# Copy configuration files from templates
+# Copy hosts configuration file from template
 HOSTS_TEMPLATE_FILE="basic-site-hosts.conf"
 yes | cp -f $CONF_FILES_DIR/$HOSTS_TEMPLATE_FILE $CONF_FILES_DIR/$HOSTS_CONF_FILE
-DOMAIN_NAMES_TEMPLATE_FILE="basic-site-domain-names.conf"
-yes | cp -f $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAMES_TEMPLATE_FILE $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAMES_CONF_FILE
 
 # Generate content of Ansible hosts file
 
