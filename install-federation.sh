@@ -27,7 +27,7 @@ echo "Basic site ssh private key file path: $BASIC_SITE_PRIVATE_KEY_FILE_PATH"
 
 XMPP_HOST_IP_PATTERN="xmpp_host_ip"
 XMPP_HOST_IP=$(grep $XMPP_HOST_IP_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-echo "XMPP host ip: $XMPP_SITE_HOST_IP"
+echo "XMPP host ip: $XMPP_HOST_IP"
 
 XMPP_PRIVATE_KEY_FILE_PATH_PATTERN="xmpp_host_ssh_private_key_file"
 XMPP_PRIVATE_KEY_FILE_PATH=$(grep $XMPP_PRIVATE_KEY_FILE_PATH_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
