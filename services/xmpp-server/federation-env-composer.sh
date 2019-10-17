@@ -17,7 +17,7 @@ XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{pr
 yes | cp -f ./$XMPP_SERVER_DIR/$PROSODY_CONF_TEMPLATE ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
 
 echo "Manager XMPP ID: $BASIC_SITE_HOST_NAME"
-echo "Manager XMPP Password: $MANAGER_PASSWORD"
+echo "Manager XMPP Password: $XMPP_PASSWORD"
 
 # Adding comment to identify component credentials
 INSERT_LINE_PATTERN="--	component_secret = \"password\""
