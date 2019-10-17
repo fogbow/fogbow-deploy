@@ -26,7 +26,7 @@ CERTIFICATE_CHAIN_FILE_NAME=$(basename $CERTIFICATE_CHAIN_FILE_PATH)
 
 CERTS_DIR="/etc/ssl/certs"
 SSL_DIR="/etc/ssl/private"
-VIRTUAL_HOST_DIR="/etc/apache2/sites-enabled"
+VIRTUAL_HOST_DIR="/etc/apache2/sites-available"
 ROOT_DIR="/var/www/html"
 CONF_DIR="/etc/apache2"
 INDEX_FILE="index.html"
