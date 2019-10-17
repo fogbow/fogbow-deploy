@@ -13,9 +13,9 @@ ANSIBLE_HOSTS_FILE=$ANSIBLE_FILES_DIR/"hosts"
 ANSIBLE_CFG_FILE=$ANSIBLE_FILES_DIR/"ansible.cfg"
 
 # Copy configuration files from templates
-HOSTS_TEMPLATE_FILE="basic-site-hosts.conf"
+HOSTS_TEMPLATE_FILE="federation-hosts.conf"
 yes | cp -f $CONF_FILES_DIR/$HOSTS_TEMPLATE_FILE $CONF_FILES_DIR/$HOSTS_CONF_FILE
-DOMAIN_NAMES_TEMPLATE_FILE="basic-site-domain-names.conf"
+DOMAIN_NAMES_TEMPLATE_FILE="federation-domain-names.conf"
 yes | cp -f $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAMES_TEMPLATE_FILE $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAMES_CONF_FILE
 
 # Generate content of Ansible hosts file
@@ -28,6 +28,14 @@ BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_host_ssh_private_key_file"
 BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
 echo "Basic site ssh private key file path: $BASIC_SITE_PRIVATE_KEY_FILE_PATH"
 
+XMPP_HOST_IP_PATTERN="xmpp_host_ip"
+XMPP_HOST_IP=$(grep $XMPP_HOST_IP_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+echo "XMPP host ip: $XMPP_SITE_HOST_IP"
+
+XMPP_PRIVATE_KEY_FILE_PATH_PATTERN="xmpp_host_ssh_private_key_file"
+XMPP_PRIVATE_KEY_FILE_PATH=$(grep $XMPP_PRIVATE_KEY_FILE_PATH_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+echo "XMPP ssh private key file path: $XMPP_PRIVATE_KEY_FILE_PATH"
+
 echo "[localhost]" > $ANSIBLE_HOSTS_FILE
 echo "127.0.0.1" >> $ANSIBLE_HOSTS_FILE
 echo "" >> $ANSIBLE_HOSTS_FILE
@@ -35,6 +43,12 @@ echo "[basic-site-machine]" >> $ANSIBLE_HOSTS_FILE
 echo $BASIC_SITE_HOST_IP >> $ANSIBLE_HOSTS_FILE
 echo "[basic-site-machine:vars]" >> $ANSIBLE_HOSTS_FILE
 echo "ansible_ssh_private_key_file=$BASIC_SITE_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE
+echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE
+echo "" >> $ANSIBLE_HOSTS_FILE
+echo "[xmpp-machine]" >> $ANSIBLE_HOSTS_FILE
+echo $XMPP_HOST_IP >> $ANSIBLE_HOSTS_FILE
+echo "[xmpp-machine:vars]" >> $ANSIBLE_HOSTS_FILE
+echo "ansible_ssh_private_key_file=$XMPP_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE
 
 # Generate content of Ansible ansible.cfg file

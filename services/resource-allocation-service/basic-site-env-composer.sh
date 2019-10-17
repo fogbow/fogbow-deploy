@@ -3,27 +3,27 @@ DIR=$(pwd)
 BASE_DIR="services/resource-allocation-service"
 CONTAINER_BASE_DIR="/root/resource-allocation-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
+HOST_CONF_NAME="hosts.conf"
 RAS_CONF_NAME="ras.conf"
 CLOUDS_FILE_NAME="clouds"
+SHARED_INFO_FILE_NAME="shared.info"
+SERVICES_FILE_NAME="services.conf"
 CONF_FILES_DIR_NAME="conf-files"
 CONF_FILES_DIR=$DIR/$CONF_FILES_DIR_NAME
-CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
+SERVICE_CONF_FILES_DIR=$BASE_DIR/$CONF_FILES_DIR_NAME
 CONF_FILE_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME
-HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
+HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/$HOST_CONF_NAME
 SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
-SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared.info"
-DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-confs"/"domain-names.conf"
+SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO_FILE_NAME
 
 # Copy ras.conf
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME ./$CONF_FILES_PATH/$RAS_CONF_NAME
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME ./$SERVICE_CONF_FILES_DIR/$RAS_CONF_NAME
 # Copy clouds directory
-yes | cp -fr $DIR/$CONF_FILES_DIR_NAME/$CLOUDS_FILE_NAME ./$CONF_FILES_PATH
+yes | cp -fr $DIR/$CONF_FILES_DIR_NAME/$CLOUDS_FILE_NAME ./$SERVICE_CONF_FILES_DIR
 # Copy services file
-SERVICES_FILE="services.conf"
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE ./$CONF_FILES_PATH/$SERVICES_FILE
+yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE_NAME ./$SERVICE_CONF_FILES_DIR/$SERVICES_FILE_NAME
 # Copy shared file
-SHARED_INFO="shared.info"
-yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
+yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO_FILE_NAME ./$SERVICE_CONF_FILES_DIR/$SHARED_INFO_FILE_NAME
 
 # Configuring application.properties file
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
@@ -52,9 +52,9 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
 # Configuring ras.conf file
 # Create key pair
 echo "" >> $CONF_FILE_PATH
-PRIVATE_KEY_PATH=$CONF_FILES_PATH/"id_rsa"
-PUBLIC_KEY_PATH=$CONF_FILES_PATH/"id_rsa.pub"
-RSA_KEY_PATH=$CONF_FILES_PATH/"rsa_key.pem"
+PRIVATE_KEY_PATH=$SERVICE_CONF_FILES_DIR/"id_rsa"
+PUBLIC_KEY_PATH=$SERVICE_CONF_FILES_DIR/"id_rsa.pub"
+RSA_KEY_PATH=$SERVICE_CONF_FILES_DIR/"rsa_key.pem"
 
 openssl genrsa -out $RSA_KEY_PATH 2048
 openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
@@ -65,17 +65,14 @@ rm $RSA_KEY_PATH
 echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_PATH
 echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_PATH
 
-# Fill local_member_id properties (xmpp_jid)
-BASIC_SITE_DOMAIN_NAME_PATTERN="ras_domain_name"
-APACHE_CONF_FILES_DIR="apache-confs"
-DOMAIN_NAME_CONF_FILE="domain-names.conf"
-DOMAIN_NAME=$(grep -w $BASIC_SITE_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
-DOMAIN_BASENAME=`basename $(dirname $DOMAIN_NAME)`
+# Fill basic_site_host_name properties (xmpp_jid)
+BASIC_SITE_HOST_NAME_PATTERN="basic_site_host_name"
+BASIC_SITE_HOST_NAME=$(grep $BASIC_SITE_HOST_NAME_PATTERN $CONF_FILES_DIR/$HOST_CONF_NAME | awk -F "=" '{print $2}')
 
-echo "" >> $CONF_FILES_PATH/$RAS_CONF_NAME
-echo "xmpp_jid=$DOMAIN_BASENAME" >> $CONF_FILES_PATH/$RAS_CONF_NAME
+echo "" >> $SERVICE_CONF_FILES_DIR/$RAS_CONF_NAME
+echo "xmpp_jid=$BASIC_SITE_HOST_NAME" >> $SERVICE_CONF_FILES_DIR/$RAS_CONF_NAME
 
-# Fill AS infos
+# Fill AS info
 echo "" >> $CONF_FILE_PATH
 BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
 BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
