@@ -1,4 +1,4 @@
-- hosts: basic-site-machine
+- hosts: xmpp-machine
   vars:
     script_name: start-services-on-xmpp-machine-after-startup
     source_dir: ../../scripts
