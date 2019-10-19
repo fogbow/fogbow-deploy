@@ -19,10 +19,6 @@ sudo docker pull $IMAGE_NAME:$TAG
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 
-echo "Xmpp S2S port: $S2S_PORT"
-echo "Xmpp C2S port: $C2S_PORT"
-echo "Xmpp C2C port: $C2C_PORT"
-
 sudo docker run -tdi --name $CONTAINER_NAME \
 	-p 5269:5269 \
 	-p 5347:5347 \

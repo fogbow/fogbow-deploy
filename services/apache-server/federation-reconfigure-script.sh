@@ -24,7 +24,7 @@ q
 
 ed -s $INDEX_FILE <<!
 /8082
--2,+2t+2
+-2,+2t+3
 -2
 s,8082,8083
 s,Resource allocation,Membership

@@ -6,23 +6,19 @@ DEPLOY_DIR="basic-site"
 DIR_PATH=$(pwd)
 CONF_FILES_DIR=$DIR_PATH/"conf-files"
 APACHE_CONF_FILES_DIR="apache-confs"
-HOSTS_CONF_FILE="hosts.conf"
+BASIC_SITE_CONF_FILE="basic-site.conf"
 ANSIBLE_FILES_DIR=$DIR_PATH/"ansible-playbook"/$DEPLOY_DIR
 ANSIBLE_HOSTS_FILE=$ANSIBLE_FILES_DIR/"hosts"
 ANSIBLE_CFG_FILE=$ANSIBLE_FILES_DIR/"ansible.cfg"
 
-# Copy hosts configuration file from template
-HOSTS_TEMPLATE_FILE="basic-site-hosts.conf"
-yes | cp -f $CONF_FILES_DIR/$HOSTS_TEMPLATE_FILE $CONF_FILES_DIR/$HOSTS_CONF_FILE
-
 # Generate content of Ansible hosts file
 
 BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
-BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE | awk -F "=" '{print $2}')
 echo "Basic site host ip: $BASIC_SITE_HOST_IP"
 
 BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_host_ssh_private_key_file"
-BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE | awk -F "=" '{print $2}')
 echo "Basic site ssh private key file path: $BASIC_SITE_PRIVATE_KEY_FILE_PATH"
 
 echo "[localhost]" > $ANSIBLE_HOSTS_FILE
@@ -37,7 +33,7 @@ echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE
 # Generate content of Ansible ansible.cfg file
 
 REMOTE_USER_PATTERN="^remote_user"
-REMOTE_USER=$(grep $REMOTE_USER_PATTERN $CONF_FILES_DIR/$HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE | awk -F "=" '{print $2}')
 echo "Remote user: $REMOTE_USER"
 
 echo "[defaults]" > $ANSIBLE_CFG_FILE

@@ -7,10 +7,10 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName basic_site_host_name
+    ServerName provider_id
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-    Redirect permanent / https://basic_site_host_name/
+    Redirect permanent / https://provider_id/
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
@@ -24,7 +24,7 @@
 
 <IfModule mod_ssl.c>
     <VirtualHost *:443>
-        ServerName basic_site_host_name
+        ServerName provider_id
         ServerAdmin webmaster@localhost
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined

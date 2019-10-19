@@ -4,7 +4,7 @@ BASE_DIR="services/authentication-service"
 CONTAINER_BASE_DIR="/root/authentication-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 CONF_FILES_DIR_NAME="conf-files"
-HOST_CONF_NAME="hosts.conf"
+BASIC_SITE_CONF_FILE_NAME="basic_site.conf"
 AS_CONF_NAME="as.conf"
 SERVICES_FILE_NAME="services.conf"
 SHARED_INFO_FILE_NAME="shared.info"
@@ -23,12 +23,12 @@ yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE_NAME $SERVICE_CONF_FILES_DI
 APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
 yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
 
-# Fill basic_site_host_name properties (xmpp_jid)
-BASIC_SITE_HOST_NAME_PATTERN="basic_site_host_name"
-BASIC_SITE_HOST_NAME=$(grep $BASIC_SITE_HOST_NAME_PATTERN $CONF_FILES_DIR/$HOST_CONF_NAME | awk -F "=" '{print $2}')
+# Fill provider_id property
+PROVIDER_ID_PATTERN="provider_id"
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 echo "" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
-echo "xmpp_jid=$BASIC_SITE_HOST_NAME" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
+echo "provider_id=$PROVIDER_ID" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
 
 # Create key pair
 echo "" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
