@@ -1,7 +1,9 @@
 #!/bin/bash
 SERVICE="fogbow-database"
-SECRETS_FILE_PATH="./conf-files/secrets"
-SERVICES_CONF_FILE_PATH="./services.conf"
+CONF_FILES_DIR_PATH="./conf-files"
+SECRETS_FILE_PATH=$CONF_FILES_DIR_PATH/"secrets"
+SERVICES_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"services.conf"
+
 CONTAINER_DATA_DIR_PATH="/var/lib/postgresql/data"
 DB_DATA_DIR_PATH="./data"
 RAS_DB_NAME=ras
