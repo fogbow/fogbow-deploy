@@ -16,6 +16,7 @@
   vars:
     services_path: ../../services
     ms_dir_name: membership-service
+    ras_dir_name: resource-allocation-service
     conf_files_secrets: conf_files/secrets
     fogbow_components: ~/fogbow-components/
   tasks:
