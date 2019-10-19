@@ -66,7 +66,7 @@ echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rs
 echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_PATH
 
 # Fill basic_site_host_name properties (xmpp_jid)
-PROVIDER_ID_PATTERN="basic_site_host_name"
+PROVIDER_ID_PATTERN="provider_id"
 PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 echo "" >> $SERVICE_CONF_FILES_DIR/$RAS_CONF_NAME
