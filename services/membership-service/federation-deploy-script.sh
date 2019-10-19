@@ -1,6 +1,6 @@
 #!/bin/bash
 CURRENT_DIR_PATH=$(pwd)
-SERVICE="authentication-service"
+SERVICE="membership-service"
 CONF_FILES_DIR_PATH=$CURRENT_DIR_PATH/"conf-files"
 SERVICES_CONF_FILE_NAME="services.conf"
 SHARED_INFO_FILE_PATH=$CONF_FILES_DIR_PATH/"shared.info"
@@ -12,8 +12,8 @@ LOG4F_FILE_NAME="log4j.properties"
 IMAGE_NAME="fogbow/"$SERVICE
 CONTAINER_NAME=$SERVICE
 
-SERVER_PORT_PATTERN="^as_port"
-AS_PORT=$(grep $SERVER_PORT_PATTERN $SHARED_INFO_FILE_PATH | awk -F "=" '{print $2}')
+SERVER_PORT_PATTERN="^ms_port"
+MS_PORT=$(grep $SERVER_PORT_PATTERN $SHARED_INFO_FILE_PATH | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 TAG=$(grep $IMAGE_BASE_NAME $CONF_FILES_DIR_PATH/$SERVICES_CONF_FILE_NAME | awk -F "=" '{print $2}')
@@ -28,16 +28,16 @@ sudo docker pull $IMAGE_NAME:$TAG
 
 sudo docker run -idt \
 	--name $CONTAINER_NAME \
-	-p $AS_PORT:8080 \
+	-p $MS_PORT:8080 \
 	-v $CONF_FILES_DIR_PATH:$CONTAINER_CONF_FILES_DIR_PATH \
 	-v $CURRENT_DIR_PATH/$LOG4F_FILE_NAME:$CONTAINER_BASE_PATH/$LOG4F_FILE_NAME \
 	-v $CURRENT_DIR_PATH/$APPLICATION_CONF_FILE_NAME:$CONTAINER_RESOURCES_PATH/$APPLICATION_CONF_FILE_NAME \
 	$IMAGE_NAME:$TAG
 
-# Add build value into as.conf
+# Add build value into ms.conf
 BUILD_FILE_NAME="build"
-AS_CONF_FILE_PATH="src/main/resources/private/as.conf"
-sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $AS_CONF_FILE_PATH"
+MS_CONF_PATH="src/main/resources/private/ms.conf"
+sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $MS_CONF_PATH"
 
-# Run AS
+# Run MS
 sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &

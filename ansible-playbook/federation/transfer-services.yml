@@ -1,0 +1,28 @@
+---
+- hosts: xmpp-machine
+  vars:
+    services_path: ../../services
+    xmpp_dir_name: xmpp-server
+    fogbow_components: ~/fogbow-components/
+  tasks:
+    - name: Copying xmpp-server to xmpp-machine
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+      with_items:
+        - "{{ services_path }}/{{ xmpp_dir_name }}"
+
+- hosts: basic-site-machine
+  vars:
+    services_path: ../../services
+    ms_dir_name: membership-service
+    ras_dir_name: resource-allocation-service
+    fogbow_components: ~/fogbow-components/
+  tasks:
+    - name: Copying MS service components
+      copy:
+        src: "{{ item }}"
+        dest: "{{ fogbow_components }}"
+      with_items:
+        - "{{ services_path }}/{{ ms_dir_name }}"
+        - "{{ services_path }}/{{ ras_dir_name }}"

@@ -2,18 +2,24 @@
 
 # Set path variables
 
-BASIC_SITE_CONF_FILE_PATH="./conf-files/basic-site.conf"
-ANSIBLE_FILES_DIR_PATH="./ansible-playbook/basic-site"
+FEDERATION_CONF_FILE_PATH="./conf-files/federation.conf"
+ANSIBLE_FILES_DIR_PATH="./ansible-playbook/federation"
 ANSIBLE_HOSTS_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"hosts"
 ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
 
 # Generate content of Ansible hosts file
 
 BASIC_SITE_IP_PATTERN="basic_site_ip"
-BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_ssh_private_key_file"
-BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
+
+XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
+XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PATTERN $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
+
+XMPP_PRIVATE_KEY_FILE_PATH_PATTERN="xmpp_server_ssh_private_key_file"
+XMPP_PRIVATE_KEY_FILE_PATH=$(grep $XMPP_PRIVATE_KEY_FILE_PATH_PATTERN $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 echo "[localhost]" > $ANSIBLE_HOSTS_FILE_PATH
 echo "127.0.0.1" >> $ANSIBLE_HOSTS_FILE_PATH
@@ -23,11 +29,17 @@ echo $BASIC_SITE_IP >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[basic-site-machine:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_ssh_private_key_file=$BASIC_SITE_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[xmpp-machine]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo $XMPP_SERVER_IP >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[xmpp-machine:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "ansible_ssh_private_key_file=$XMPP_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 
 # Generate content of Ansible ansible.cfg file
 
 REMOTE_USER_PATTERN="^remote_user"
-REMOTE_USER=$(grep $REMOTE_USER_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 echo "[defaults]" > $ANSIBLE_CFG_FILE_PATH
 echo "inventory = hosts" >> $ANSIBLE_CFG_FILE_PATH

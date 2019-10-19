@@ -4,8 +4,9 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     ras_dir_name: resource-allocation-service
     as_dir_name: authentication-service
+    apache_server_dir_name: apache-server
   tasks:
-    - name: Removing previously installed RAS and AS if applied
+    - name: Removing previously installed RAS, AS and Apache if applied
       become: yes
       file:
         state: absent
@@ -13,3 +14,4 @@
       with_items:
         - "{{ fogbow_components }}/{{ ras_dir_name }}"
         - "{{ fogbow_components }}/{{ as_dir_name }}"
+        - "{{ fogbow_components }}/{{ apache_server_dir_name }}"

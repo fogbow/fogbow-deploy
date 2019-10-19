@@ -1,0 +1,24 @@
+---
+- hosts: xmpp-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    xmpp_server: "xmpp-server"
+  tasks:
+    - name: Removing xmpp-server
+      become: yes
+      file:
+        state: absent
+        path: "{{ fogbow_components }}/{{ xmpp_server }}"
+
+- hosts: basic-site-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    ms_dir_name: membership-service
+  tasks:
+    - name: Removing previously installed MS if applied
+      become: yes
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ ms_dir_name }}"

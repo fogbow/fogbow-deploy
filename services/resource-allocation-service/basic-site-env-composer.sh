@@ -1,60 +1,68 @@
 #!/bin/bash
-DIR=$(pwd)
-BASE_DIR="services/resource-allocation-service"
-CONTAINER_BASE_DIR="/root/resource-allocation-service"
+
+SERVICE="resource-allocation-service"
+CONF_FILE_NAME="ras.conf"
+CLOUDS_DIR_NAME="clouds"
+SHARED_INFO_FILE_NAME="shared.info"
+SERVICES_CONF_FILE_NAME="services.conf"
+APPLICATION_PROPERTIES_FILE_NAME="application.properties"
+BASIC_SITE_CONF_FILE_NAME="basic-site.conf"
+SECRETS_FILE_NAME="secrets"
+CONF_FILE_TEMPLATE_DIR_PATH="./conf-files/"
+BASE_DIR_PATH="services/"$SERVICE
+CONF_FILE_DIR_PATH=$BASE_DIR_PATH/"conf-files"
+CONTAINER_BASE_DIR_PATH="/root"/$SERVICE
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
-RAS_CONF_NAME="ras.conf"
-CLOUDS_FILE_NAME="clouds"
-CONF_FILES_DIR_NAME="conf-files"
-CONF_FILES_DIR=$DIR/$CONF_FILES_DIR_NAME
-CONF_FILES_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME
-CONF_FILE_PATH=$BASE_DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME
-HOSTS_CONF_FILE=$DIR/$CONF_FILES_DIR_NAME/"hosts.conf"
-SECRETS_FILE=$DIR/$CONF_FILES_DIR_NAME/"secrets"
-SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/"shared.info"
-DOMAIN_NAMES_FILE=$DIR/$CONF_FILES_DIR_NAME/"apache-confs"/"domain-names.conf"
 
-# Copy ras.conf
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$RAS_CONF_NAME ./$CONF_FILES_PATH/$RAS_CONF_NAME
-# Copy clouds directory
-yes | cp -fr $DIR/$CONF_FILES_DIR_NAME/$CLOUDS_FILE_NAME ./$CONF_FILES_PATH
-# Copy services file
-SERVICES_FILE="services.conf"
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE ./$CONF_FILES_PATH/$SERVICES_FILE
-# Copy shared file
-SHARED_INFO="shared.info"
-yes | cp -f $DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO ./$CONF_FILES_PATH/$SHARED_INFO
+# Copy configuration files
+mkdir -p $CONF_FILE_DIR_PATH
+## Copy ras.conf
+yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+## Copy clouds directory
+yes | cp -fr $CONF_FILE_TEMPLATE_DIR_PATH/$CLOUDS_DIR_NAME $CONF_FILE_DIR_PATH
+## Copy shared info
+yes | cp -f "./services"/$SHARED_INFO_FILE_NAME $CONF_FILE_DIR_PATH/$SHARED_INFO_FILE_NAME
+## Copy services file
+yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$SERVICES_CONF_FILE_NAME $CONF_FILE_DIR_PATH/$SERVICES_CONF_FILE_NAME
+## Copy application.properties file
+yes | cp -f $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".example" $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 
-# Configuring application.properties file
-APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
-yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
+# Edit configuration files
 
-BASIC_SITE_HOST_PRIVATE_IP_PATTERN="basic_site_host_ip"
-BASIC_SITE_HOST_PRIVATE_IP=$(grep $BASIC_SITE_HOST_PRIVATE_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
+## Edit application.properties
+
+BASIC_SITE_IP_PATTERN="basic_site_ip"
+BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 JDBC_PREFIX="jdbc:postgresql:"
 DB_PORT="5432"
 RAS_DB_ENDPOINT="ras"
 
 DB_URL_PROPERTY="spring.datasource.url"
-DB_URL=$JDBC_PREFIX"//"$BASIC_SITE_HOST_PRIVATE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
-echo "" >> $APPLICATION_CONF_FILE
-echo "$DB_URL_PROPERTY=$DB_URL" >> $APPLICATION_CONF_FILE
+DB_URL=$JDBC_PREFIX"//"$BASIC_SITE_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
+echo "" >> $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
+echo "$DB_URL_PROPERTY=$DB_URL" >> $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 
 DB_USERNAME="fogbow"
 DB_USERNAME_PATTERN="spring.datasource.username"
-echo "$DB_USERNAME_PATTERN=$DB_USERNAME" >> $APPLICATION_CONF_FILE
+echo "$DB_USERNAME_PATTERN=$DB_USERNAME" >> $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 
-GENERAL_PASSWORD_PATTERN="^db_password"
-DB_PASSWORD=$(grep $GENERAL_PASSWORD_PATTERN $SECRETS_FILE | awk -F "=" '{print $2}')
+PASSWORD_PATTERN="^db_password"
+DB_PASSWORD=$(grep $PASSWORD_PATTERN $CONF_FILE_DIR_PATH/$SECRETS_FILE_NAME | awk -F "=" '{print $2}')
 DB_PASSWORD_PATTERN="spring.datasource.password"
-echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $APPLICATION_CONF_FILE
+echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 
-# Configuring ras.conf file
-# Create key pair
-echo "" >> $CONF_FILE_PATH
-PRIVATE_KEY_PATH=$CONF_FILES_PATH/"id_rsa"
-PUBLIC_KEY_PATH=$CONF_FILES_PATH/"id_rsa.pub"
-RSA_KEY_PATH=$CONF_FILES_PATH/"rsa_key.pem"
+## Edit ras.conf
+
+PROVIDER_ID_PATTERN="provider_id"
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
+
+echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "provider_id=$PROVIDER_ID" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+
+echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+PRIVATE_KEY_PATH=$CONF_FILE_DIR_PATH/"id_rsa"
+PUBLIC_KEY_PATH=$CONF_FILE_DIR_PATH/"id_rsa.pub"
+RSA_KEY_PATH=$CONF_FILE_DIR_PATH/"rsa_key.pem"
 
 openssl genrsa -out $RSA_KEY_PATH 2048
 openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
@@ -62,29 +70,15 @@ openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
 chmod 600 $PRIVATE_KEY_PATH
 rm $RSA_KEY_PATH
 
-echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_PATH
-echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_PATH
+echo "public_key_file_path="$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "private_key_file_path="$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 
-# Fill local_member_id properties (xmpp_jid)
-BASIC_SITE_DOMAIN_NAME_PATTERN="ras_domain_name"
-APACHE_CONF_FILES_DIR="apache-confs"
-DOMAIN_NAME_CONF_FILE="domain-names.conf"
-DOMAIN_NAME=$(grep -w $BASIC_SITE_DOMAIN_NAME_PATTERN $CONF_FILES_DIR/$APACHE_CONF_FILES_DIR/$DOMAIN_NAME_CONF_FILE | awk -F "=" '{print $2}')
-DOMAIN_BASENAME=`basename $(dirname $DOMAIN_NAME)`
-
-echo "" >> $CONF_FILES_PATH/$RAS_CONF_NAME
-echo "xmpp_jid=$DOMAIN_BASENAME" >> $CONF_FILES_PATH/$RAS_CONF_NAME
-
-# Fill AS infos
-echo "" >> $CONF_FILE_PATH
-BASIC_SITE_HOST_IP_PATTERN="basic_site_host_ip"
-BASIC_SITE_HOST_IP=$(grep $BASIC_SITE_HOST_IP_PATTERN $HOSTS_CONF_FILE | awk -F "=" '{print $2}')
-
+# Fill AS info
 PROTOCOL="http://"
-echo "as_url=$PROTOCOL$BASIC_SITE_HOST_IP" >> $CONF_FILE_PATH
-AS_PORT=$(grep ^as_port $SHARED_INFO_FILE | awk -F "=" '{print $2}')
-echo "as_port=$AS_PORT" >> $CONF_FILE_PATH
+echo "as_url=$PROTOCOL$BASIC_SITE_IP" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+AS_PORT=$(grep ^as_port $CONF_FILE_DIR_PATH/$SHARED_INFO_FILE_NAME | awk -F "=" '{print $2}')
+echo "as_port=$AS_PORT" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 
 # Timestamp Database URL
-echo "" >> $CONF_FILE_PATH
-echo "jdbc_database_url=jdbc:sqlite:/root/resource-allocation-service/ras.db" >> $CONF_FILE_PATH
+echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "jdbc_database_url=jdbc:sqlite:/root/resource-allocation-service/ras.db" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME

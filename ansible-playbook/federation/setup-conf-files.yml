@@ -3,7 +3,7 @@
   connection: local
   vars:
     script_runner: sh start-env-composers.sh
-    script_path: ../../scripts/basic-site
+    script_path: ../../scripts/federation
   tasks:
     - name: Setting up configuration files
       shell: "{{ script_runner }}"
