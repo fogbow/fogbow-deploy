@@ -15,7 +15,7 @@ XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{
 sudo docker cp $CONTAINER_NAME:$ROOT_DIR_PATH/$RAS_CONF_FILE_NAME $TMP_RAS_CONF_FILE_NAME"
 sudo chown ubuntu.ubuntu $TMP_RAS_CONF_FILE_NAME
 
-ed -s $TMP_RAS_CONF_FILE_PATH <<!
+ed -s $TMP_RAS_CONF_FILE_NAME <<!
 /false
 s,false,true
 i
@@ -26,12 +26,12 @@ w
 q
 !
 
-sed -i "s|xmpp_password=|xmpp_password=$XMPP_PASSWORD|g" $TMP_RAS_CONF_FILE_PATH
-sed -i "s|xmpp_server_ip=|xmpp_server_ip=$XMPP_SERVER_IP|g" $TMP_RAS_CONF_FILE_PATH
+sed -i "s|xmpp_password=|xmpp_password=$XMPP_PASSWORD|g" $TMP_RAS_CONF_FILE_NAME
+sed -i "s|xmpp_server_ip=|xmpp_server_ip=$XMPP_SERVER_IP|g" $TMP_RAS_CONF_FILE_NAME
 
 sudo docker stop $CONTAINER_NAME
 sudo docker start $CONTAINER_NAME
-sudo docker cp $TMP_RAS_CONF_FILE_PATH $CONTAINER_NAME:$CONTAINER_CONF_DIR_PATH/$RAS_CONF_FILE_NAME
+sudo docker cp $TMP_RAS_CONF_FILE_NAME $CONTAINER_NAME:$CONTAINER_CONF_DIR_PATH/$RAS_CONF_FILE_NAME
 
 rm $TMP_RAS_CONF_FILE_NAME
 
