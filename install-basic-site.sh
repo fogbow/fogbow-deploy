@@ -11,11 +11,9 @@ ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
 
 BASIC_SITE_IP_PATTERN="basic_site_ip"
 BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
-echo "Basic site host ip: $BASIC_SITE_IP"
 
 BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_ssh_private_key_file"
 BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
-echo "Basic site ssh private key file path: $BASIC_SITE_PRIVATE_KEY_FILE_PATH"
 
 echo "[localhost]" > $ANSIBLE_HOSTS_FILE_PATH
 echo "127.0.0.1" >> $ANSIBLE_HOSTS_FILE_PATH
@@ -30,7 +28,6 @@ echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 
 REMOTE_USER_PATTERN="^remote_user"
 REMOTE_USER=$(grep $REMOTE_USER_PATTERN $BASIC_SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
-echo "Remote user: $REMOTE_USER"
 
 echo "[defaults]" > $ANSIBLE_CFG_FILE_PATH
 echo "inventory = hosts" >> $ANSIBLE_CFG_FILE_PATH
