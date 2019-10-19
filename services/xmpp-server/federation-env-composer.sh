@@ -1,39 +1,38 @@
 #!/bin/bash
-DIR=$(pwd)
-FEDERATION_CONF_FILE_NAME="federation.conf"
-CONF_FILES_DIR=$DIR/"conf-files"
-SECRETS_FILE_PATH=$CONF_FILES_DIR/"secrets"
 
-XMPP_SERVER_DIR="services/xmpp-server"
-PROSODY_CONF_TEMPLATE="prosody.cfg.lua.example"
-PROSODY_CONF_FILE="prosody.cfg.lua"
+SERVICE="xmpp-server"
+SERVICES_CONF_FILE_NAME="services.conf"
+CONF_FILE_TEMPLATE_DIR_PATH="./conf-files/"
+BASE_DIR_PATH="services/"$SERVICE
+CONF_FILE_DIR_PATH=$BASE_DIR_PATH/"conf-files"
+FEDERATION_CONF_FILE_NAME="federation.conf"
+SECRETS_FILE_PATH=$CONF_FILE_DIR_PATH/"secrets"
+PROSODY_CONF_TEMPLATE_FILE_NAME="prosody.cfg.lua.example"
+PROSODY_CONF_FILE_NAME="prosody.cfg.lua"
+
+# Copy configuration files
+mkdir -p $CONF_FILE_DIR_PATH
+## Copy services file
+yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$SERVICES_CONF_FILE_NAME $CONF_FILE_DIR_PATH/$SERVICES_CONF_FILE_NAME
 
 PROVIDER_ID_PATTERN="provider_id"
-PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILES_DIR/$FEDERATION_CONF_FILE_NAME | awk -F "=" '{print $2}')
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$FEDERATION_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 XMPP_PASSWORD_PATTERN="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{print $2}')
 
-yes | cp -f ./$XMPP_SERVER_DIR/$PROSODY_CONF_TEMPLATE ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
-
-echo "Manager XMPP ID: $PROVIDER_ID"
+yes | cp -f ./$BASE_DIR_PATH/$PROSODY_CONF_TEMPLATE_FILE_NAME ./$BASE_DIR_PATH/$PROSODY_CONF_FILE_NAME
 
 # Adding comment to identify component credentials
 INSERT_LINE_PATTERN="--	component_secret = \"password\""
 COMPONENT_COMMENT="-- Manager Component"
 
-sed -i "/$INSERT_LINE_PATTERN/a $COMPONENT_COMMENT" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
+sed -i "/$INSERT_LINE_PATTERN/a $COMPONENT_COMMENT" ./$BASE_DIR_PATH/$PROSODY_CONF_FILE_NAME
 
 # Adding component domain
 COMPONENT_DOMAIN="Component \"ras-$PROVIDER_ID\""
-sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
+sed -i "/$COMPONENT_COMMENT/a $COMPONENT_DOMAIN" ./$BASE_DIR_PATH/$PROSODY_CONF_FILE_NAME
 
 # Adding component password
 COMPONENT_PASSWORD="\ \ \ \ \ \ \ \ component_secret = \"$XMPP_PASSWORD\""
-sed -i "/$COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$XMPP_SERVER_DIR/$PROSODY_CONF_FILE
-
-# Copying service.conf file
-echo "Copying services.conf to service directory"
-SERVICES_FILE="services.conf"
-
-yes | cp -f $CONF_FILES_DIR/$SERVICES_FILE $XMPP_SERVER_DIR/$SERVICES_FILE
+sed -i "/$COMPONENT_DOMAIN/a $COMPONENT_PASSWORD" ./$BASE_DIR_PATH/$PROSODY_CONF_FILE_NAME

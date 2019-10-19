@@ -1,33 +1,37 @@
 #!/bin/bash
-DIR=$(pwd)
-CONTAINER_BASE_DIR="/root/membership-service"
-PROJECT_RESOURCES_DIR="src/main/resources/private"
-LOG4J_FILE_NAME="log4j.properties"
-CONF_FILE_NAME="ms.conf"
-SHARED_INFO_PATH=$DIR/"shared.info"
-IMAGE_NAME="fogbow/membership-service"
-CONTAINER_NAME="membership-service"
+CURRENT_DIR_PATH=$(pwd)
+SERVICE="membership-service"
+CONF_FILES_DIR_PATH=$CURRENT_DIR_PATH/"conf-files"
+SERVICES_CONF_FILE_NAME="services.conf"
+SHARED_INFO_FILE_PATH=$CONF_FILES_DIR_PATH/"shared.info"
+APPLICATION_CONF_FILE_NAME="application.properties"
+CONTAINER_BASE_PATH="/root/"$SERVICE
+CONTAINER_RESOURCES_PATH=$CONTAINER_BASE_PATH/src/main/resources
+CONTAINER_CONF_FILES_DIR_PATH=$CONTAINER_RESOURCES_PATH/"private"
+LOG4F_FILE_NAME="log4j.properties"
+IMAGE_NAME="fogbow/"$SERVICE
+CONTAINER_NAME=$SERVICE
 
-MS_PORT=$(grep ^ms_port $SHARED_INFO_PATH | awk -F "=" '{print $2}')
+SERVER_PORT_PATTERN="^ms_port"
+MS_PORT=$(grep $SERVER_PORT_PATTERN $SHARED_INFO_FILE_PATH | awk -F "=" '{print $2}')
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
-SERVICES_CONF=services.conf
-TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+TAG=$(grep $IMAGE_BASE_NAME $CONF_FILES_DIR_PATH/$SERVICES_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 if [ -z ${TAG// } ]; then
 	TAG="latest"
 fi
 
-echo "Membership port: $MEMBERSHIP_HOST_PORT"
-
 sudo docker stop $CONTAINER_NAME
 sudo docker rm $CONTAINER_NAME
 sudo docker pull $IMAGE_NAME:$TAG
 
-sudo docker run -idt --name $CONTAINER_NAME \
+sudo docker run -idt \
+	--name $CONTAINER_NAME \
 	-p $MS_PORT:8080 \
-	-v $DIR/$CONF_FILE_NAME:$CONTAINER_BASE_DIR/$PROJECT_RESOURCES_DIR/$CONF_FILE_NAME \
-	-v $DIR/$LOG4J_FILE_NAME:$CONTAINER_BASE_DIR/$LOG4J_FILE_NAME:ro \
+	-v $CONF_FILES_DIR_PATH:$CONTAINER_CONF_FILES_DIR_PATH \
+	-v $CURRENT_DIR_PATH/$LOG4F_FILE_NAME:$CONTAINER_BASE_PATH/$LOG4F_FILE_NAME \
+	-v $CURRENT_DIR_PATH/$APPLICATION_CONF_FILE_NAME:$CONTAINER_RESOURCES_PATH/$APPLICATION_CONF_FILE_NAME \
 	$IMAGE_NAME:$TAG
 
 # Add build value into ms.conf

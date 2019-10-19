@@ -39,5 +39,5 @@ BUILD_FILE_NAME="build"
 AS_CONF_FILE_PATH="src/main/resources/private/as.conf"
 sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $AS_CONF_FILE_PATH"
 
-# Run FNS
+# Run AS
 sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
