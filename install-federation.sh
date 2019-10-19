@@ -53,7 +53,7 @@ echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
 # Deploy
 
-(cd $ANSIBLE_FILES_DIR && ansible-playbook deploy.yml)
+(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
 
 # House keeping
 
