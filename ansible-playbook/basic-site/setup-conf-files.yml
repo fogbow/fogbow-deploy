@@ -9,7 +9,3 @@
       shell: "{{ script_runner }}"
       args:
         chdir: "{{ script_path }}"
-      register: setup_conf_files_result
-    
-    - debug:
-        var: setup_conf_files_result.stdout_lines
