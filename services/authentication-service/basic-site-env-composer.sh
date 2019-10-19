@@ -9,7 +9,7 @@ BASIC_SITE_CONF_FILE_NAME="basic-site.conf"
 CONF_FILE_TEMPLATE_DIR_PATH="./conf-files/"
 BASE_DIR_PATH="services/"$SERVICE
 CONF_FILE_DIR_PATH=$BASE_DIR_PATH/"conf-files"
-CONTAINER_BASE_DIR="/root/authentication-service"
+CONTAINER_BASE_DIR_PATH="/root"/$SERVICE
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
 # Copy configuration files
@@ -21,7 +21,7 @@ yes | cp -f "./services"/$SHARED_INFO_FILE_NAME $CONF_FILE_DIR_PATH/$SHARED_INFO
 ## Copy services file
 yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$SERVICES_CONF_FILE_NAME $CONF_FILE_DIR_PATH/$SERVICES_CONF_FILE_NAME
 ## Copy application.properties file
-yes | cp -f $BASE_DIR/$APPLICATION_PROPERTIES_FILE_NAME".example" $BASE_DIR/$APPLICATION_PROPERTIES_FILE_NAME
+yes | cp -f $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".example" $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 
 # Edit configuration files
 
@@ -44,5 +44,5 @@ openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
 chmod 600 $PRIVATE_KEY_PATH
 rm $RSA_KEY_PATH
 
-echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
-echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "public_key_file_path="$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "private_key_file_path="$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
