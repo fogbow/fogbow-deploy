@@ -1,40 +1,42 @@
 #!/bin/bash
-DIR=$(pwd)
-BASE_DIR="services/authentication-service"
+
+SERVICE="authentication-service"
+CONF_FILE_NAME="as.conf"
+SHARED_INFO_FILE_NAME="shared.info"
+SERVICES_CONF_FILE_NAME="services.conf"
+APPLICATION_PROPERTIES_FILE_NAME="application.properties"
+BASIC_SITE_CONF_FILE_NAME="basic-site.conf"
+CONF_FILE_TEMPLATE_DIR_PATH="./conf-files/"
+BASE_DIR_PATH="services/"$SERVICE
+CONF_FILE_DIR_PATH=$BASE_DIR_PATH/"conf-files"
 CONTAINER_BASE_DIR="/root/authentication-service"
 CONTAINER_CONF_FILES_DIR="src/main/resources/private"
-CONF_FILES_DIR_NAME="conf-files"
-BASIC_SITE_CONF_FILE_NAME="basic-site.conf"
-AS_CONF_NAME="as.conf"
-SERVICES_FILE_NAME="services.conf"
-SHARED_INFO_FILE_NAME="shared.info"
-CONF_FILES_DIR=$DIR/$CONF_FILES_DIR_NAME
-SERVICE_CONF_FILES_DIR=$BASE_DIR/$CONF_FILES_DIR_NAME
-SHARED_INFO_FILE=$DIR/"services"/$CONF_FILES_DIR_NAME/$SHARED_INFO_FILE_NAME
 
-# Copy as.conf
-mkdir -p $SERVICE_CONF_FILES_DIR
-yes | cp -f $CONF_FILES_DIR/$AS_CONF_NAME $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
-# Copy shared info
-yes | cp -f $SHARED_INFO_FILE $SERVICE_CONF_FILES_DIR/$SHARED_INFO_FILE_NAME
-# Copy services file
-yes | cp -f $DIR/$CONF_FILES_DIR_NAME/$SERVICES_FILE_NAME $SERVICE_CONF_FILES_DIR/$SERVICES_FILE_NAME
-# Copy application.properties file
-APPLICATION_CONF_FILE=$BASE_DIR/"application.properties"
-yes | cp -f $APPLICATION_CONF_FILE".example" $APPLICATION_CONF_FILE
+# Copy configuration files
+mkdir -p $CONF_FILE_DIR_PATH
+## Copy as.conf
+yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+## Copy shared info
+yes | cp -f "./services"/$SHARED_INFO_FILE_NAME $CONF_FILE_DIR_PATH/$SHARED_INFO_FILE_NAME
+## Copy services file
+yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$SERVICES_CONF_FILE_NAME $CONF_FILE_DIR_PATH/$SERVICES_CONF_FILE_NAME
+## Copy application.properties file
+yes | cp -f $BASE_DIR/$APPLICATION_PROPERTIES_FILE_NAME".example" $BASE_DIR/$APPLICATION_PROPERTIES_FILE_NAME
 
-# Fill provider_id property
+# Edit configuration files
+
+# Include provider_id
 PROVIDER_ID_PATTERN="provider_id"
-PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILES_DIR/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$BASIC_SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
-echo "" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
-echo "provider_id=$PROVIDER_ID" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
+echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "provider_id=$PROVIDER_ID" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 
-# Create key pair
-echo "" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
-PRIVATE_KEY_PATH=$SERVICE_CONF_FILES_DIR/"id_rsa"
-PUBLIC_KEY_PATH=$SERVICE_CONF_FILES_DIR/"id_rsa.pub"
-RSA_KEY_PATH=$SERVICE_CONF_FILES_DIR/"rsa_key.pem"
+## Create and include key pair
+echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+PRIVATE_KEY_PATH=$CONF_FILE_DIR_PATH/"id_rsa"
+PUBLIC_KEY_PATH=$CONF_FILE_DIR_PATH/"id_rsa.pub"
+RSA_KEY_PATH=$CONF_FILE_DIR_PATH/"rsa_key.pem"
 
 openssl genrsa -out $RSA_KEY_PATH 2048
 openssl pkcs8 -topk8 -in $RSA_KEY_PATH -out $PRIVATE_KEY_PATH -nocrypt
@@ -42,5 +44,5 @@ openssl rsa -in $PRIVATE_KEY_PATH -outform PEM -pubout -out $PUBLIC_KEY_PATH
 chmod 600 $PRIVATE_KEY_PATH
 rm $RSA_KEY_PATH
 
-echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
-echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $SERVICE_CONF_FILES_DIR/$AS_CONF_NAME
+echo "public_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa.pub" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "private_key_file_path="$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"id_rsa" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
