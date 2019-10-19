@@ -5,7 +5,7 @@
 BASIC_SITE_CONF_FILE_PATH="./conf-files/basic-site.conf"
 ANSIBLE_FILES_DIR_PATH="./ansible-playbook/basic-site"
 ANSIBLE_HOSTS_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"hosts"
-ANSIBLE_CFG_FILE_PATH_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
+ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
 
 # Generate content of Ansible hosts file
 
