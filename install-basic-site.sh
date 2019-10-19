@@ -43,8 +43,6 @@ echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
 # House keeping
 
-echo "Doing house-keeping at"$(pwd)
-
 find . -type f -name "secrets" -exec rm {} \;
 
 chmod -R go-rw conf-files

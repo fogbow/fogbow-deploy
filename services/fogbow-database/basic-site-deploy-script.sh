@@ -1,26 +1,21 @@
 #!/bin/bash
-DIR_PATH=$(pwd)
-CONF_FILES_DIR="conf-files"
-GENERAL_CONF_FILE_PATH=$DIR/$CONF_FILES_DIR/"general.conf"
-SECRETS="secrets"
-
+SERVICE="fogbow-database"
+SECRETS_FILE_PATH="./conf-files/secrets"
+SERVICES_CONF_FILE_PATH="./services.conf"
+CONTAINER_DATA_DIR_PATH="/var/lib/postgresql/data"
+DB_DATA_DIR_PATH="./data"
+RAS_DB_NAME=ras
 IMAGE_NAME="fogbow/database"
-CONTAINER_NAME="fogbow-database"
-
+CONTAINER_NAME=$SERVICE
 CONTAINER_PORT="5432"
 
 DB_USER="fogbow"
-DB_PASSWORD=$(grep ^db_password $SECRETS | awk -F "=" '{print $2}')
+DB_PASSWORD=$(grep ^db_password $SECRETS_FILE_PATH | awk -F "=" '{print $2}')
 
-RAS_DB_NAME=ras
+mkdir -p $DB_DATA_DIR_PATH
 
-DB_DATA_DIR=$DIR_PATH/"data"
-mkdir -p $DB_DATA_DIR
-CONTAINER_DATA_DIR="/var/lib/postgresql/data"
-
-SERVICES_CONF=$DIR_PATH/"services.conf"
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
-TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF | awk -F "=" '{print $2}')
+TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 if [ -z ${TAG// } ]; then
 	TAG="latest"
@@ -35,5 +30,5 @@ sudo docker run -tdi --name $CONTAINER_NAME \
 	-e DB_USER=$DB_USER \
 	-e DB_PASS=$DB_PASSWORD \
 	-e DB_NAME=$RAS_DB_NAME \
-	-v $DB_DATA_DIR:$CONTAINER_DATA_DIR \
+	-v $DB_DATA_DIR_PATH:$CONTAINER_DATA_DIR_PATH \
 	$IMAGE_NAME:$TAG
