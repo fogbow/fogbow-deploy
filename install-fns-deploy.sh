@@ -15,6 +15,12 @@ BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F 
 BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_ssh_private_key_file"
 BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
+XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
+XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F "=" '{print $2}')
+
+XMPP_SERVER_PRIVATE_KEY_FILE_PATH_PATTERN="xmpp_server_ssh_private_key_file"
+XMPP_SERVER_PRIVATE_KEY_FILE_PATH=$(grep $XMPP_SERVER_PRIVATE_KEY_FILE_PATH_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F "=" '{print $2}')
+
 VANILLA_AGENT_IP_PATTERN="vanilla_agent_private_ip"
 VANILLA_AGENT_IP=$(grep $VANILLA_AGENT_IP_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
@@ -28,6 +34,12 @@ echo "[basic-site-machine]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo $BASIC_SITE_IP >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[basic-site-machine:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_ssh_private_key_file=$BASIC_SITE_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[xmpp-machine]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo $XMPP_SERVER_IP >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[xmpp-machine:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "ansible_ssh_private_key_file=$XMPP_SERVER_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[vanilla-agent-machine]" >> $ANSIBLE_HOSTS_FILE_PATH
