@@ -1,5 +1,5 @@
 ---
-- hosts: vanila-agent-machine
+- hosts: vanilla-agent-machine
   vars:
     fna_dir_name: federated-network-agent
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
