@@ -5,10 +5,10 @@
     fogbow_components: ~/fogbow-components
     conf_files: conf-files
     fns_dir_name: federated-network-service
-    private_key_fns_to_dmz_path: ../services/federated-network-service/conf-files/vanilla-agent-id_rsa
-    private_key_fns_path: ../services/federated-network-service/conf-files/id_rsa
-    secrets_fns: ../services/federated-network-service/conf-files/secrets
-    fns_conf: ../services/federated-network-service/conf-files/fns.conf
+    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/vanilla-agent-id_rsa
+    private_key_fns_path: ../../services/federated-network-service/conf-files/id_rsa
+    secrets_fns: ../../services/federated-network-service/conf-files/secrets
+    fns_conf: ../../services/federated-network-service/conf-files/fns.conf
   tasks:
     - name: Copy private keys to internal machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
@@ -30,9 +30,9 @@
   vars:
     fogbow_components: ~/fogbow-components
     agent_dir_name: federated-network-agent/conf-files
-    ipsec_conf_path: ../services/federated-network-agent/ipsec.conf
+    ipsec_conf_path: ../../services/federated-network-agent/ipsec.conf
     fn_agent_dir_name: federated-network-agent
-    secrets_agent: ../services/federated-network-agent/conf-files/secrets
+    secrets_agent: ../../services/federated-network-agent/conf-files/secrets
   tasks:
     - name: Copy secrets, prosody and ipsec confs to DMZ machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
