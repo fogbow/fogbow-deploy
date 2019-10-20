@@ -27,8 +27,8 @@ sudo chown ubuntu.ubuntu $TMP_RAS_CONF_FILE_NAME
 
 PROVIDER_ID_PATTERN="provider_id"
 XMPP_JID_PATTERN="xmpp_jid"
-XMPP_PASSWORD_PATTERN=xmpp_password"
-XMPP_SERVER_IP_PATTERN=xmpp_server_ip"
+XMPP_PASSWORD_PATTERN="xmpp_password"
+XMPP_SERVER_IP_PATTERN="xmpp_server_ip"
 AS_URL_PATTERN="as_url"
 AS_PORT_PATTERN="as_port"
 RAS_URL_PATTERN="ras_url"
