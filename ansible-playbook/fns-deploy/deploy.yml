@@ -6,3 +6,4 @@
 - import_playbook: transfer-sensitive-data.yml
 - import_playbook: deploy-each-service.yml
 - import_playbook: transfer-scripts.yml
+- import_playbook: reconfigure-already-deployed-services.yml
