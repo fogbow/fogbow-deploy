@@ -1,23 +1,23 @@
 ---
-- hosts: xmpp-machine
+- hosts: vanilla-agent-machine
   vars:
-    xmpp_dir_name: xmpp-server
+    fna_dir_name: federated-network-agent
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: bash federation-deploy-script.sh
+    deploy_script_runner: bash fns-deploy-deploy-script.sh
   tasks:
-    - name: Deploying services in XMPP machine
+    - name: Deploying services in vanilla agent machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:
         chdir: "{{ item }}"
       with_items:
-        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
+        - "{{ fogbow_components }}/{{ fna_dir_name }}"
 
 - hosts: basic-site-machine
   vars:
-    ms_dir_name: membership-service
+    fns_dir_name: federated-network-service
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: bash federation-deploy-script.sh
+    deploy_script_runner: bash fns-deploy-deploy-script.sh
   tasks:
     - name: Deploying services in basic site machine
       shell: "{{ deploy_script_runner }}"
@@ -25,4 +25,4 @@
       args:
         chdir: "{{ item }}"
       with_items:
-        - "{{ fogbow_components }}/{{ ms_dir_name }}"
+        - "{{ fogbow_components }}/{{ fns_dir_name }}"

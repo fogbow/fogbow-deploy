@@ -1,21 +1,16 @@
 #!/bin/bash
 
-DIR=$(pwd)
-SERVICES_DIR="services"
+SERVICES_DIR_NAME="services"
+DATABASE_SERVICE_DIR=$SERVICES_DIR_NAME/"fogbow-database"
+AS_DIR_PATH=$SERVICES_DIR_NAME/"authentication-service"
+RAS_DIR_PATH=$SERVICES_DIR_NAME/"resource-allocation-service"
+APACHE_SERVER_DIR_PATH=$SERVICES_DIR_NAME/"apache-server"
 
-DATABASE_SERVICE_DIR=$SERVICES_DIR/"fogbow-database"
-AUTHENTICATION_SERVICE_DIR=$SERVICES_DIR/"authentication-service"
-RESOURCE_ALLOCATION_SERVICE_DIR=$SERVICES_DIR/"resource-allocation-service"
-APACHE_SERVICE_DIR=$SERVICES_DIR/"apache-server"
-
-echo ""
-echo "Running basic-site/env-composer.sh"
 bash env-composer.sh
 cd ../..
 
-SERVICES_LIST="$DATABASE_SERVICE_DIR $AUTHENTICATION_SERVICE_DIR $RESOURCE_ALLOCATION_SERVICE_DIR $APACHE_SERVICE_DIR"
+SERVICES_LIST="$DATABASE_SERVICE_DIR $AS_DIR_PATH $RAS_DIR_PATH $APACHE_SERVER_DIR_PATH"
 
 for service in $SERVICES_LIST; do
-	echo "Running $service/basic-site-env-composer.sh"
 	bash $service/"basic-site-env-composer.sh"
 done

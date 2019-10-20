@@ -1,0 +1,9 @@
+---
+- import_playbook: install-dependencies.yml
+- import_playbook: setup-conf-files.yml
+- import_playbook: remove-previous-installation.yml
+- import_playbook: transfer-services.yml
+- import_playbook: transfer-sensitive-data.yml
+- import_playbook: deploy-each-service.yml
+- import_playbook: transfer-scripts.yml
+- import_playbook: reconfigure-already-deployed-services.yml
