@@ -1,15 +1,15 @@
-- hosts: xmpp-machine
+- hosts: vanilla-agent-machine
   vars:
-    script_name: start-services-on-xmpp-machine-after-startup
+    script_name: start-services-on-vanilla-agent-after-startup
     source_dir: ../../scripts
     target_dir: /etc/init.d
   tasks:
-    - name: Copy script to xmpp-machine
+    - name: Copy script to vanilla-agent-machine
       become: yes
       copy: 
         src: "{{ source_dir }}/{{ script_name }}"
         dest: "{{ target_dir }}/{{ script_name }}"
         mode: 0755
-    - name: Add script as a service in xmpp-machine
+    - name: Add script as a service in vanilla-agent-machine
       become: yes
       command: update-rc.d "{{ script_name }}" defaults
