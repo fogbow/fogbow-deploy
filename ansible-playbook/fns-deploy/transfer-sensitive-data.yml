@@ -1,6 +1,6 @@
 # This playbook transfers sensitive data, taking care of setting its permission in the remote machine accordingly
 
-- hosts: internal-machine
+- hosts: basic-site-machine
   vars:
     fogbow_components: ~/fogbow-components
     fns_dir_name: federated-network-service
