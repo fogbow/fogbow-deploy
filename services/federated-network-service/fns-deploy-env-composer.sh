@@ -41,6 +41,8 @@ echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 echo "xmpp_jid=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 echo "xmpp_password=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 echo "xmpp_server_ip=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "xmpp_c2c_port=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
+echo "xmpp_timeout=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 
 echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 echo "as_port=" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
