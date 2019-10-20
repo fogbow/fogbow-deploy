@@ -26,7 +26,7 @@ sudo docker cp $RAS_CONTAINER_NAME:$RAS_CONTAINER_CONF_DIR_PATH/$RAS_CONF_FILE_N
 sudo chown ubuntu.ubuntu $TMP_RAS_CONF_FILE_NAME
 
 PROVIDER_ID_PATTERN="provider_id"
-XMPP_JID_PATTERN=xmpp_jid"
+XMPP_JID_PATTERN="xmpp_jid"
 XMPP_PASSWORD_PATTERN=xmpp_password"
 XMPP_SERVER_IP_PATTERN=xmpp_server_ip"
 AS_URL_PATTERN="as_url"
