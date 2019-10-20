@@ -27,7 +27,7 @@ yes | cp -f $BASE_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".example" $BASE_DIR
 
 # Edit configuration files
 
-## application.properties will be edited from ras.conf at deployment time
+## application.properties will be edited from ras/application.properties at deployment time
 
 ## Edit fns.conf (part of fns.conf will be edited from ras.conf at deployment time)
 

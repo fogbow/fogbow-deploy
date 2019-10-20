@@ -16,10 +16,23 @@ TIMESTAMP_DB_DIR_NAME="timestamp-storage"
 IMAGE_NAME="fogbow"/$SERVICE
 CONTAINER_NAME=$SERVICE
 
-# Complete fns.conf configuration using ras.conf info
+# Edit configurations from RAS service
 
 RAS_CONTAINER_NAME="resource-allocation-service"
 RAS_CONTAINER_CONF_DIR_PATH="/root/resource-allocation-service/src/main/resources/private/"
+
+## Copy application.properties from RAS and edit
+
+APP_PROPERTIES_FILE_NAME="application.properties"
+sudo docker cp $RAS_CONTAINER_NAME:$RAS_CONTAINER_CONF_DIR_PATH/../$APP_PROPERTIES_FILE_NAME $APP_PROPERTIES_FILE_NAME
+sudo chown ubuntu.ubuntu $APP_PROPERTIES_FILE_NAME
+
+RAS_BD_PATTERN="ras"
+FNS_BD_NAME="fns"
+sed -i "s|$RAS_BD_PATTERN|$FNS_BD_NAME|g" $APP_PROPERTIES_FILE_NAME
+
+## Complete fns.conf configuration using ras.conf info
+
 RAS_CONF_FILE_NAME="ras.conf"
 TMP_RAS_CONF_FILE_NAME="ras.conf.tmp"
 sudo docker cp $RAS_CONTAINER_NAME:$RAS_CONTAINER_CONF_DIR_PATH/$RAS_CONF_FILE_NAME $TMP_RAS_CONF_FILE_NAME
