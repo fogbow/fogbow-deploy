@@ -12,3 +12,17 @@
         chdir: "{{ item }}"
       with_items:
         - "{{ fogbow_components }}/{{ apache_dir_name }}"
+
+- hosts: xmpp-machine
+  vars:
+    xmpp_dir_name: xmpp-server
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    deploy_script_runner: bash fns-deploy-reconfigure-script.sh
+  tasks:
+    - name: Reconfiguring XMPP server in xmpp-machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ xmpp_dir_name }}"
