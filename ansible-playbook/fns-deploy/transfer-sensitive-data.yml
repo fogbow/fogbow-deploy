@@ -3,6 +3,7 @@
 - hosts: basic-site-machine
   vars:
     fogbow_components: ~/fogbow-components
+    conf_files: conf-files
     fns_dir_name: federated-network-service
     private_key_fns_to_dmz_path: ../services/federated-network-service/conf-files/dmz-id_rsa
     private_key_fns_path: ../services/federated-network-service/conf-files/id_rsa
