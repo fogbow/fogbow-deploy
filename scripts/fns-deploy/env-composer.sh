@@ -32,8 +32,8 @@ AGENT_PUBLIC_KEY_FILE_PATH=$CURRENT_DIR_PATH/"vanilla-agent-id_rsa.pub"
 
 ssh-keygen -f $AGENT_PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "internal-communication-key" -N ""
 
-NEW_AGENT_PRIVATE_KEY_FILE_PATH="services"/"federated-network-service"/"conf-files"/"vanilla-agent-id_rsa"
-NEW_AGENT_PUBLIC_KEY_FILE_PATH="services"/"federated-network-agent"/"vanilla-agent-id_rsa.pub"
+NEW_AGENT_PRIVATE_KEY_FILE_PATH="../../services"/"federated-network-service"/"conf-files"/"vanilla-agent-id_rsa"
+NEW_AGENT_PUBLIC_KEY_FILE_PATH="../../services"/"federated-network-agent"/"vanilla-agent-id_rsa.pub"
 
 mkdir -p $(dirname $NEW_AGENT_PRIVATE_KEY_FILE_PATH)
 mkdir -p $(dirname $NEW_AGENT_PUBLIC_KEY_FILE_PATH)
