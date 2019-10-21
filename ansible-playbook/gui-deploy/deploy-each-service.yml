@@ -1,0 +1,14 @@
+---
+- hosts: basic-site-machine
+  vars:
+    gui_dir_name: fogbow-gui
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    deploy_script_runner: bash gui-deploy-deploy-script.sh
+  tasks:
+    - name: Deploying services in basic site machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ gui_dir_name }}"
