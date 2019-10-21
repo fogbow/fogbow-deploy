@@ -11,15 +11,15 @@ sudo docker cp $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PATH/$VIRTUAL_HOST_FILE_NAME $T
 sudo docker cp $CONTAINER_NAME:$ROOT_DIR_PATH/$INDEX_FILE_NAME $TMP_INDEX_FILE_NAME
 sudo chown ubuntu.ubuntu $TMP_VIRTUAL_HOST_FILE_NAME $TMP_INDEX_FILE_NAME
 
-cp $TMP_VIRTUAL_HOST_FILE_NAME $TMP_VIRTUAL_HOST_FILE_NAME.original.dbg
-
 ed -s $TMP_VIRTUAL_HOST_FILE_NAME <<!
-/as
+/\/as
 .,+t+
 -
-.,+1s,as ,fns,g
+.,+1s,\/as,\/fns,g
 -
 .,+1s,8080,8081
+-
+.,+1s, http,http
 w
 q
 !
@@ -38,7 +38,5 @@ sudo docker cp $TMP_VIRTUAL_HOST_FILE_NAME $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PAT
 sudo docker cp $TMP_INDEX_FILE_NAME $CONTAINER_NAME:$ROOT_DIR_PATH/$INDEX_FILE_NAME
 
 sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart"
-
-cp $TMP_VIRTUAL_HOST_FILE_NAME $TMP_VIRTUAL_HOST_FILE_NAME.final.dbg
 
 rm $TMP_VIRTUAL_HOST_FILE_NAME $TMP_INDEX_FILE_NAME
