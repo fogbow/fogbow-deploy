@@ -20,4 +20,6 @@ q
 
 sudo docker cp $TMP_VIRTUAL_HOST_FILE_NAME $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PATH/$VIRTUAL_HOST_FILE_NAME
 
+sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart"
+
 rm $TMP_VIRTUAL_HOST_FILE_NAME

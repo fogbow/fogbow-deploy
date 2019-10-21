@@ -1,11 +1,11 @@
 #!/bin/bash
 BASE_DIR_PATH="services/federated-network-agent"
 CONF_FILES_DIR_PATH=$BASE_DIR_PATH/"conf-files"
-FNS_DEPLOY_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"fns-deploy.conf"
+SITE_CONF_FILE_NAME=$CONF_FILES_DIR_PATH/"site.conf"
 SECRETS_FILE_PATH=$CONF_FILES_DIR_PATH/"secrets"
 
-# Copy fns-deploy.conf file
-yes | cp -f $FNS_DEPLOY_CONF_FILE_PATH $CONF_FILES_DIR_PATH
+# Copy site.conf file
+yes | cp -f $SITE_CONF_FILE_NAME $CONF_FILES_DIR_PATH
 # Copy secrets
 yes | cp -f $SECRETS_FILE_PATH $CONF_FILES_DIR_PATH
 

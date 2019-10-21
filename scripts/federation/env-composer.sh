@@ -19,9 +19,9 @@ touch $RAS_SECRETS_FILE_PATH
 chmod 600 $RAS_SECRETS_FILE_PATH
 
 # Retrieve xmpp server IP to reconfigure RAS
-FEDERATION_CONF_FILE_PATH="../../conf-files/federation.conf"
+SITE_CONF_FILE_PATH="../../conf-files/site.conf"
 XMPP_SERVER_IP_PROPERTY="xmpp_server_ip"
-XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PROPERTY $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
+XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PROPERTY $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 # Generate DB password and fill secret files
 XMPP_PASSWORD_PROPERTY="xmpp_password"

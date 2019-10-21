@@ -1,9 +1,9 @@
 #!/bin/bash
-FNS_DEPLOY_CONF_FILE_PATH="./conf-files/fns-deploy.conf"
+SITE_CONF_FILE_NAME="./conf-files/site.conf"
 SECRETS_FILE_PATH="./conf-files/secrets"
 
 REMOTE_USER_PATTERN="remote_user"
-REMOTE_USER=$(grep $REMOTE_USER_PATTERN $FNS_DEPLOY_CONF_FILE_PATH | awk -F "=" '{print $2}')
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 VPN_PASSWORD_KEY="vpn_password"
 VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $SECRETS_FILE_PATH | awk -F "=" '{print $2}')
