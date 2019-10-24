@@ -105,3 +105,7 @@ sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINE
 
 # Run FNS
 sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
+
+# Remove tmp file
+
+rm $TMP_RAS_CONF_FILE_NAME
