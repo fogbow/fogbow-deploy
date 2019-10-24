@@ -80,7 +80,7 @@ echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
 echo "add_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/create-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "remove_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/delete-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "agent_scripts_path=~/fogbow-components/federated-network-agent/" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
 VANILLA_AGENT_PRIVATE_IP_PATTERN="vanilla_agent_private_ip"
