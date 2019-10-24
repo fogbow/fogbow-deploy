@@ -17,5 +17,5 @@ export const env = {
             label: 'Password'
         }
     },
-    fnsModes: ['vanilla', 'dfns']
+    fnsModes: []
 };

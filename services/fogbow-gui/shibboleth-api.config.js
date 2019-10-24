@@ -5,6 +5,8 @@ export const env = {
     ms: , // Auto-generated value
     local: , // Auto-generated value
     refreshTime: 5000,
-    credentialFields: { },
     remoteCredentialsUrl: ,
+    authenticationPlugin: 'Shibboleth',
+    credentialFields: { },
+    fnsModes: []
 };

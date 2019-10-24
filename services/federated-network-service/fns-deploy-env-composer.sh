@@ -1,5 +1,6 @@
 #!/bin/bash
 
+FNS_DEPLOY_CONF_FILE_NAME="site.conf"
 SERVICE="federated-network-service"
 CONF_FILE_NAME="fns.conf"
 SHARED_INFO_FILE_NAME="shared.info"
