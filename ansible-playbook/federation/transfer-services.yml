@@ -16,7 +16,7 @@
   vars:
     services_path: ../../services
     ms_dir_name: membership-service
-    ras_dir_name: resource-allocation-service
+    reconfig_dir_name: reconfiguration
     fogbow_components: ~/fogbow-components/
   tasks:
     - name: Copying MS service components
@@ -25,4 +25,4 @@
         dest: "{{ fogbow_components }}"
       with_items:
         - "{{ services_path }}/{{ ms_dir_name }}"
-        - "{{ services_path }}/{{ ras_dir_name }}"
+        - "{{ services_path }}/{{ reconfig_dir_name }}"
