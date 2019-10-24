@@ -5,7 +5,7 @@
   vars:
     clouds_directory: ../../conf-files/clouds
 
-    certificates_conf_path: ../../conf-files/apache-confs/certificate-files.conf
+    certificates_conf_path: ../../conf-files/certificate-files.conf
     ssl_certificate_file_pattern: SSL_certificate_file_path
     ssl_certificate_key_file_pattern: SSL_certificate_key_file_path
     ssl_certificate_chain_file_pattern: SSL_certificate_chain_file_path
