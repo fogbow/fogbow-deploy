@@ -22,7 +22,7 @@ sudo docker cp $TMP_VIRTUAL_HOST_FILE_NAME $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PAT
 
 rm $TMP_VIRTUAL_HOST_FILE_NAME
 
-CONF_FILE_DIR_PATH="services/fogbow-gui/conf-files"
+CONF_FILE_DIR_PATH="../fogbow-gui/conf-files"
 GUI_CONF_FILE_NAME="gui.conf"
 
 AUTH_TYPE_PATTERN="authentication_type"
@@ -31,7 +31,7 @@ AUTH_TYPE_CLASS=$(grep $AUTH_TYPE_PATTERN $CONF_FILE_DIR_PATH/$GUI_CONF_FILE_NAM
 if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     CERTS_DIR_PATH="/etc/ssl/certs"
     SSL_DIR_PATH="/etc/ssl/private"
-    BASE_DIR_PATH="services/reconfiguration/conf-files"
+    BASE_DIR_PATH="../reconfiguration/conf-files"
     SHIB_CONF_DIR_PATH="/etc/shibboleth"
     SHIB_AUTH_APP_DIR_PATH="/home/ubuntu/shibboleth-authentication-application"
     SECURE_INDEX_PATH="/var/www/secure/index.html"
@@ -65,12 +65,9 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     sudo docker cp $BASE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_FILE_NAME $CONTAINER_NAME:$CERTS_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.crt
     sudo docker cp $BASE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME $CONTAINER_NAME:$SSL_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.key
 
-    sudo docker cp $SHARED_FOLDER/. $CONTAINER_NAME:$CONTAINER_BASE_DIR/$SHARED_FOLDER
-
-    AS_CONTAINER_NAME="authentication-server"
+    AS_CONTAINER_NAME="authentication-service"
     AS_CONTAINER_CONF_FILE_DIR_PATH="/root/authentication-service/src/main/resources/private"
     AS_PUB_KEY_FILE_NAME="id_rsa.pub"
-    RECONFIGURATION_CONF_DIR_PATH="services/reconfiguration/conf-files"
     sudo docker cp $AS_CONTAINER_NAME:$AS_CONTAINER_CONF_FILE_DIR_PATH/$AS_PUB_KEY_FILE_NAME $BASE_DIR_PATH/$AS_PUB_KEY_FILE_NAME
     sudo docker cp $BASE_DIR_PATH/$AS_PUB_KEY_FILE_NAME $CONTAINER_NAME:$CONTAINER_CONF_FILE_DIR_PATH/$AS_PUB_KEY_FILE_NAME
     sudo rm $BASE_DIR_PATH/$AS_PUB_KEY_FILE_NAME

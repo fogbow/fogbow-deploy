@@ -20,13 +20,3 @@ if [ "$?" -ne "0" ]; then
 	echo "Adding agent host ssh public key in authorized keys"
 	echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
 fi
-
-CREATE_NETWORK_SCRIPT="create-federated-network"
-DELETE_NETWORK_SCRIPT="delete-federated-network"
-CREATE_TUNNEL_SCRIPT="create-tunnel-from-agent-to-compute.sh"
-CREATE_FEDNET_TUNNEL_SCRIPT="create-fednet-tunnels.sh"
-
-chmod +x $CREATE_NETWORK_SCRIPT
-chmod +x $DELETE_NETWORK_SCRIPT
-chmod +x $CREATE_TUNNEL_SCRIPT
-chmod +x $CREATE_FEDNET_TUNNEL_SCRIPT

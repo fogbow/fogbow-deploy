@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script goal is to generate the Ansible hosts and ansible.cfg files
 
 # Set path variables
 
