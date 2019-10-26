@@ -89,6 +89,6 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
 
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
     sudo docker exec $CONTAINER_NAME /bin/bash -c "bash bin/start-shib-app.sh" &
-else
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart"
 fi
+
+sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart"
