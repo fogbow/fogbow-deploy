@@ -1,0 +1,16 @@
+---
+- hosts: basic-site-machine
+  vars:
+    apache_dir_name: apache-server
+    as_dir_name: authentication-service
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    deploy_script_runner: bash gui-deploy-reconfigure-script.sh
+  tasks:
+    - name: Reconfiguring apache-server in basic-site-machine
+      shell: "{{ deploy_script_runner }}"
+      become: yes
+      args:
+        chdir: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ apache_dir_name }}"
+        - "{{ fogbow_components }}/{{ as_dir_name }}"

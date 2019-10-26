@@ -4,7 +4,7 @@ RAS_CONF_FILE_NAME="ras.conf"
 TMP_RAS_CONF_FILE_NAME="ras.conf.tmp"
 CONTAINER_CONF_DIR_PATH="/root/resource-allocation-service/src/main/resources/private/"
 CONTAINER_NAME="resource-allocation-service"
-SECRETS_FILE_PATH=$CONF_FILES_DIR_NAME/"secrets"
+SECRETS_FILE_PATH="../reconfiguration/conf-files/secrets"
 
 XMPP_PASSWORD_PATTERN="xmpp_password"
 XMPP_PASSWORD=$(grep $XMPP_PASSWORD_PATTERN $SECRETS_FILE_PATH | awk -F "=" '{print $2}')

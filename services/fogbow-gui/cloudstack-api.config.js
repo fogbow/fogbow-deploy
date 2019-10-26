@@ -21,5 +21,5 @@ export const env = {
             label: 'Domain'
         }
     },
-    fnsModes: ['vanilla', 'dfns']
+    fnsModes: []
 };

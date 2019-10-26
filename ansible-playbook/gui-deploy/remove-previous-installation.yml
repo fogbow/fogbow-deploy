@@ -1,0 +1,13 @@
+---
+- hosts: basic-site-machine
+  vars:
+    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
+    gui_dir_name: fogbow-gui
+  tasks:
+    - name: Removing previously installed GUI if applied
+      become: yes
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - "{{ fogbow_components }}/{{ gui_dir_name }}"

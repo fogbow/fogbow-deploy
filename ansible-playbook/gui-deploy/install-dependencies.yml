@@ -1,5 +1,5 @@
 ---
-- hosts: dmz-machine:internal-machine
+- hosts: basic-site-machine
   tasks:
     - name: Installing Docker
       apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600

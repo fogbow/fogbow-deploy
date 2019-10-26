@@ -4,8 +4,9 @@ export const env = {
     fns: , // Auto-generated value
     ms: , // Auto-generated value
     local: , // Auto-generated value
+    refreshTime: 5000,
     remoteCredentialsUrl: '',
-    authenticationPlugin: 'ONE',
+    authenticationPlugin: 'ONe',
     credentialFields: {
         username: {
             type: 'text',
@@ -16,5 +17,5 @@ export const env = {
             label: 'Password'
         }
     },
-    fnsModes: ['vanilla', 'dfns']
+    fnsModes: []
 };

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+FNS_DEPLOY_CONF_FILE_NAME="site.conf"
 SERVICE="federated-network-service"
 CONF_FILE_NAME="fns.conf"
 SHARED_INFO_FILE_NAME="shared.info"
@@ -77,21 +78,21 @@ touch $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "driver_class_name=cloud.fogbow.fns.core.drivers.vanilla.VanillaServiceDriver" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
-echo "add_federated_network_script_path=~/fogbow-components/federated-network-agent/create-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "remove_federated_network_script_path=~/fogbow-components/federated-network-agent/delete-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "agent_scripts_path=~/fogbow-components/federated-network-agent/" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "add_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/create-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "remove_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/delete-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
 VANILLA_AGENT_PRIVATE_IP_PATTERN="vanilla_agent_private_ip"
 VANILLA_AGENT_PRIVATE_IP=$(grep $VANILLA_AGENT_PRIVATE_IP_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$FNS_DEPLOY_CONF_FILE_NAME | awk -F "=" '{print $2}')
-echo "host_ip=$VANILLA_AGENT_PRIVATE_PRIVATE_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "federated_network_agent_private_address=$VANILLA_AGENT_PRIVATE_PRIVATE_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "host_ip=$VANILLA_AGENT_PRIVATE_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "federated_network_agent_private_address=$VANILLA_AGENT_PRIVATE_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
 VANILLA_AGENT_PUBLIC_IP_PATTERN="vanilla_agent_public_ip"
 VANILLA_AGENT_PUBLIC_IP=$(grep $VANILLA_AGENT_PUBLIC_IP_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$FNS_DEPLOY_CONF_FILE_NAME | awk -F "=" '{print $2}')
-echo "federated_network_agent_address=$VANILLA_AGENT_PRIVATE_PUBLIC_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
+echo "federated_network_agent_address=$VANILLA_AGENT_PUBLIC_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
-PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR/$CONTAINER_CONF_FILES_DIR/"vanilla-agent-id_rsa"
+PERMISSION_FILE_PATH=$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/"vanilla-agent-id_rsa"
 echo "federated_network_agent_permission_file_path=$PERMISSION_FILE_PATH" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
 REMOTE_USER_PATTERN="remote_user"

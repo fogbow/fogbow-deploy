@@ -4,9 +4,9 @@
 
 SECRETS_FILE_NAME="secrets"
 XMPP_CONF_FILE_PATH="../../services/xmpp-server/conf-files"
-RAS_CONF_FILE_PATH="../../services/resource-allocation-service/conf-files"
+RECONFIGURATION_CONF_FILE_PATH="../../services/reconfiguration/conf-files"
 XMPP_SECRETS_FILE_PATH=$XMPP_CONF_FILE_PATH/$SECRETS_FILE_NAME
-RAS_SECRETS_FILE_PATH=$RAS_CONF_FILE_PATH/$SECRETS_FILE_NAME
+RAS_SECRETS_FILE_PATH=$RECONFIGURATION_CONF_FILE_PATH/$SECRETS_FILE_NAME
 
 # Create secrets files
 
@@ -14,14 +14,14 @@ mkdir -p $XMPP_CONF_FILE_PATH
 touch $XMPP_SECRETS_FILE_PATH
 chmod 600 $XMPP_SECRETS_FILE_PATH
 
-mkdir -p $RAS_CONF_FILE_PATH
+mkdir -p $RECONFIGURATION_CONF_FILE_PATH
 touch $RAS_SECRETS_FILE_PATH
 chmod 600 $RAS_SECRETS_FILE_PATH
 
 # Retrieve xmpp server IP to reconfigure RAS
-FEDERATION_CONF_FILE_PATH="../../conf-files/federation.conf"
+SITE_CONF_FILE_PATH="../../conf-files/site.conf"
 XMPP_SERVER_IP_PROPERTY="xmpp_server_ip"
-XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PROPERTY $FEDERATION_CONF_FILE_PATH | awk -F "=" '{print $2}')
+XMPP_SERVER_IP=$(grep $XMPP_SERVER_IP_PROPERTY $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 # Generate DB password and fill secret files
 XMPP_PASSWORD_PROPERTY="xmpp_password"
