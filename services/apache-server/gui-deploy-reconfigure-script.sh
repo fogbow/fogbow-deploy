@@ -58,11 +58,11 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     sudo docker cp $BASE_DIR_PATH/$CONF_SHIB_ENV_ATT_MAP_FILE_NAME $CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_MAP_FILE_NAME
     sudo docker cp $BASE_DIR_PATH/$CONF_SHIB_ENV_SHIB_XML_FILE_NAME $CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_SHIB_XML_FILE_NAME
     sudo docker cp $BASE_DIR_PATH/$CONF_SHIB_ENV_ATT_POLICY_FILE_NAME $CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_POLICY_FILE_NAME
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "mkdir -p /var/www/secure" &
+    sudo docker exec -it $CONTAINER_NAME mkdir -p /var/www/secure
     sudo docker cp $BASE_DIR_PATH/$CONF_SHIB_ENV_INDEX_SECURE_FILE_NAME $CONTAINER_NAME:$SECURE_INDEX_PATH
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_LOG4J_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "sed 's/#DAEMON_USER=_shibd/DAEMON_USER=root/g' /etc/init.d/shibd" &
+    sudo docker exec -it $CONTAINER_NAME sed "s/#DAEMON_USER=_shibd/DAEMON_USER=root/g" /etc/init.d/shibd
     sudo docker cp $BASE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME
     AS_CONTAINER_NAME="authentication-service"
     AS_CONTAINER_CONF_FILE_DIR_PATH="/root/authentication-service/src/main/resources/private"
@@ -72,15 +72,15 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     sudo docker cp $BASE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_FILE_NAME $CONTAINER_NAME:$CERTS_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.crt
     sudo docker cp $BASE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME $CONTAINER_NAME:$SSL_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.key
 
+    sudo docker exec $CONTAINER_NAME a2ensite default.conf
+    sudo docker exec $CONTAINER_NAME a2ensite shibboleth-sp2.conf
+
     ENABLE_MODULES_SCRIPT="gui-deploy-enable-modules"
     CONTAINER_BASE_PATH="/home/ubuntu"
 
     sudo chmod +x $ENABLE_MODULES_SCRIPT
     sudo docker cp $ENABLE_MODULES_SCRIPT $CONTAINER_NAME:$CONTAINER_BASE_PATH/$ENABLE_MODULES_SCRIPT
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "sudo $CONTAINER_BASE_PATH/$ENABLE_MODULES_SCRIPT" &
-
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "a2ensite default.conf" &
-    sudo docker exec $CONTAINER_NAME /bin/bash -c "a2ensite shibboleth-sp2.conf" &
+    sudo docker exec $CONTAINER_NAME $CONTAINER_BASE_PATH/$ENABLE_MODULES_SCRIPT
 
     SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN="ship_private_key_path="
     sed -i "s#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN.*#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME#" $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
@@ -89,6 +89,6 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
 
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
     sudo docker exec $CONTAINER_NAME /bin/bash -c "bash bin/start-shib-app.sh" &
+else
+    sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart" &
 fi
-
-sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart" &
