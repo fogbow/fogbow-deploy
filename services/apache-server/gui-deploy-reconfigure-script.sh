@@ -62,7 +62,7 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     sudo docker cp $BASE_DIR_PATH/$CONF_SHIB_ENV_INDEX_SECURE_FILE_NAME $CONTAINER_NAME:$SECURE_INDEX_PATH
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH
     sudo docker cp $BASE_DIR_PATH/$SHIB_AUTH_APP_LOG4J_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH
-    sudo docker exec -it $CONTAINER_NAME sed "s/#DAEMON_USER=_shibd/DAEMON_USER=root/g" /etc/init.d/shibd
+    sudo docker exec -it $CONTAINER_NAME sed -i "s/^DAEMON_USER=_shibd/DAEMON_USER=root/g" /etc/init.d/shibd
     sudo docker cp $BASE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME $CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME
     AS_CONTAINER_NAME="authentication-service"
     AS_CONTAINER_CONF_FILE_DIR_PATH="/root/authentication-service/src/main/resources/private"
