@@ -24,10 +24,18 @@ cp $CONF_FILE_DIR_PATH/$DFNS_CONF_FILE_NAME $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_F
 echo "driver_class_name=cloud.fogbow.fns.core.drivers.dfns.DfnsServiceDriver" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 echo "" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
-#echo "add_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/create-federated-network" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-#echo "remove_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/delete-federated-network" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-#echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-#echo "" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
+#agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/
+#federated_network_agent_permission_file_path=src/main/resources/private/dmz-id_rsa
+#federated_network_agent_user=ubuntu
+#federated_network_agent_private_address=10.11.16.28
+#federated_network_agent_address=150.165.15.9
+#federated_network_agent_pre_shared_key=neemau6Yix
+#host_ip=150.165.15.9
+
+
+echo "create_tunnel_from_compute_to_agent_script_path=/root/federated-network-service/bin/agent-scripts/dfns/create-tunnel-from-compute-to-agent.sh" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
+echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
+echo "" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
 #VANILLA_AGENT_PRIVATE_IP_PATTERN="vanilla_agent_private_ip"
 #VANILLA_AGENT_PRIVATE_IP=$(grep $VANILLA_AGENT_PRIVATE_IP_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$FNS_DEPLOY_CONF_FILE_NAME | awk -F "=" '{print $2}')
@@ -49,17 +57,6 @@ echo "" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 #VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $CONF_FILE_DIR_PATH/$SECRETS_FILE_NAME | awk -F "=" '{print $2}')
 #echo "federated_network_agent_pre_shared_key=$VPN_PASSWORD" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
-#create_tunnel_from_compute_to_agent_script_path=/Users/fubica/IdeaProjects/federated-network-service/bin/agent-scripts/dfns/create-tunnel-from-compute-to-agent.sh
-#agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/
-#vlan_id_service_url=http://10.11.4.187:8888
-#federated_network_agent_permission_file_path=src/main/resources/private/dmz-id_rsa
-#federated_network_agent_user=ubuntu
-#federated_network_agent_private_address=10.11.16.28
-#federated_network_agent_address=150.165.15.9
-#federated_network_agent_pre_shared_key=neemau6Yix
-#host_ip=150.165.15.9
-#driver_class_name=cloud.fogbow.fns.core.drivers.dfns.DfnsServiceDriver
-#default_network_cidr=10.11.4.0/22
 
 ed -s $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME <<!
 w
