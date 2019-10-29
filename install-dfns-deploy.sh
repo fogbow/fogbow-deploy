@@ -67,7 +67,7 @@ for i in $DFNS_AGENTS_PUBLIC_IPS_LIST
 do
     echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_agent_dir_name: dfns-agents"
+    echo "      dfns_agent_dir_name: dfns-agents" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      atomix_dir_name: atomix" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      utils_dir_name: utils"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
