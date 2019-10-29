@@ -151,6 +151,10 @@ echo "inventory = hosts" >> $ANSIBLE_CFG_FILE_PATH
 echo "remote_user = $REMOTE_USER" >> $ANSIBLE_CFG_FILE_PATH
 echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
+# Copy site.conf to services
+mkdir -p "services/dfns-agents/conf-files"
+cp "./conf-files/site.conf" "services/dfns-agents/conf-files/site.conf"
+
 # Deploy
 
 (cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
