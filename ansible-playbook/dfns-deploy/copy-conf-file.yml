@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    script_runner: sh copy-conf-file.sh
+    script_path: ../../scripts/dfns-deploy
+  tasks:
+    - name: Setting up configuration files
+      shell: "{{ script_runner }}"
+      args:
+        chdir: "{{ script_path }}"
