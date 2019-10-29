@@ -19,10 +19,11 @@ DFNS_CLUSTER_PUBLIC_IPS_LIST=$(grep $DFNS_CLUSTER_PUBLIC_IPS_LIST_PATTERN $SITE_
 OTHERS=""
 
 for i in $DFNS_CLUSTER_PUBLIC_IPS_LIST
+do
     if [ $i != $1 ]; then
         OTHERS=$OTHERS" "$i
     fi
-do
+done
 
 echo $OTHERS
 
