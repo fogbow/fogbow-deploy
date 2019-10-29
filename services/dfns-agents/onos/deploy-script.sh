@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ONOS_ID_CONTAINER=$(sudo docker ps | grep onos | awk '{ print $1 }')
-if [ $ONOS_CONTAINER_ID != "" ]; then
+if [ cID-$ONOS_CONTAINER_ID != "cID-" ]; then
     sudo docker stop $ONOS_CONTAINER_ID
     sudo docker container rm $ONOS_CONTAINER_ID
     sudo docker system prune -af
