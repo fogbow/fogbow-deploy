@@ -82,6 +82,7 @@ do
     echo "      atomix_dir_name: atomix" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      utils_dir_name: utils"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      confs_dir_name: conf-files"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      dfns_remote_path: ~/dfns-agents"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Copying DFNS agents software in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -92,6 +93,7 @@ do
     echo "          - \"{{ dfns_path }}/{{ atomix_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          - \"{{ dfns_path }}/{{ utils_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ confs_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
