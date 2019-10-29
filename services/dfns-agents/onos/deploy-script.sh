@@ -1,9 +1,13 @@
 #!/bin/bash
 
-sudo docker stop onos_controller
-sudo docker container rm onos_controller
-sudo docker system prune -af
-sudo docker container prune -f
+ONOS_ID_CONTAINER=$(sudo docker ps | grep onos | awk '{ print $1 }')
+if [ $ONOS_CONTAINER_ID != "" ]; then
+    sudo docker stop $ONOS_CONTAINER_ID
+    sudo docker container rm $ONOS_CONTAINER_ID
+    sudo docker system prune -af
+    sudo docker container prune -f
+fi
+
 sudo apt-get remove openvswitch-common -y
 sudo apt-get remove openvswitch-switch -y
 

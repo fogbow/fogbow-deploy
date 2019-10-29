@@ -1,7 +1,10 @@
 #!/bin/bash
 
-sudo docker stop atomix_node
-sudo docker container rm atomix_node
+ATOMIX_ID_CONTAINER=$(sudo docker ps | grep atomix | awk '{ print $1 }')
+if [ $ATOMIX_CONTAINER_ID != "" ]; then
+    sudo docker stop $ATOMIX_CONTAINER_ID
+    sudo docker container rm $ATOMIX_CONTAINER_ID
+fi
 
 SITE_CONF_FILE_PATH="../conf-files/site.conf"
 
