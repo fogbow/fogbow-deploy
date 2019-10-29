@@ -70,7 +70,7 @@ echo "private_key_file_path="$CONTAINER_BASE_DIR_PATH/$CONTAINER_CONF_FILES_DIR/
 echo "" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 echo "jdbc_database_url=jdbc:sqlite:/root/federated-network-service/fns.db" >> $CONF_FILE_DIR_PATH/$CONF_FILE_NAME
 
-## Create and edit services/vanilla.conf
+## Create and edit services/vanilla/driver.conf
 
 mkdir -p $FNS_SERVICE_DRIVER_DIR_PATH
 touch $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
