@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo docker stop atomix_node
+sudo docker container rm atomix_node
+
 SITE_CONF_FILE_PATH="../conf-files/site.conf"
 
 DFNS_CLUSTER_PUBLIC_IPS_LIST_PATTERN="dfns_cluster_public_ips_list"

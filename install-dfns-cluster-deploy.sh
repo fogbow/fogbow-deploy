@@ -56,8 +56,6 @@ do
     echo "      atomix_dir_name: atomix" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      utils_dir_name: utils"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_scripts_path: \"/home/{{ lookup(\'config\', \'DEFAULT_REMOTE_USER\')}}/dfns-agents/utils/scripts\""  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      remove_script_runner: bash remove-script.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Removing previously installed DFNS agent software (if applied) in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -69,14 +67,6 @@ do
     echo "          - \"{{ dfns_agent_dir_name }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          - \"{{ dfns_agent_dir_name }}/{{ utils_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "    - name: Removing containers in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      shell: \"{{ remove_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        chdir: \"{{ item }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_scripts_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
 # Generate transfer-agents-software.yml
