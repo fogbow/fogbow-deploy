@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ATOMIX_ID_CONTAINER=$(sudo docker ps | grep atomix | awk '{ print $1 }')
+ATOMIX_CONTAINER_ID=$(sudo docker ps | grep atomix | awk '{ print $1 }')
 if [ cID-$ATOMIX_CONTAINER_ID != "cID-" ]; then
     sudo docker stop $ATOMIX_CONTAINER_ID
     sudo docker container rm $ATOMIX_CONTAINER_ID
