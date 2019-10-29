@@ -28,8 +28,8 @@ echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 DFNS_AGENTS_PRIVATE_KEY_FILE_PATH_PATTERN="dfns_agents_ssh_private_key_file"
 DFNS_AGENTS_PRIVATE_KEY_FILE_PATH=$(grep $DFNS_AGENTS_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
-DFNS_AGENTS_NODE_LIST_PATTERN="dfns_agents_public_ips_list"
-DFNS_AGENTS_NODE_LIST=$(grep $DFNS_AGENTS_NODE_LIST_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DFNS_AGENTS_PUBLIC_IPS_LIST_PATTERN="dfns_agents_public_ips_list"
+DFNS_AGENTS_PUBLIC_IPS_LIST=$(grep $DFNS_AGENTS_PUBLIC_IPS_LIST_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 for i in $DFNS_AGENTS_PUBLIC_IPS_LIST
 do
@@ -103,10 +103,10 @@ do
     echo "        copy:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          src: \"{{ item }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          dest: \"{{ dfns_remote_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_path }}/{{ atomix_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_path }}/{{ utils_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ atomix_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ utils_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
@@ -127,9 +127,9 @@ do
     echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "          chdir: "{{ item }}"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_path }}/{{ atomix_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          chdir: \"{{ item }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ atomix_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
@@ -150,9 +150,9 @@ do
     echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "          chdir: "{{ item }}"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "        - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          chdir: \"{{ item }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
@@ -168,7 +168,7 @@ echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
 # Deploy
 
-#(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
+(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml -e ansible_ssh_port=15022)
 
 # House keeping
 
