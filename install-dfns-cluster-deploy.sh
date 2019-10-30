@@ -211,8 +211,6 @@ cp "./conf-files/site.conf" "services/dfns-agents/conf-files/site.conf"
 ONOS_SECRET=$(pwgen 10 1)
 export ONOS_SECRET
 
-echo secret:$ONOS_SECRET
-
 (cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
 
 # House keeping
