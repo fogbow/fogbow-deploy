@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ONOS_CONTAINER_ID=$(sudo docker ps | grep onos | awk '{ print $1 }')
+ONOS_CONTAINER_ID=$(sudo docker ps -a | grep onos | awk '{ print $1 }')
 if [ cID-$ONOS_CONTAINER_ID != "cID-" ]; then
     sudo docker stop $ONOS_CONTAINER_ID
     sudo docker container rm $ONOS_CONTAINER_ID

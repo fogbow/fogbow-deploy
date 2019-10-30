@@ -1,4 +1,4 @@
 ---
 - import_playbook: copy-conf-files.yml
-- import_playbook: transfer-conf-files.yml
+- import_playbook: transfer-services.yml
 - import_playbook: reconfigure-fns.yml

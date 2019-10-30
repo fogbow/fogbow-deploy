@@ -12,12 +12,12 @@ CONTAINER_CONF_FILES_DIR="src/main/resources/private"
 
 ## Edit fns.conf
 
-ed -s $CONF_FILE_DIR_PATH/$FNS_CONF_FILE_NAME <<!
-/^build/d
-/^service_names/s,$,\,dfns
-w
-q
-!
+SERVICE_NAMES=$(grep "^service_names" $CONF_FILE_DIR_PATH/$FNS_CONF_FILE_NAME | awk -F "=" '{ print $2 }')
+DFNS=$(echo $SERVICE_NAMES | grep dfns)
+
+if [S$DFNS == S]; then
+    sed -i "s/^service_names=.*/service_names=$SERVICE_NAMES,dfns" $CONF_FILE_DIR_PATH/$FNS_CONF_FILE_NAME
+fi
 
 ## Create and edit services/dfns/driver.conf
 
@@ -44,11 +44,6 @@ echo "federated_network_agent_permission_file_path=$PERMISSION_FILE_PATH" >> $DF
 REMOTE_USER_PATTERN="remote_user"
 REMOTE_USER=$(grep $REMOTE_USER_PATTERN $CONF_FILE_DIR_PATH/$SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 echo "federated_network_agent_user=$REMOTE_USER" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-
-#federated_network_agent_pre_shared_key=neemau6Yix
-#VPN_PASSWORD_KEY="vpn_password"
-#VPN_PASSWORD=$(grep $VPN_PASSWORD_KEY $CONF_FILE_DIR_PATH/$SECRETS_FILE_NAME | awk -F "=" '{print $2}')
-#echo "federated_network_agent_pre_shared_key=$VPN_PASSWORD" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
 # Create dfns agent key pair
 AGENT_PRIVATE_KEY_FILE_PATH="./dfns-agent-id_rsa"

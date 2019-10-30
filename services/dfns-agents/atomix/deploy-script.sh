@@ -1,9 +1,11 @@
 #!/bin/bash
 
-ATOMIX_CONTAINER_ID=$(sudo docker ps | grep atomix | awk '{ print $1 }')
+ATOMIX_CONTAINER_ID=$(sudo docker ps -a | grep atomix | awk '{ print $1 }')
 if [ cID-$ATOMIX_CONTAINER_ID != "cID-" ]; then
     sudo docker stop $ATOMIX_CONTAINER_ID
     sudo docker container rm $ATOMIX_CONTAINER_ID
+    sudo docker system prune -af
+    sudo docker container prune -f
 fi
 
 SITE_CONF_FILE_PATH="../conf-files/site.conf"
