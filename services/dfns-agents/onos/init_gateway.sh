@@ -8,8 +8,8 @@ ipsec_psk="atmosphere_psw"
 
 function install_system_dependencies {
         sudo apt-get update
-	sudo apt-get install openvswitch-common openvswitch-switch -y
-	sudo apt-get install linux-headers-4.4.0-154-generic -y
+        sudo apt-get install strongswan openvswitch-common openvswitch-switch -y
+    	sudo apt-get install linux-headers-4.4.0-154-generic -y
         sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common python libelf-dev -y
 }
 
