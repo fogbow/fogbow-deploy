@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
-    script_runner: sh copy-conf-file.sh
+    script_runner: sh copy-conf-files.sh
     script_path: ../../scripts/dfns-deploy
   tasks:
     - name: Setting up configuration files
