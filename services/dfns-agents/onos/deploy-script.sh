@@ -19,4 +19,6 @@ echo $OTHERS
 ONOS_SECRET=$2
 export ONOS_SECRET
 
+echo [$2][$ONOS_SECRET] > onos.secret.debug
+
 bash ./init_gateway.sh $1 $OTHERS

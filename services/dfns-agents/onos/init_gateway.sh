@@ -5,7 +5,7 @@ onos_version="1.14.1"
 ovs_version="2.11"
 
 # ONOS_SECRET is exported by the sh script that calls this script
-echo secret:$ONOS_SECRET > onos.secret.debug
+echo secret:$ONOS_SECRET >> onos.secret.debug
 
 ipsec_psk=$ONOS_SECRET
 

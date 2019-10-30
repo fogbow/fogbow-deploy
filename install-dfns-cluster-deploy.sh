@@ -179,7 +179,8 @@ do
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      deploy_script_runner: bash deploy-script.sh $i ansible_env.ONOS_SECRET"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      onos_secret: \"{{ lookup(\'env\',\'ONOS_SECRET\') }}\""
+    echo "      deploy_script_runner: bash deploy-script.sh $i {{ onos_secret }}"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Deploying Onos in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -209,6 +210,8 @@ cp "./conf-files/site.conf" "services/dfns-agents/conf-files/site.conf"
 
 ONOS_SECRET=$(pwgen 10 1)
 export ONOS_SECRET
+
+echo secret:$ONOS_SECRET
 
 (cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
 
