@@ -1,11 +1,11 @@
 ---
 - hosts: basic-site-machine
   vars:
-    services_path: ../../services
-    fns_dir_name: federated-network-service/conf-files
+    services_path: ../../services/federated-network-service
+    fns_dir_name: conf-files
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying FNS service components
+    - name: Copying FNS conf-files
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"
