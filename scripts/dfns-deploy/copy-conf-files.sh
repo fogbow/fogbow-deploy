@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVICE="dfns-agents"
+SERVICE="federated-network-service"
 SITE_CONF_FILE_NAME="site.conf"
 DFNS_CONF_FILE_NAME="dfns.conf"
 CONF_FILE_TEMPLATE_DIR_PATH="../../conf-files"
