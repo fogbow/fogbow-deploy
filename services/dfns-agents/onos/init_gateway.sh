@@ -4,7 +4,10 @@ atomix_version="3.0.8"
 onos_version="1.14.1"
 ovs_version="2.11"
 
-ipsec_psk="atmosphere_psw"
+# ONOS_SECRET is exported by the sh script that calls this script
+echo secret:$ONOS_SECRET > onos.secret.debug
+
+ipsec_psk=$ONOS_SECRET
 
 function install_system_dependencies {
         sudo apt-get update

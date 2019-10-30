@@ -16,4 +16,7 @@ done
 
 echo $OTHERS
 
+ONOS_SECRET=$2
+export ONOS_SECRET
+
 bash ./init_gateway.sh $1 $OTHERS
