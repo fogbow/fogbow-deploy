@@ -99,9 +99,9 @@ do
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
-# Generate remove-old-containers.yml
+# Generate remove-atomix-container.yml
 
-YML_FILE_NAME="remove-old-containers.yml"
+YML_FILE_NAME="remove-atomix-container.yml"
 
 echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 for i in $DFNS_CLUSTER_PUBLIC_IPS_LIST
@@ -112,7 +112,7 @@ do
     echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      remove_script_runner: bash remove-script.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      - name: Removing Atomix and Onos containers in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      - name: Removing Atomix container in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        shell: \"{{ remove_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -122,6 +122,28 @@ do
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
+# Generate remove-onos-container.yml
+
+YML_FILE_NAME="remove-onos-container.yml"
+
+echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+for i in $DFNS_CLUSTER_PUBLIC_IPS_LIST
+do
+    echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      onos_dir_name: onos" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      remove_script_runner: bash remove-script.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      - name: Removing Onos container in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        shell: \"{{ remove_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          chdir: \"{{ item }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "        with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "          - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+done
 
 # Generate deploy-atomix.yml
 
