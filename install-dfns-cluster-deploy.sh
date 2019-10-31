@@ -3,7 +3,7 @@
 
 # Set path variables
 
-SITE_CONF_FILE_PATH="./conf-files/site.conf"
+CLUSTER_CONF_FILE_PATH="./conf-files/cluster.conf"
 ANSIBLE_FILES_DIR_PATH="./ansible-playbook/dfns-cluster-deploy"
 ANSIBLE_HOSTS_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"hosts"
 ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
@@ -11,10 +11,10 @@ ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
 # Generate content of Ansible hosts file
 
 DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH_PATTERN="dfns_cluster_ssh_private_key_file"
-DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH=$(grep $DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH=$(grep $DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH_PATTERN $CLUSTER_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 DFNS_CLUSTER_PUBLIC_IPS_LIST_PATTERN="dfns_cluster_public_ips_list"
-DFNS_CLUSTER_PUBLIC_IPS_LIST=$(grep $DFNS_CLUSTER_PUBLIC_IPS_LIST_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DFNS_CLUSTER_PUBLIC_IPS_LIST=$(grep $DFNS_CLUSTER_PUBLIC_IPS_LIST_PATTERN $CLUSTER_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 for i in $DFNS_CLUSTER_PUBLIC_IPS_LIST
 do
@@ -195,7 +195,7 @@ done
 # Generate content of Ansible ansible.cfg file
 
 REMOTE_USER_PATTERN="^remote_user"
-REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $CLUSTER_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 echo "[defaults]" > $ANSIBLE_CFG_FILE_PATH
 echo "inventory = hosts" >> $ANSIBLE_CFG_FILE_PATH

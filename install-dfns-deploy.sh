@@ -16,8 +16,8 @@ BASIC_SITE_IP=$(grep $BASIC_SITE_IP_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{
 BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN="basic_site_ssh_private_key_file"
 BASIC_SITE_PRIVATE_KEY_FILE_PATH=$(grep $BASIC_SITE_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
-DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH_PATTERN="dfns_cluster_ssh_private_key_file"
-DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH=$(grep $DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DFNS_AGENT_PRIVATE_KEY_FILE_PATH_PATTERN="dfns_agent_ssh_private_key_file"
+DFNS_AGENT_PRIVATE_KEY_FILE_PATH=$(grep $DFNS_AGENT_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 
 DFNS_AGENT_PUBLIC_IP_PATTERN="dfns_agent_public_ip"
 DFNS_AGENT_PUBLIC_IP=$(grep $DFNS_AGENT_PUBLIC_IP_PATTERN $SITE_CONF_FILE_PATH | awk -F "=" '{print $2}')
@@ -34,7 +34,7 @@ echo "" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[agent-node-$DFNS_AGENT_PUBLIC_IP]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo $DFNS_AGENT_PUBLIC_IP >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[agent-node-$DFNS_AGENT_PUBLIC_IP:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
-echo "ansible_ssh_private_key_file=$DFNS_CLUSTER_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "ansible_ssh_private_key_file=$DFNS_AGENT_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 
 # Generate content of Ansible ansible.cfg file
