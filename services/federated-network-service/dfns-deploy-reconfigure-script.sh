@@ -45,4 +45,4 @@ REMOTE_USER_PATTERN="remote_user"
 REMOTE_USER=$(grep $REMOTE_USER_PATTERN $CONF_FILE_DIR_PATH/$SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
 echo "federated_network_agent_user=$REMOTE_USER" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
-#bash fns-deploy-deploy-script.sh
+bash fns-deploy-deploy-script.sh
