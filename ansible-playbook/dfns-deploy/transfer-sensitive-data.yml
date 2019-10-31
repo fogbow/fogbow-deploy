@@ -1,0 +1,13 @@
+# This playbook transfers sensitive data, taking care of setting its permission in the remote machine accordingly
+
+- hosts: basic-site-machine
+  vars:
+    fogbow_components: ~/fogbow-components
+    conf_files: conf-files
+    fns_dir_name: federated-network-service
+    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/dfns-agent-id_rsa
+  tasks:
+    - name: Copy private keys to basic-site-machine
+      copy: src={{ item.src }} dest={{ item.dest }} mode=0600
+      with_items:
+        - { src: "{{ private_key_fns_to_dmz_path }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
