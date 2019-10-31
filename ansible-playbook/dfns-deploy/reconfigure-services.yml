@@ -2,6 +2,7 @@
 - hosts: basic-site-machine
   vars:
     fns_dir_name: federated-network-service
+    gui_dir_name: fogbow-gui
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash dfns-deploy-reconfigure-script.sh
   tasks:
@@ -12,3 +13,4 @@
         chdir: "{{ item }}"
       with_items:
         - "{{ fogbow_components }}/{{ fns_dir_name }}"
+        - "{{ fogbow_components }}/{{ gui_dir_name }}"

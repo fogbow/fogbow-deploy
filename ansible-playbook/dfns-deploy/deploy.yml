@@ -4,4 +4,4 @@
 - import_playbook: transfer-dfns-install.yml
 - import_playbook: add-public-key.yml
 - import_playbook: transfer-sensitive-data.yml
-- import_playbook: reconfigure-fns.yml
+- import_playbook: reconfigure-services.yml
