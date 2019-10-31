@@ -4,7 +4,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     fna_dir_name: "federated-network-agent"
   tasks:
-    - name: Removing federated network agent
+    - name: Removing federated network agent in vanilla-agent-machine
       become: yes
       file:
         state: absent
@@ -15,7 +15,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     fns_dir_name: federated-network-service
   tasks:
-    - name: Removing previously installed FNS if applied
+    - name: Removing previously installed FNS (if applied) in basic-site-machine
       become: yes
       file:
         state: absent

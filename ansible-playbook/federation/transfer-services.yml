@@ -5,7 +5,7 @@
     xmpp_dir_name: xmpp-server
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying xmpp-server to xmpp-machine
+    - name: Copying xmpp-server to XMPP machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"
@@ -19,7 +19,7 @@
     reconfig_dir_name: reconfiguration
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying MS service components
+    - name: Copying MS service components to basic-site-machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"

@@ -10,7 +10,7 @@
     secrets_fns: ../../services/federated-network-service/conf-files/secrets
     fns_conf: ../../services/federated-network-service/conf-files/fns.conf
   tasks:
-    - name: Copy private keys to internal machine
+    - name: Copy private keys to basic-site-machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ private_key_fns_to_dmz_path }}", dest: "{{ fogbow_components }}/{{ fns_dir_name }}/{{ conf_files }}" }
@@ -34,7 +34,7 @@
     fn_agent_dir_name: federated-network-agent
     secrets_agent: ../../services/federated-network-agent/conf-files/secrets
   tasks:
-    - name: Copy secrets, prosody and ipsec confs to DMZ machine
+    - name: Copy secrets and ipsec confs to vanilla agent machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ secrets_agent }}", dest: "{{ fogbow_components }}/{{ agent_dir_name }}" }

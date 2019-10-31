@@ -1,0 +1,8 @@
+---
+- import_playbook: install-dependencies.yml
+- import_playbook: remove-previous-installation.yml
+- import_playbook: transfer-agents-software.yml
+- import_playbook: remove-atomix-container.yml
+- import_playbook: remove-onos-container.yml
+- import_playbook: deploy-atomix.yml
+- import_playbook: deploy-onos.yml

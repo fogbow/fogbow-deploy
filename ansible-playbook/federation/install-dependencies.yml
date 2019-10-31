@@ -1,7 +1,7 @@
 ---
 - hosts: xmpp-machine
   tasks:
-    - name: Installing Docker
+    - name: Installing Docker in XMPP machine
       apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
       become: yes
       with_items:
