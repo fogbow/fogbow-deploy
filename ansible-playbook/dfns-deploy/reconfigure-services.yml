@@ -6,7 +6,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash dfns-deploy-reconfigure-script.sh
   tasks:
-    - name: Reconfiguring FNS in basic-site-machine
+    - name: Reconfiguring FNS and GUI in basic-site-machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:

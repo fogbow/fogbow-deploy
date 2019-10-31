@@ -6,7 +6,7 @@
     prosody_conf_path: ../../services/xmpp-server/prosody.cfg.lua
     xmpp_dir_name: xmpp-server
   tasks:
-    - name: Copy prosody to XMPP machine
+    - name: Copying prosody to XMPP machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: '{{ prosody_conf_path }}', dest: '{{ fogbow_components }}/{{ xmpp_dir_name }}' }

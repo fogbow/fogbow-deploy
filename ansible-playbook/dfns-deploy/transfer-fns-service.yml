@@ -5,7 +5,7 @@
     fns_dir_name: federated-network-service
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying FNS service components
+    - name: Copying FNS service components in basic-site-machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"

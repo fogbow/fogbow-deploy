@@ -6,7 +6,7 @@
     reconfig_dir_name: reconfiguration
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying GUI service components
+    - name: Copying GUI service components in basic-site-machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"

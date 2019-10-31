@@ -4,7 +4,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     xmpp_server: "xmpp-server"
   tasks:
-    - name: Removing xmpp-server
+    - name: Removing previously installed xmpp-server (if applied) in XMPP machine
       become: yes
       file:
         state: absent
@@ -15,7 +15,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     ms_dir_name: membership-service
   tasks:
-    - name: Removing previously installed MS if applied
+    - name: Removing previously installed MS (if applied) in basic-site-machine
       become: yes
       file:
         state: absent

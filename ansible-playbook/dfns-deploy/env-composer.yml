@@ -5,7 +5,7 @@
     script_runner: sh env-composer.sh
     script_path: ../../scripts/dfns-deploy
   tasks:
-    - name: Setting up configuration files
+    - name: Setting up configuration files in localhost
       shell: "{{ script_runner }}"
       args:
         chdir: "{{ script_path }}"

@@ -4,12 +4,12 @@
     source_dir: ../../scripts
     target_dir: /etc/init.d
   tasks:
-    - name: Copy script to xmpp-machine
+    - name: Copying scripts to XMPP machine
       become: yes
       copy: 
         src: "{{ source_dir }}/{{ script_name }}"
         dest: "{{ target_dir }}/{{ script_name }}"
         mode: 0755
-    - name: Add script as a service in xmpp-machine
+    - name: Adding script as a service in XMPP machine
       become: yes
       command: update-rc.d "{{ script_name }}" defaults

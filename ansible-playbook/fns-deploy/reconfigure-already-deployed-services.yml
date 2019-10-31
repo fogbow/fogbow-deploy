@@ -19,7 +19,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash fns-deploy-reconfigure-script.sh
   tasks:
-    - name: Reconfiguring XMPP server in xmpp-machine
+    - name: Reconfiguring XMPP server in XMPP machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:

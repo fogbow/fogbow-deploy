@@ -5,7 +5,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash fns-deploy-deploy-script.sh
   tasks:
-    - name: Deploying services in vanilla agent machine
+    - name: Deploying services in vanilla-agent-machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:
@@ -19,7 +19,7 @@
     fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
     deploy_script_runner: bash fns-deploy-deploy-script.sh
   tasks:
-    - name: Deploying services in basic site machine
+    - name: Deploying services in basic-site-machine
       shell: "{{ deploy_script_runner }}"
       become: yes
       args:

@@ -34,7 +34,7 @@
     fn_agent_dir_name: federated-network-agent
     secrets_agent: ../../services/federated-network-agent/conf-files/secrets
   tasks:
-    - name: Copy secrets, prosody and ipsec confs to DMZ machine
+    - name: Copy secrets and ipsec confs to vanilla agent machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
       with_items:
         - { src: "{{ secrets_agent }}", dest: "{{ fogbow_components }}/{{ agent_dir_name }}" }
