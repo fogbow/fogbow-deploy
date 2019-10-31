@@ -8,7 +8,7 @@
     apache_dir_name: apache-server
     fogbow_components: ~/fogbow-components/
   tasks:
-    - name: Copying RAS and AS service components
+    - name: Copying RAS and AS service components in basic-site-machine
       copy:
         src: "{{ item }}"
         dest: "{{ fogbow_components }}"

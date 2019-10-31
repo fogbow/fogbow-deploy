@@ -4,7 +4,7 @@
     source_dir: ../../scripts
     target_dir: /etc/init.d
   tasks:
-    - name: Copy script to basic-site-machine
+    - name: Copying script to basic-site-machine
       become: yes
       copy: 
         src: "{{ source_dir }}/{{ script_name }}"

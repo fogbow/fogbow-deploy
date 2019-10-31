@@ -204,7 +204,7 @@ echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
 # Copy site.conf to services
 mkdir -p "services/dfns-agents/conf-files"
-cp "./conf-files/site.conf" "services/dfns-agents/conf-files/site.conf"
+cp "./conf-files/cluster.conf" "services/dfns-agents/conf-files/cluster.conf"
 
 # Deploy
 

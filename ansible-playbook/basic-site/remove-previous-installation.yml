@@ -6,7 +6,7 @@
     as_dir_name: authentication-service
     apache_server_dir_name: apache-server
   tasks:
-    - name: Removing previously installed RAS, AS and Apache if applied
+    - name: Removing previously installed RAS, AS and Apache (if applied) in basic-site-machine
       become: yes
       file:
         state: absent
