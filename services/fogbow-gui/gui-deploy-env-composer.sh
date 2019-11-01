@@ -36,10 +36,10 @@ sed -i "s#.*ms:.*#	ms: 'https://$PROVIDER_ID/ms',#" $BASE_DIR_PATH/$API_CONF_FIL
 sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $BASE_DIR_PATH/$API_CONF_FILE_NAME
 
 # Setting FNS implementations (if any)
-FNS_MODES_PATTERN="fns_modes"
-FNS_MODES=$(grep $FNS_MODES_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME | awk -F "=" '{print $2}')
+FNS_SERVICE_NAMES_PATTERN="fns_service_names"
+FNS_SERVICE_NAMES=$(grep $FNS_SERVICE_NAMES_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME | awk -F "=" '{print $2}')
 
-sed -i "s#.*fnsModes.*#	fnsModes: [$FNS_MODES],#" $BASE_DIR_PATH/$API_CONF_FILE_NAME
+sed -i "s#.*fnsServiceNames.*#	fnsServiceNames: [$FNS_SERVICE_NAMES],#" $BASE_DIR_PATH/$API_CONF_FILE_NAME
 
 RECONFIGURATION_BASE_DIR_PATH="services/reconfiguration/conf-files"
 mkdir -p $RECONFIGURATION_BASE_DIR_PATH
