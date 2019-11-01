@@ -8,7 +8,6 @@ CONTAINER_BASE_DIR_PATH="/root/fogbow-gui"
 CONTAINER_CONF_FILE_PATH="src/defaults"
 SHARED_INFO_FILE_PATH="./conf-files/shared.info"
 GUI_CONF_FILE_NAME="gui.conf"
-GUI_PORT_PATTERN="fogbow_gui_server_port"
 
 IMAGE_BASE_NAME=$(basename $IMAGE_NAME)
 TAG=$(grep $IMAGE_BASE_NAME $SERVICES_CONF_FILE_PATH | awk -F "=" '{print $2}')
