@@ -37,7 +37,7 @@ sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $BASE_DIR_PATH/$API_CONF_FILE_NAM
 
 # Setting FNS implementations (if any)
 FNS_SERVICE_NAMES_PATTERN="fns_service_names"
-FNS_SERVICE_NAMES=$(grep $FNS_SERVICE_NAMES_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME | awk -F "=" '{print $2}')
+FNS_SERVICE_NAMES=$(grep ^$FNS_SERVICE_NAMES_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 sed -i "s#.*fnsServiceNames.*#	fnsServiceNames: [$FNS_SERVICE_NAMES],#" $BASE_DIR_PATH/$API_CONF_FILE_NAME
 
