@@ -26,8 +26,6 @@ mkdir -p $DFNS_DRIVER_DIR_PATH
 cp $CONF_FILE_DIR_PATH/$DFNS_CONF_FILE_NAME $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
 echo "driver_class_name=cloud.fogbow.fns.core.drivers.dfns.DfnsServiceDriver" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-echo "create_tunnel_from_compute_to_agent_script_path=/root/federated-network-service/bin/agent-scripts/dfns/create-tunnel-from-compute-to-agent.sh" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
-echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $DFNS_DRIVER_DIR_PATH/$DFNS_DRIVER_FILE_NAME
 
 DFNS_AGENT_PRIVATE_IP_PATTERN="dfns_agent_private_ip"
 DFNS_AGENT_PRIVATE_IP=$(grep $DFNS_AGENT_PRIVATE_IP_PATTERN $CONF_FILE_DIR_PATH/$SITE_CONF_FILE_NAME | awk -F "=" '{print $2}')
