@@ -8,5 +8,5 @@ export const env = {
     remoteCredentialsUrl: ,
     authenticationPlugin: 'Shibboleth',
     credentialFields: { },
-    fnsModes: []
+    fnsServiceNames: []
 };

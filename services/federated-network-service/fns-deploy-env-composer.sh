@@ -78,11 +78,6 @@ touch $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "driver_class_name=cloud.fogbow.fns.core.drivers.vanilla.VanillaServiceDriver" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
 
-echo "add_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/create-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "remove_federated_network_script_path=/root/federated-network-service/bin/agent-scripts/vanilla/delete-federated-network" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "agent_scripts_path=/home/ubuntu/fogbow-components/federated-network-agent/" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-echo "" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
-
 VANILLA_AGENT_PRIVATE_IP_PATTERN="vanilla_agent_private_ip"
 VANILLA_AGENT_PRIVATE_IP=$(grep $VANILLA_AGENT_PRIVATE_IP_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$FNS_DEPLOY_CONF_FILE_NAME | awk -F "=" '{print $2}')
 echo "federated_network_agent_private_address=$VANILLA_AGENT_PRIVATE_IP" >> $FNS_SERVICE_DRIVER_DIR_PATH/$FNS_SERVICE_DRIVER_FILE_NAME
