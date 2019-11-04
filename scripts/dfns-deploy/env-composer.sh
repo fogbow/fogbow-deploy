@@ -21,7 +21,7 @@ yes | cp -f $CONF_FILE_TEMPLATE_DIR_PATH/$DFNS_CONF_FILE_NAME $CONF_FILE_DIR_PAT
 AGENT_PRIVATE_KEY_FILE_PATH=$CURRENT_DIR_PATH/"dfns-agent-id_rsa"
 AGENT_PUBLIC_KEY_FILE_PATH=$CURRENT_DIR_PATH/"dfns-agent-id_rsa.pub"
 
-ssh-keygen -f $AGENT_PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "internal-communication-key" -N ""
+ssh-keygen -f $AGENT_PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "FNS-DFNS-key" -N ""
 
 NEW_AGENT_PRIVATE_KEY_FILE_PATH="../../services/federated-network-service/conf-files/dfns-agent-id_rsa"
 NEW_AGENT_PUBLIC_KEY_FILE_PATH="../../services/dfns-agents/install/dfns-agent-id_rsa.pub"
