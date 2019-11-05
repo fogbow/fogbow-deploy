@@ -15,6 +15,7 @@ w
 q
 !
 
+chmod 644 $TMP_PROSODY_CFG_FILE_NAME
 sudo docker cp $TMP_PROSODY_CFG_FILE_NAME $CONTAINER_NAME:$PROSODY_CFG_FILE_PATH
 
 sudo docker exec $CONTAINER_NAME /bin/bash -c "service prosody restart"

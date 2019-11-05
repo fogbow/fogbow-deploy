@@ -4,8 +4,8 @@ VIRTUAL_HOST_DIR_PATH="/etc/apache2/sites-available"
 ROOT_DIR_PATH="/var/www/html"
 INDEX_FILE_NAME="index.html"
 VIRTUAL_HOST_FILE_NAME="000-default.conf"
-TMP_INDEX_FILE_NAME="index.html.tmp"
-TMP_VIRTUAL_HOST_FILE_NAME="000-default.conf.tmp"
+TMP_INDEX_FILE_NAME="index.html.fed"
+TMP_VIRTUAL_HOST_FILE_NAME="000-default.conf.fed"
 
 cp $VIRTUAL_HOST_FILE_NAME $TMP_VIRTUAL_HOST_FILE_NAME
 cp $INDEX_FILE_NAME $TMP_INDEX_FILE_NAME
@@ -35,5 +35,3 @@ sudo docker cp $TMP_VIRTUAL_HOST_FILE_NAME $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PAT
 sudo docker cp $TMP_INDEX_FILE_NAME $CONTAINER_NAME:$ROOT_DIR_PATH/$INDEX_FILE_NAME
 
 sudo docker exec $CONTAINER_NAME /bin/bash -c "/etc/init.d/apache2 restart"
-
-rm $TMP_VIRTUAL_HOST_FILE_NAME $TMP_INDEX_FILE_NAME
