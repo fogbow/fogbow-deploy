@@ -1,5 +1,6 @@
 #!/bin/bash
-# This script goal is to generate the Ansible hosts and ansible.cfg files
+# This script goal is to generate the Ansible hosts and ansible.cfg files, as well as the spacific .yml files
+# for the hosts that form the cluster.
 
 # Set path variables
 
@@ -85,7 +86,7 @@ do
     echo "      onos_dir_name: onos"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      utils_dir_name: utils"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      confs_dir_name: conf-files"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_remote_path: ~/dfns-agents"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_remote_path: dfns-agents"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Copying DFNS agents software in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        copy:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -109,7 +110,7 @@ do
     echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      atomix_dir_name: atomix" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_path: dfns-agents" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      remove_script_runner: bash remove-script.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Removing Atomix container in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -132,7 +133,7 @@ do
     echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_path: dfns-agents" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      remove_script_runner: bash remove-script.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Removing Onos container in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -155,7 +156,7 @@ do
     echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      atomix_dir_name: atomix" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_path: dfns-agents" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      deploy_script_runner: bash deploy-script.sh $i"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Deploying Atomix in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -178,7 +179,7 @@ do
     echo "- hosts: agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_dir_name: onos" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-    echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    echo "      dfns_path: dfns-agents" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      onos_secret: \"{{ lookup('env','ONOS_SECRET') }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      deploy_script_runner: bash deploy-script.sh $i {{ onos_secret }}"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -202,7 +203,7 @@ echo "inventory = hosts" >> $ANSIBLE_CFG_FILE_PATH
 echo "remote_user = $REMOTE_USER" >> $ANSIBLE_CFG_FILE_PATH
 echo "host_key_checking = False" >> $ANSIBLE_CFG_FILE_PATH
 
-# Copy site.conf to services
+# Copy cluster.conf to services
 mkdir -p "services/dfns-agents/conf-files"
 cp "./conf-files/cluster.conf" "services/dfns-agents/conf-files/cluster.conf"
 

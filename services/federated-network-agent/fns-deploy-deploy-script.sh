@@ -15,7 +15,13 @@ sudo bash $STRONGSWAN_INSTALLATION_SCRIPT $VPN_PASSWORD
 AGENT_HOST_PUBLIC_KEY=$(cat vanilla-agent-id_rsa.pub)
 
 AUTHORIZED_KEYS_FILE_PATH=/"home"/$REMOTE_USER/".ssh"/"authorized_keys"
-grep "$AGENT_HOST_PUBLIC_KEY" $AUTHORIZED_KEYS_FILE_PATH
-if [ "$?" -ne "0" ]; then
-	echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
-fi
+
+# Remove old keys
+ed $AUTHORIZED_KEYS_FILE_PATH <<!
+g/FNS-vanilla-key/d
+w
+q
+!
+
+echo "" >> $AUTHORIZED_KEYS_FILE_PATH
+echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH

@@ -18,15 +18,12 @@ CONTAINER_NAME=$SERVICE
 
 # Edit configurations from RAS service
 
-RAS_CONTAINER_NAME="resource-allocation-service"
-RAS_CONTAINER_BASE_DIR_PATH="/root/resource-allocation-service"
-RAS_CONTAINER_CONF_DIR_PATH=$RAS_CONTAINER_BASE_DIR_PATH/"src/main/resources/private/"
-
 ## Copy application.properties from RAS and edit
 
+RAS_BASE_DIR_PATH="../resource-allocation-service"
+RAS_CONF_FILE_DIR_PATH=$RAS_BASE_DIR_PATH/"conf-files"
 APP_PROPERTIES_FILE_NAME="application.properties"
-sudo docker cp $RAS_CONTAINER_NAME:$RAS_CONTAINER_BASE_DIR_PATH/$APP_PROPERTIES_FILE_NAME $APP_PROPERTIES_FILE_NAME
-sudo chown ubuntu.ubuntu $APP_PROPERTIES_FILE_NAME
+cp $RAS_BASE_DIR_PATH/$APP_PROPERTIES_FILE_NAME $APP_PROPERTIES_FILE_NAME
 
 RAS_BD_PATTERN="ras"
 FNS_BD_NAME="fns"
@@ -34,11 +31,8 @@ sed -i "s|$RAS_BD_PATTERN|$FNS_BD_NAME|g" $APP_PROPERTIES_FILE_NAME
 
 ## Complete fns.conf configuration using ras.conf info
 
-RAS_CONF_FILE_NAME="ras.conf"
-TMP_RAS_CONF_FILE_NAME="ras.conf.tmp"
+RAS_CONF_FILE_PATH=$RAS_CONF_FILE_DIR_PATH/"ras.conf"
 FNS_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/$FNS_CONF_FILE_NAME
-sudo docker cp $RAS_CONTAINER_NAME:$RAS_CONTAINER_CONF_DIR_PATH/$RAS_CONF_FILE_NAME $TMP_RAS_CONF_FILE_NAME
-sudo chown ubuntu.ubuntu $TMP_RAS_CONF_FILE_NAME
 
 PROVIDER_ID_PATTERN="provider_id"
 XMPP_JID_PATTERN="xmpp_jid"
@@ -49,10 +43,10 @@ AS_PORT_PATTERN="as_port"
 RAS_URL_PATTERN="ras_url"
 RAS_PORT_PATTERN="ras_port"
 
-PROVIDER_ID=$(grep ^$PROVIDER_ID_PATTERN $TMP_RAS_CONF_FILE_NAME | awk -F "=" '{print $2}')
-XMPP_PASSWORD=$(grep ^$XMPP_PASSWORD_PATTERN $TMP_RAS_CONF_FILE_NAME | awk -F "=" '{print $2}')
-XMPP_SERVER_IP=$(grep ^$XMPP_SERVER_IP_PATTERN $TMP_RAS_CONF_FILE_NAME | awk -F "=" '{print $2}')
-AS_URL=$(grep ^$AS_URL_PATTERN $TMP_RAS_CONF_FILE_NAME | awk -F "=" '{print $2}')
+PROVIDER_ID=$(grep ^$PROVIDER_ID_PATTERN $RAS_CONF_FILE_PATH | awk -F "=" '{print $2}')
+XMPP_PASSWORD=$(grep ^$XMPP_PASSWORD_PATTERN $RAS_CONF_FILE_PATH | awk -F "=" '{print $2}')
+XMPP_SERVER_IP=$(grep ^$XMPP_SERVER_IP_PATTERN $RAS_CONF_FILE_PATH | awk -F "=" '{print $2}')
+AS_URL=$(grep ^$AS_URL_PATTERN $RAS_CONF_FILE_PATH | awk -F "=" '{print $2}')
 RAS_URL=$AS_URL
 AS_PORT=$(grep ^$AS_PORT_PATTERN $SHARED_INFO_FILE_PATH | awk -F "=" '{print $2}')
 RAS_PORT=$(grep ^$RAS_PORT_PATTERN $SHARED_INFO_FILE_PATH | awk -F "=" '{print $2}')
@@ -105,7 +99,3 @@ sudo docker exec $CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINE
 
 # Run FNS
 sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
-
-# Remove tmp file
-
-rm $TMP_RAS_CONF_FILE_NAME

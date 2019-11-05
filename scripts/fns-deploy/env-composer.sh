@@ -30,7 +30,7 @@ echo "$VPN_PASSWORD_PROPERTY=$GENERATED_PASSWORD" >> $FNA_SECRETS_FILE_PATH
 AGENT_PRIVATE_KEY_FILE_PATH=$CURRENT_DIR_PATH/"vanilla-agent-id_rsa"
 AGENT_PUBLIC_KEY_FILE_PATH=$CURRENT_DIR_PATH/"vanilla-agent-id_rsa.pub"
 
-ssh-keygen -f $AGENT_PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "internal-communication-key" -N ""
+ssh-keygen -f $AGENT_PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "FNS-vanilla-key" -N ""
 
 NEW_AGENT_PRIVATE_KEY_FILE_PATH="../../services"/"federated-network-service"/"conf-files"/"vanilla-agent-id_rsa"
 NEW_AGENT_PUBLIC_KEY_FILE_PATH="../../services"/"federated-network-agent"/"vanilla-agent-id_rsa.pub"

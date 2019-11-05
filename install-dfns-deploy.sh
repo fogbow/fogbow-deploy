@@ -65,18 +65,18 @@ echo "          dest: \"{{ dfns_remote_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YM
 echo "        with_items:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "          - \"{{ dfns_path }}/{{ install_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 
-# Generate add-public-key.yml
+# Generate setup-dfns-agent-machine.yml
 
-YML_FILE_NAME="add-public-key.yml"
+YML_FILE_NAME="setup-dfns-agent-machine.yml"
 
 echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "- hosts: agent-node-$DFNS_AGENT_PUBLIC_IP" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      install_dir_name: install" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      dfns_path: \"/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/dfns-agents\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      deploy_script_runner: bash add-public-key.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      deploy_script_runner: bash setup-dfns-agent-machine.sh"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      - name: Adding public key in agent-node-$DFNS_AGENT_PUBLIC_IP" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      - name: Setting up agent-node-$DFNS_AGENT_PUBLIC_IP" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
