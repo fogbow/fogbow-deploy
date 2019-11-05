@@ -20,9 +20,10 @@ CONTAINER_NAME=$SERVICE
 
 ## Copy application.properties from RAS and edit
 
-RAS_CONF_FILE_DIR_PATH="../resource-allocation-service/conf-files"
+RAS_BASE_DIR_PATH="../resource-allocation-service"
+RAS_CONF_FILE_DIR_PATH=$RAS_BASE_DIR_PATH/"conf-files"
 APP_PROPERTIES_FILE_NAME="application.properties"
-cp $RAS_CONF_FILE_DIR_PATH/$APP_PROPERTIES_FILE_NAME $APP_PROPERTIES_FILE_NAME
+cp $RAS_BASE_DIR_PATH/$APP_PROPERTIES_FILE_NAME $APP_PROPERTIES_FILE_NAME
 
 RAS_BD_PATTERN="ras"
 FNS_BD_NAME="fns"

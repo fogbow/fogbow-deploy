@@ -4,8 +4,7 @@ VIRTUAL_HOST_DIR_PATH="/etc/apache2/sites-available"
 VIRTUAL_HOST_FILE_NAME="000-default.conf"
 TMP_VIRTUAL_HOST_FILE_NAME="000-default.conf.tmp"
 
-sudo docker cp $CONTAINER_NAME:$VIRTUAL_HOST_DIR_PATH/$VIRTUAL_HOST_FILE_NAME $TMP_VIRTUAL_HOST_FILE_NAME
-sudo chown ubuntu.ubuntu $TMP_VIRTUAL_HOST_FILE_NAME
+sudo docker cp $VIRTUAL_HOST_FILE_NAME $TMP_VIRTUAL_HOST_FILE_NAME
 
 ed -s $TMP_VIRTUAL_HOST_FILE_NAME <<!
 /ms
@@ -33,7 +32,7 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     SSL_DIR_PATH="/etc/ssl/private"
     BASE_DIR_PATH="../reconfiguration/conf-files"
     SHIB_CONF_DIR_PATH="/etc/shibboleth"
-    SHIB_AUTH_APP_DIR_PATH="/home/ubuntu/shibboleth-authentication-application"
+    SHIB_AUTH_APP_DIR_PATH="shibboleth-authentication-application"
     SECURE_INDEX_PATH="/var/www/secure/index.html"
     VIRTUAL_HOST_SHIB_ENVIRONMENT_80_FILE_NAME="default.conf"
     VIRTUAL_HOST_SHIB_ENVIRONMENT_443_FILE="shibboleth-sp2.conf"
@@ -41,7 +40,6 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     CONF_SHIB_ENV_ATT_POLICY_FILE_NAME="attribute-policy.xml"
     CONF_SHIB_ENV_SHIB_XML_FILE_NAME="shibboleth2.xml"
     CONF_SHIB_ENV_INDEX_SECURE_FILE_NAME="index-secure.html"
-    SHIB_AUTH_APP_DIR_PATH="/home/ubuntu/shibboleth-authentication-application"
     SHIB_AUTH_APP_CONF_FILE_NAME="shibboleth-authentication-application.conf"
     SHIB_AUTH_APP_LOG4J_FILE_NAME="log4j.properties"
     AS_PUBLIC_KEY_NAME='authentication_service_public_key.pem'
@@ -80,7 +78,7 @@ if [ "$AUTH_TYPE_CLASS" == "shibboleth" ]; then
     sudo docker cp $ENABLE_MODULES_SCRIPT $CONTAINER_NAME:/$ENABLE_MODULES_SCRIPT
     sudo docker exec $CONTAINER_NAME /$ENABLE_MODULES_SCRIPT
     sudo docker exec $CONTAINER_NAME /bin/bash -c "rm /$ENABLE_MODULES_SCRIPT"
-    
+
     SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN="shib_private_key_path="
     sed -i "s#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN.*#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME#" $BASE_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
     SHIB_AUTH_APP_AS_PUBLIC_KEY_PATTERN="as_public_key_path="
