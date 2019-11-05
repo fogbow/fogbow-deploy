@@ -2,6 +2,6 @@
 - import_playbook: env-composer.yml
 - import_playbook: transfer-fns-service.yml
 - import_playbook: transfer-dfns-install.yml
-- import_playbook: add-public-key.yml
+- import_playbook: setup-dfns-agent-machine.yml
 - import_playbook: transfer-sensitive-data.yml
 - import_playbook: reconfigure-services.yml

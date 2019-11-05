@@ -20,3 +20,5 @@ q
 
 echo "" >> $AUTHORIZED_KEYS_FILE_PATH
 echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
+
+mkdir -p fogbow-components/federated-network-agent
