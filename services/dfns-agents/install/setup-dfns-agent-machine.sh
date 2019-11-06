@@ -21,4 +21,5 @@ q
 echo "" >> $AUTHORIZED_KEYS_FILE_PATH
 echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
 
-sudo $REMOTE_USER mkdir -p /home/$REMOTE_USER/fogbow-components/federated-network-agent
+mkdir -p /home/$REMOTE_USER/fogbow-components/federated-network-agent
+sudo chown -R $REMOTE_USER.$REMOTE_USER /home/$REMOTE_USER/fogbow-components
