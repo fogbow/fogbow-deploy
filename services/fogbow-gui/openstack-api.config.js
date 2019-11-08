@@ -4,6 +4,8 @@ export const env = {
     fns: , // Auto-generated value
     ms: , // Auto-generated value
     local: , // Auto-generated value
+    serverEndpoint: '',
+    deployType: '',
     refreshTime: 5000,
     remoteCredentialsUrl: '',
     authenticationPlugin: 'KeystoneV3',
