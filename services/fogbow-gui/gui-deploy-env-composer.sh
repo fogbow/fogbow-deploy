@@ -37,7 +37,7 @@ sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $BASE_DIR_PATH/$API_CONF_FILE_NAM
 
 # Setting deployType property
 
-DEPLOY_TYPE_PATTERN="fns_service_names"
+DEPLOY_TYPE_PATTERN="deploy_type"
 DEPLOY_TYPE=$(grep ^$DEPLOY_TYPE_PATTERN $CONF_FILE_TEMPLATE_DIR_PATH/$CONF_FILE_NAME | awk -F "=" '{print $2}')
 
 sed -i "s#.*deployType.*#	deployType: '$DEPLOY_TYPE',#" $BASE_DIR_PATH/$API_CONF_FILE_NAME
