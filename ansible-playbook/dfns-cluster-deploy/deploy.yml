@@ -6,3 +6,4 @@
 - import_playbook: remove-onos-container.yml
 - import_playbook: deploy-atomix.yml
 - import_playbook: deploy-onos.yml
+- import_playbook: install-vlan-id-service.yml

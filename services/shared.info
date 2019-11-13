@@ -4,3 +4,4 @@ fns_port=8081
 ras_port=8082
 ms_port=8083
 gui_port=8084
+vlanid_port=8085
