@@ -249,7 +249,7 @@ cp "./conf-files/cluster.conf" "services/dfns-agents/conf-files/cluster.conf"
 ONOS_SECRET=$(pwgen 10 1)
 export ONOS_SECRET
 
-#(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
+(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
 
 # House keeping
 
