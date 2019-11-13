@@ -193,6 +193,44 @@ do
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
+# Generate install-vlan-id-service.yml
+
+YML_FILE_NAME="install-vlan-id-service.yml"
+
+echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+FIRST_DFNS_CLUSTER_IP=${$DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
+echo "- hosts: localhost" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      service_path: ../../services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      env_composer_runner: bash env-composer.sh" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      - name: Setup conf file" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        shell: \"{{ env_composer_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "          chdir: \"{{ service_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+
+FIRST_DFNS_CLUSTER_IP=${$DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
+echo "- hosts: agent-node-$FIRST_DFNS_CLUSTER_IP" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      service_path: ../../services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      dfns_remote_path: dfns-agents/services"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      deploy_script_path: dfns-agents/services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      deploy_script_runner: bash deploy-script.sh" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      - name: Transfer service to agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        copy:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "          src: \"{{ service_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "          dest: \"{{ dfns_remote_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      - name: Deploying vlan-id-service in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "          chdir: \"{{ deploy_script_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+
+
 # Generate content of Ansible ansible.cfg file
 
 REMOTE_USER_PATTERN="^remote_user"
