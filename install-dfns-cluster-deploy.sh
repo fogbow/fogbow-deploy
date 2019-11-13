@@ -75,7 +75,7 @@ done
 # Generate transfer-agents-software.yml
 
 YML_FILE_NAME="transfer-agents-software.yml"
-
+FIRST_DFNS_CLUSTER_IP=${DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
 echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 for i in $DFNS_CLUSTER_PUBLIC_IPS_LIST
 do
@@ -87,6 +87,9 @@ do
     echo "      utils_dir_name: utils"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      confs_dir_name: conf-files"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      dfns_remote_path: dfns-agents"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    if [ "$i" = "$FIRST_DFNS_CLUSTER_IP" ]; then
+      echo "      vlan_id_service_path: ../../services/vlan-id-service"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    fi
     echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "      - name: Copying DFNS agents software in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "        copy:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -97,6 +100,9 @@ do
     echo "          - \"{{ dfns_path }}/{{ onos_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          - \"{{ dfns_path }}/{{ utils_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
     echo "          - \"{{ dfns_path }}/{{ confs_dir_name }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    if [ "$i" = "$FIRST_DFNS_CLUSTER_IP" ]; then
+      echo "          - \"{{ vlan_id_service_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+    fi
     echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 done
 
@@ -198,31 +204,24 @@ done
 YML_FILE_NAME="install-vlan-id-service.yml"
 
 echo "---" > $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-FIRST_DFNS_CLUSTER_IP=${$DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
 echo "- hosts: localhost" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      service_path: ../../services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      env_composer_runner: bash env-composer.sh" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      - name: Setup conf file" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      - name: Setup confs file" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        shell: \"{{ env_composer_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        args:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "          chdir: \"{{ service_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 
-FIRST_DFNS_CLUSTER_IP=${$DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
+FIRST_DFNS_CLUSTER_IP=${DFNS_CLUSTER_PUBLIC_IPS_LIST%% *}
 echo "- hosts: agent-node-$FIRST_DFNS_CLUSTER_IP" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  vars:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      service_path: ../../services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      dfns_remote_path: dfns-agents/services"  >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      deploy_script_path: dfns-agents/services/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
+echo "      deploy_script_path: dfns-agents/vlan-id-service" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      deploy_script_runner: bash deploy-script.sh" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "  tasks:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "      - name: Transfer service to agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "        copy:" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "          src: \"{{ service_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
-echo "          dest: \"{{ dfns_remote_path }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "      - name: Deploying vlan-id-service in agent-node-$i" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        shell: \"{{ deploy_script_runner }}\"" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
 echo "        become: yes" >> $ANSIBLE_FILES_DIR_PATH/$YML_FILE_NAME
@@ -250,7 +249,7 @@ cp "./conf-files/cluster.conf" "services/dfns-agents/conf-files/cluster.conf"
 ONOS_SECRET=$(pwgen 10 1)
 export ONOS_SECRET
 
-(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
+#(cd $ANSIBLE_FILES_DIR_PATH && ansible-playbook deploy.yml)
 
 # House keeping
 
