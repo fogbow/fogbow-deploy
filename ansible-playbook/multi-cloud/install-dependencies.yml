@@ -1,0 +1,11 @@
+---
+- hosts: service-host
+  tasks:
+    - name: Installing Docker
+      apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+      become: yes
+      with_items:
+        - docker.io
+    - name: Installing Compose
+      shell: sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" \
+      -o /usr/local/bin/docker-compose; sudo chmod +x /usr/local/bin/docker-compose

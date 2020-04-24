@@ -1,0 +1,6 @@
+---
+- import_playbook: install-dependencies.yml
+#- import_playbook: remove-previous-installation.yml
+#- import_playbook: copy-conf-files.yml
+#- import_playbook: copy-sensitive-data.yml
+#- import_playbook: deploy-services.yml
