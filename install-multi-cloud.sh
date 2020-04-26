@@ -3,8 +3,8 @@
 
 # Set path variables
 
-SITE_CONF_FILE_NAME="./conf-files/multi-cloud/host.conf"
-ANSIBLE_FILES_DIR_PATH="./ansible-playbook/multi-cloud"
+SITE_CONF_FILE_NAME="./multi-cloud/conf-files/host.conf"
+ANSIBLE_FILES_DIR_PATH="./multi-cloud/ansible-playbook"
 ANSIBLE_HOSTS_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"hosts"
 ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
 

@@ -31,8 +31,8 @@
     ras_dir_name: resource-allocation-service
     db_dir_name: fogbow-database
 
-    private_key_as_path: ../../services/authentication-service/conf-files/id_rsa
-    private_key_ras_path: ../../services/resource-allocation-service/conf-files/id_rsa
+    private_key_as_path: ../../services/authentication-service/conf-files/as.conf
+    private_key_ras_path: ../../services/resource-allocation-service/conf-files/as.conf
 
     secrets_db: ../../services/fogbow-database/conf-files/secrets
     secrets_ras: ../../services/resource-allocation-service/conf-files/secrets

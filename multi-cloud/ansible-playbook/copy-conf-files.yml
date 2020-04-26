@@ -1,0 +1,22 @@
+- hosts: service-host
+  vars:
+    source_yml: ../docker-compose.yml
+    target_yml: ./docker-compose.yml
+    source_dir: ../conf-files
+    target_dir: ./
+  tasks:
+    - name: Copying conf-files to service-host
+      become: yes
+      copy:
+        src: "{{ source_dir }}"
+        dest: "{{ target_dir }}"
+        mode: 0600
+    - name: Copying docker-compose.yml to service-host
+      become: yes
+      copy:
+        src: "{{ source_yml }}"
+        dest: "{{ target_yml }}"
+        mode: 0644
+    - name: Placeholder
+      become: yes
+      command: echo done

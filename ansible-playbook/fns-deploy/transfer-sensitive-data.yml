@@ -5,8 +5,8 @@
     fogbow_components: ~/fogbow-components
     conf_files: conf-files
     fns_dir_name: federated-network-service
-    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/vanilla-agent-id_rsa
-    private_key_fns_path: ../../services/federated-network-service/conf-files/id_rsa
+    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/vanilla-agent-as.conf
+    private_key_fns_path: ../../services/federated-network-service/conf-files/as.conf
     secrets_fns: ../../services/federated-network-service/conf-files/secrets
     fns_conf: ../../services/federated-network-service/conf-files/fns.conf
   tasks:

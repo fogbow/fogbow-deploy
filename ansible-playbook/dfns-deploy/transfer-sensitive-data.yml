@@ -5,7 +5,7 @@
     fogbow_components: ~/fogbow-components
     conf_files: conf-files
     fns_dir_name: federated-network-service
-    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/dfns-agent-id_rsa
+    private_key_fns_to_dmz_path: ../../services/federated-network-service/conf-files/dfns-agent-as.conf
   tasks:
     - name: Copying private keys to basic-site-machine
       copy: src={{ item.src }} dest={{ item.dest }} mode=0600
