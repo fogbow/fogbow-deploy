@@ -2,6 +2,8 @@
   vars:
     source_conf: ../conf-files
     target_conf: ./
+    source_props: ../properties
+    target_props: ./
     source_docker: ../docker
     target_docker: ./
     source_yml: ../docker-compose.yml
@@ -12,6 +14,12 @@
       copy:
         src: "{{ source_conf }}"
         dest: "{{ target_conf }}"
+        mode: 0600
+    - name: Copying properties to service-host
+      become: yes
+      copy:
+        src: "{{ source_props }}"
+        dest: "{{ target_props }}"
         mode: 0600
     - name: Copying Dockerfiles to service-host
       become: yes
