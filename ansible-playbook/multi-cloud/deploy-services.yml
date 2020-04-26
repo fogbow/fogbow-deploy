@@ -1,20 +1,5 @@
 ---
-- hosts: basic-site-machine
-  vars:
-    apache_dir_name: apache-server
-    as_dir_name: authentication-service
-    ras_dir_name: resource-allocation-service
-    database_dir_name: fogbow-database
-    fogbow_components: "/home/{{ lookup('config', 'DEFAULT_REMOTE_USER')}}/fogbow-components"
-    deploy_script_runner: bash basic-site-deploy-script.sh
+- hosts: service-host
   tasks:
-    - name: Deploying RAS, AS database, and Apache services in basic-site-machine
-      shell: "{{ deploy_script_runner }}"
-      become: yes
-      args:
-        chdir: "{{ item }}"
-      with_items:
-        - "{{ fogbow_components }}/{{ database_dir_name }}"
-        - "{{ fogbow_components }}/{{ ras_dir_name }}"
-        - "{{ fogbow_components }}/{{ as_dir_name }}"
-        - "{{ fogbow_components }}/{{ apache_dir_name }}"
+    - name: Deploying services in service-host
+      shell: docker-compose multi-cloud.yml up

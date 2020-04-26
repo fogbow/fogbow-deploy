@@ -2,8 +2,8 @@
 - hosts: localhost
   connection: local
   vars:
-    script_runner: sh start-env-composers.sh
-    script_path: ../../scripts/basic-site
+    script_runner: sh multi-site-conf-setup.sh
+    script_path: ../../scripts
   tasks:
     - name: Setting up configuration files in localhost
       shell: "{{ script_runner }}"
