@@ -17,10 +17,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      -e DB_USER="fogbow"
-      -e DB_PASS="pass"
-      -e DB_NAME="ras"
-      -e DB2_NAME="fns"
+      - DB_USER="fogbow"
+      - DB_PASS="pass"
+      - DB_NAME="ras"
+      - DB2_NAME="fns"
     volumes:
       - ./data:/var/lib/postgresql/data
   as:
