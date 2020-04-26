@@ -27,4 +27,4 @@
         mode: 0644
     - name: Create fogbow-database directory
       become: yes
-      command: mkdir data
+      command: mkdir -p data
