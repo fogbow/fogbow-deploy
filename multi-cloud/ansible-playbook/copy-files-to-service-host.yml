@@ -25,6 +25,6 @@
         src: "{{ source_yml }}"
         dest: "{{ target_yml }}"
         mode: 0644
-    - name: Placeholder
+    - name: Create fogbow-database directory
       become: yes
-      command: echo done
+      command: mkdir data
