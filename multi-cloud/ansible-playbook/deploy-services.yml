@@ -2,4 +2,6 @@
 - hosts: service-host
   tasks:
     - name: Deploying services in service-host
-      cmd: bash -lc "cd .. && docker-compose up"
+      shell: sudo docker-compose up
+      args:
+        chdir: ..
