@@ -34,6 +34,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./conf-files/as:~/src/main/resources/private
-      - ./properties/as/application.properties:~/src/main/resources/application.properties
-      - ./properties/as/log4j.properties:~/src/main/resources/log4j.properties
+      - ./conf-files/as:/root/authentication-service/src/main/resources/private
+      - ./properties/as/application.properties:/root/authentication-service/src/main/resources/application.properties
+      - ./properties/as/log4j.properties:/root/authentication-service/src/main/resources/log4j.properties
