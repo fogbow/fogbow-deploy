@@ -5,14 +5,14 @@ ARG AS_BRANCH
 
 # Install.
 RUN \
-  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -y build-essential && \
-  apt-get install -y software-properties-common && \
-  apt-get install -y byobu curl git htop man unzip vim wget maven && \
-  apt-get install -y net-tools iputils-ping && \
-  rm -rf /var/lib/apt/lists/*
+    sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+    apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y build-essential && \
+    apt-get install -y software-properties-common && \
+    apt-get install -y byobu curl git htop man unzip vim wget maven && \
+    apt-get install -y net-tools iputils-ping && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set environment variables.
 ENV HOME /root
@@ -22,13 +22,13 @@ WORKDIR /root
 
 # Installing Common
 RUN \
-  git clone https://github.com/fogbow/common.git && \
-  (cd common && git checkout $COMMON_BRANCH && mvn install -Dmaven.test.skip=true)
+    git clone https://github.com/fogbow/common.git && \
+    (cd common && git checkout $COMMON_BRANCH && mvn install -Dmaven.test.skip=true)
 
 # Downloading Authentication service
 RUN \
-  git clone https://github.com/fogbow/authentication-service.git && \
-  (cd authentication-service && git checkout $AS_BRANCH && mvn install -Dmaven.test.skip=true)
+    git clone https://github.com/fogbow/authentication-service.git && \
+    (cd authentication-service && git checkout $AS_BRANCH && mvn install -Dmaven.test.skip=true)
 
 # Define working directory.
 WORKDIR /root/authentication-service
@@ -41,5 +41,9 @@ RUN \
     echo "build_number=as-$as_build_number-common-$common_build_number" > build)
 
 RUN \
-  mvn dependency:sources
+    mvn dependency:sources
+
+COPY ~/docker/as/start_as.sh ./start_as.sh
+
+CMD ["/bin/bash","./start_as.sh"]
 

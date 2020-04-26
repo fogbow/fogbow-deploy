@@ -1,11 +1,11 @@
 - hosts: service-host
   vars:
-    source_docker: ../docker
-    target_docker: ./docker
-    source_yml: ../docker-compose.yml
-    target_yml: ./docker-compose.yml
     source_conf: ../conf-files
     target_conf: ./
+    source_docker: ../docker
+    target_docker: ./
+    source_yml: ../docker-compose.yml
+    target_yml: ./docker-compose.yml
   tasks:
     - name: Copying conf-files to service-host
       become: yes
