@@ -23,9 +23,17 @@ services:
       - DB2_NAME="fns"
     volumes:
       - ./data:/var/lib/postgresql/data
+#  as:
+#    build:
+#      context: ./docker/as
+#      args:
+#        COMMON_BRANCH: develop
+#        AS_BRANCH: develop
   as:
-    build:
-      context: ./docker/as
-      args:
-        COMMON_BRANCH: develop
-        AS_BRANCH: develop
+    image: fogbow/authentication-service:develop
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./conf-files/as:~/src/main/resources/private
+      - ./properties/as/application.properties:~/src/main/resources/application.properties
+      - ./properties/as/log4j.properties:~/src/main/resources/log4j.properties
