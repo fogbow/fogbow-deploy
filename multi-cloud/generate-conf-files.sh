@@ -61,12 +61,12 @@ DB_PASSWORD=$(pwgen 10 1)
 
 # Apache conf-file generation
 ## Setting apache variables
-APACHE_DIR_PATH="../conf-files/apache"
+APACHE_DIR_PATH="./conf-files/apache"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
-CERTIFICATE_FILE_PATH="../conf-files/certs/site.crt"
-CERTIFICATE_KEY_FILE_PATH="../conf-files/certs/site.key"
-CERTIFICATE_CHAIN_FILE_PATH="../conf-files/certs/site.pem"
+CERTIFICATE_FILE_PATH="./conf-files/certs/site.crt"
+CERTIFICATE_KEY_FILE_PATH="./conf-files/certs/site.key"
+CERTIFICATE_CHAIN_FILE_PATH="./conf-files/certs/site.pem"
 ## Creating directory
 mkdir -p $APACHE_DIR_PATH
 ## Copying certificate files
@@ -88,7 +88,7 @@ sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 
 # AS conf-file generation
 ## Setting AS variables
-AS_DIR_PATH="../conf-files/as"
+AS_DIR_PATH="./conf-files/as"
 AS_CONF_FILE_NAME="as.conf"
 AS_CONTAINER_CONF_FILE_DIR_PATH="/root/authentication-service/src/main/resources/private"
 AS_PRIVATE_KEY_PATH=$AS_DIR_PATH/"id_rsa"
@@ -119,7 +119,7 @@ echo "private_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $AS_DI
 
 # RAS conf-file generation
 ## Setting AS variables
-RAS_DIR_PATH="../conf-files/ras"
+RAS_DIR_PATH="./conf-files/ras"
 RAS_CONF_FILE_NAME="ras.conf"
 CLOUDS_DIR_NAME="clouds"
 APPLICATION_PROPERTIES_FILE_NAME="application.properties"
@@ -171,7 +171,7 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $RAS_DIR_PATH/$APPLICATION_PROPERTIE
 
 # GUI conf-file generation
 ## Setting AS variables
-GUI_DIR_PATH="../conf-files/gui"
+GUI_DIR_PATH="./conf-files/gui"
 GUI_CONF_FILE_NAME="api.config.js"
 ## Creating directory
 mkdir -p $GUI_DIR_PATH
