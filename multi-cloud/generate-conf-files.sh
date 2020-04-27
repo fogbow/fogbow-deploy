@@ -150,8 +150,8 @@ openssl pkcs8 -topk8 -in $RAS_RSA_KEY_PATH -out $RAS_PRIVATE_KEY_PATH -nocrypt
 openssl rsa -in $RAS_PRIVATE_KEY_PATH -outform PEM -pubout -out $RAS_PUBLIC_KEY_PATH
 chmod 600 $RAS_PRIVATE_KEY_PATH
 rm $RAS_RSA_KEY_PATH
-echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$AS_CONF_FILE_NAME
-echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$AS_CONF_FILE_NAME
+echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
+echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Copying clouds directory
 yes | cp -fr $TEMPLATES_DIR_PATH/$CLOUDS_DIR_NAME RAS_DIR_PATH
 ## Copying application.properties file
