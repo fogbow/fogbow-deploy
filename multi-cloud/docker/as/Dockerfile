@@ -45,5 +45,5 @@ RUN \
 
 COPY ~/docker/as/start_as.sh ./start_as.sh
 
-CMD ["/bin/bash","./start_as.sh"]
+CMD ["./mvnw spring-boot:run -X > log.out 2> log.err"]
 
