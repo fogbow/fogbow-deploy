@@ -60,6 +60,11 @@ AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
 DB_PASSWORD_PROPERTY="db_password"
 DB_PASSWORD=$(pwgen 10 1)
 
+# Updating docker-compose.yml
+DOCKER_COMPOSE_FILE="docker-compose.yml"
+chmod 600 $DOCKER_COMPOSE_FILE
+sed -i "s|DB_PASS|$DB_PASSWORD|g" $DOCKER_COMPOSE_FILE
+
 # Apache conf-file generation
 ## Setting apache variables
 APACHE_DIR_PATH="./conf-files/apache"
@@ -97,6 +102,8 @@ AS_PUBLIC_KEY_PATH=$AS_DIR_PATH/"id_rsa.pub"
 AS_RSA_KEY_PATH=$AS_DIR_PATH/"rsa_key.pem"
 ## Creating directory
 mkdir -p $AS_DIR_PATH
+touch $AS_DIR_PATH/$AS_CONF_FILE_NAME
+chmod 600 $AS_DIR_PATH/$AS_CONF_FILE_NAME
 ## Adding properties
 echo "# Authentication plugin specific properties" > $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $SIP_PATTERN=$SIP >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
@@ -130,6 +137,8 @@ RAS_PUBLIC_KEY_PATH=$RAS_DIR_PATH/"id_rsa.pub"
 RAS_RSA_KEY_PATH=$RAS_DIR_PATH/"rsa_key.pem"
 ## Creating directory
 mkdir -p $RAS_DIR_PATH
+touch $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
+chmod 600 $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Adding properties
 echo "# Comma-separated list of the names of the clouds managed by this RAS" > $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "# Their configuration is stored under the directory clouds/<name>" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
