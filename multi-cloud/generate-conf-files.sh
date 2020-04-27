@@ -3,7 +3,7 @@
 # Source configuration files
 SERVICE_CONF_FILE_PATH="./multi-cloud.conf"
 HOST_CONF_FILE_PATH="./host.conf"
-TEMPLATES_DIR_PATH="../templates"
+TEMPLATES_DIR_PATH="./templates"
 
 # Ports configuration
 AS_PORT_PATTERN="As_port"
