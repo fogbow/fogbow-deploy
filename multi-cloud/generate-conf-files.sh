@@ -162,7 +162,7 @@ rm $RAS_RSA_KEY_PATH
 echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Copying clouds directory
-yes | cp -fr $TEMPLATES_DIR_PATH/$CLOUDS_DIR_NAME RAS_DIR_PATH
+yes | cp -fr $TEMPLATES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
 ## Copying application.properties file
 yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 ## Editing application.properties
