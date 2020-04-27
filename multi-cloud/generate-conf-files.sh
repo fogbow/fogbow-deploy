@@ -3,7 +3,7 @@
 # Source configuration files
 SERVICE_CONF_FILE_PATH="./multi-cloud.conf"
 HOST_CONF_FILE_PATH="./host.conf"
-TEMPLATES_DIR_PATH="./templates"
+TEMPLATES_DIR_PATH="./conf-files/templates"
 
 # Ports configuration
 AS_PORT_PATTERN="As_port"
@@ -64,9 +64,9 @@ DB_PASSWORD=$(pwgen 10 1)
 APACHE_DIR_PATH="./conf-files/apache"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
-CERTIFICATE_FILE_PATH="./conf-files/certs/site.crt"
-CERTIFICATE_KEY_FILE_PATH="./conf-files/certs/site.key"
-CERTIFICATE_CHAIN_FILE_PATH="./conf-files/certs/site.pem"
+CERTIFICATE_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.crt"
+CERTIFICATE_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.key"
+CERTIFICATE_CHAIN_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.pem"
 ## Creating directory
 mkdir -p $APACHE_DIR_PATH
 ## Copying certificate files
