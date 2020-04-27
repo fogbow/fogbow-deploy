@@ -1,6 +1,7 @@
 version: '3'
 services:
   apache:
+    container_name: fogbow-apache
     image: "fogbow/apache-shibboleth-server:latest"
     ports:
       - "80:80"
@@ -13,6 +14,7 @@ services:
       - ./conf-files/apache/000-default.conf:/etc/apache2/sites-availability/000-default.conf
       - ./conf-files/apache/index.html:/var/www/html/index.html
   database:
+    container_name: fogbow-database
     image: "fogbow/database:latest"
     ports:
       - "5432:5432"
@@ -23,17 +25,27 @@ services:
       - DB2_NAME="fns"
     volumes:
       - ./data:/var/lib/postgresql/data
-#  as:
-#    build:
-#      context: ./docker/as
-#      args:
-#        COMMON_BRANCH: develop
-#        AS_BRANCH: develop
   as:
+    container_name: fogbow-as
     image: fogbow/authentication-service:develop
     ports:
       - "8080:8080"
     volumes:
       - ./conf-files/as:/root/authentication-service/src/main/resources/private
-      - ./properties/as/application.properties:/root/authentication-service/src/main/resources/application.properties
-      - ./properties/as/log4j.properties:/root/authentication-service/src/main/resources/log4j.properties
+
+  ras:
+    container_name: fogbow-ras
+    image: fogbow/resource-allocation-service:develop
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./conf-files/ras:/root/resource-allocation-service/src/main/resources/private
+      - ./properties/application.properties:/root/resource-allocation-service/application.properties
+      - ./timestamp-storage/ras.db:/root/resource-allocation-service/ras.db
+  gui:
+    container_name: fogbow-gui
+    image: fogbow/fogbow-gui:develop
+    ports:
+      - "8084:8080"
+    volumes:
+      - ./conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js
