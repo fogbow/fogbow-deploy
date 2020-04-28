@@ -16,47 +16,47 @@ GUI_PORT="8084"
 # Reading configuration files
 ## Reading data from host.conf
 SERVICE_HOST_IP_PATTERN="service_host_ip"
-SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $HOST_CONF_FILE_PATH | awk -F "=" '{print $2}')
+SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_PATTERN="service_host_DNS"
-PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $HOST_CONF_FILE_PATH | awk -F "=" '{print $2}')
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_TAG="provider_id"
 ## Reading data from multi-cloud.conf
 ### Apache Shibboleth configuration
 DSP_PATTERN="domain_service_provider"
-DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 CSPP_PATTERN="certificate_service_provider_path"
-CSPP=$(grep $CSPP_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+CSPP=$(grep $CSPP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DSP_PATTERN="key_service_provider_path"
-DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DSU_PATTERN="discovery_service_url"
-DSU=$(grep $DSU_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DSU=$(grep $DSU_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DSMU_PATTERN="discovery_service_metadata_url"
-DSMU=$(grep $DSMU_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+DSMU=$(grep $DSMU_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ### AS configuration
 SIP_PATTERN="system_identity_provider_plugin_class"
-SIP=$(grep $SIP_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+SIP=$(grep $SIP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 OS_PATTERN="openstack_keystone_v3_url"
-OS=$(grep $OS_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+OS=$(grep $OS_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 CS_PATTERN="cloudstack_url"
-CS=$(grep $CS_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+CS=$(grep $CS_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ONE_PATTERN="opennebula_url"
-ONE=$(grep $ONE_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+ONE=$(grep $ONE_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 LEP_PATTERN="ldap_endpoint"
-LEP=$(grep $LEP_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+LEP=$(grep $LEP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 LB_PATTERN="ldap_base"
-LB=$(grep $LB_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+LB=$(grep $LB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 LET_PATTERN="ldap_encrypt_type"
-LET=$(grep $LET_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+LET=$(grep $LET_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 SHIB_PATTERN="shib_public_key_file_path"
-SHIB=$(grep $SHIB_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+SHIB=$(grep $SHIB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ## RAS configuration
 CN_PATTERN="cloud_names"
-CN=$(grep $CN_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+CN=$(grep $CN_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 AUTH_PATTERN="authorization_plugin_class"
-AUTH=$(grep $AUTH_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+AUTH=$(grep $AUTH_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ## GUI configuration
 AT_PATTERN="authentication_type"
-AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "=" '{print $2}')
+AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 
 # Generating secrets
 DB_PASSWORD_PROPERTY="db_password"
