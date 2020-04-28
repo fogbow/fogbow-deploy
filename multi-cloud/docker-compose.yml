@@ -20,7 +20,7 @@ services:
       - "5432:5432"
     environment:
       - DB_USER="fogbow"
-      - DB_PASS="DB_PASS"
+      - DB_PASS="db_password"
       - DB_NAME="ras"
       - DB2_NAME="fns"
     volumes:

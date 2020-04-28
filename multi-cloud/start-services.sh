@@ -26,7 +26,7 @@ sudo docker run -tdi --name fogbow-apache \
 sudo docker run -tdi --name fogbow-database \
       -p 5432:5432 \
       -e DB_USER="fogbow" \
-      -e DB_PASS="DB_PASS" \
+      -e DB_PASS="db_password" \
       -e DB_NAME="ras" \
       -e DB2_NAME="fns" \
       -v /home/ubuntu/data:/var/lib/postgresql/data \
@@ -44,7 +44,7 @@ sudo docker run -tdi --name fogbow-ras \
       -v /home/ubuntu/timestamp-storage/ras.db:/root/resource-allocation-service/ras.db \
       fogbow/resource-allocation-service:develop
 
-sudo doccker run -tdi --name fogbow-gui \
+sudo docker run -tdi --name fogbow-gui \
       -p 8084:8080 \
       -v /home/ubuntu/conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js \
       fogbow/fogbow-gui:develop
