@@ -1,0 +1,5 @@
+---
+- hosts: service-host
+  tasks:
+    - name: Starting services in service-host
+      shell: bash start-services.sh
