@@ -2,4 +2,4 @@
 - hosts: service-host
   tasks:
     - name: Deploying services in service-host
-      shell: sudo docker-compose --verbose up
+      shell: sudo docker-compose --verbose up &
