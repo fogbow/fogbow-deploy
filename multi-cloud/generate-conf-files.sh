@@ -66,6 +66,9 @@ DB_PASSWORD=$(pwgen 10 1)
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 chmod 600 $DOCKER_COMPOSE_FILE
 sed -i "s|DB_PASS|$DB_PASSWORD|g" $DOCKER_COMPOSE_FILE
+START_SERVICES_FILE="start-services.sh"
+chmod 600 $START_SERVICES_FILE
+sed -i "s|DB_PASS|$DB_PASSWORD|g" $START_SERVICES_FILE
 
 # Apache conf-file generation
 ## Setting apache variables
