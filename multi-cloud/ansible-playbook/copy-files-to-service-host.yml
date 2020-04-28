@@ -4,6 +4,8 @@
     target_conf: ./
     source_yml: ../docker-compose.yml
     target_yml: ./docker-compose.yml
+    source_start: ../start-services.sh
+    target_start: ./start-services.sh
   tasks:
     - name: Copying conf-files to service-host
       become: yes
@@ -17,6 +19,12 @@
         src: "{{ source_yml }}"
         dest: "{{ target_yml }}"
         mode: 0600
+    - name: Copying start-services.sh to service-host
+      become: yes
+      copy:
+        src: "{{ source_start }}"
+        dest: "{{ target_start }}"
+        mode: 0755
     - name: Create fogbow-database directory
       become: yes
       command: mkdir -p data
