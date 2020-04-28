@@ -32,19 +32,21 @@ services:
       - "8080:8080"
     volumes:
       - ./conf-files/as:/root/authentication-service/src/main/resources/private
-#  ras:
-#    container_name: fogbow-ras
-#    image: fogbow/resource-allocation-service:develop
-#    ports:
-#      - "8082:8080"
-#    volumes:
-#      - ./conf-files/ras:/root/resource-allocation-service/src/main/resources/private
-#      - ./properties/application.properties:/root/resource-allocation-service/application.properties
-#      - ./timestamp-storage/ras.db:/root/resource-allocation-service/ras.db
-#  gui:
-#    container_name: fogbow-gui
-#    image: fogbow/fogbow-gui:develop
-#    ports:
-#      - "8084:8080"
-#    volumes:
-#      - ./conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js
+    command: tail -f /dev/null
+  ras:
+    container_name: fogbow-ras
+    image: fogbow/resource-allocation-service:develop
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./conf-files/ras:/root/resource-allocation-service/src/main/resources/private
+      - ./properties/application.properties:/root/resource-allocation-service/application.properties
+      - ./timestamp-storage/ras.db:/root/resource-allocation-service/ras.db
+    command: tail -f /dev/null
+  gui:
+    container_name: fogbow-gui
+    image: fogbow/fogbow-gui:develop
+    ports:
+      - "8084:8080"
+    volumes:
+      - ./conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js

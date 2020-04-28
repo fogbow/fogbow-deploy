@@ -70,6 +70,7 @@ sed -i "s|DB_PASS|$DB_PASSWORD|g" $DOCKER_COMPOSE_FILE
 # Apache conf-file generation
 ## Setting apache variables
 APACHE_DIR_PATH="./conf-files/apache"
+PORTS_FILE_PATH="ports.conf"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
 CERTIFICATE_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.crt"
@@ -81,6 +82,8 @@ mkdir -p $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_KEY_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $APACHE_DIR_PATH
+## Copying ports.conf
+yes | cp -f $TEMPLATES_DIR_PATH/$PORTS_FILE_PATH $APACHE_DIR_PATH
 ## Generating Virtual Host file
 yes | cp -f $TEMPLATES_DIR_PATH/$APACHE_VHOST_FILE_NAME $APACHE_DIR_PATH
 sed -i "s|$SERVICE_HOST_IP_PATTERN|$SERVICE_HOST_IP|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
