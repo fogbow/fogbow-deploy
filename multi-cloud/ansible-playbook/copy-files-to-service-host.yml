@@ -2,10 +2,6 @@
   vars:
     source_conf: ../conf-files
     target_conf: ./
-    source_props: ../properties
-    target_props: ./
-    source_docker: ../docker
-    target_docker: ./
     source_yml: ../docker-compose.yml
     target_yml: ./docker-compose.yml
   tasks:
@@ -15,24 +11,12 @@
         src: "{{ source_conf }}"
         dest: "{{ target_conf }}"
         mode: 0600
-    - name: Copying properties to service-host
-      become: yes
-      copy:
-        src: "{{ source_props }}"
-        dest: "{{ target_props }}"
-        mode: 0600
-    - name: Copying Dockerfiles to service-host
-      become: yes
-      copy:
-        src: "{{ source_docker }}"
-        dest: "{{ target_docker }}"
-        mode: 0644
     - name: Copying docker-compose.yml to service-host
       become: yes
       copy:
         src: "{{ source_yml }}"
         dest: "{{ target_yml }}"
-        mode: 0644
+        mode: 0600
     - name: Create fogbow-database directory
       become: yes
       command: mkdir -p data
