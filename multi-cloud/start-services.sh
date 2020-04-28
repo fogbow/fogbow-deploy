@@ -29,11 +29,11 @@ AS_CONF_FILE_PATH="src/main/resources/private/as.conf"
 AS_CONTAINER_NAME="fogbow-as"
 
 sudo docker exec $AS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $AS_CONF_FILE_PATH"
-sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
+sudo docker exec $AS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
 
 # Start RAS
 CONTAINER_RAS_CONF_FILE_PATH="src/main/resources/private/ras.conf"
 RAS_CONTAINER_NAME="fogbow-ras"
 
 sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINER_RAS_CONF_FILE_PATH"
-sudo docker exec $CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
+sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
