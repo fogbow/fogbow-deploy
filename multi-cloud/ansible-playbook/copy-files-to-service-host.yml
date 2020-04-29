@@ -10,8 +10,8 @@
         state: absent
       with_items:
         - "./conf-files"
-        - "service.conf"
-        - "deploy-and-start-services.sh"
+        - "./service.conf"
+        - "./deploy-and-start-services.sh"
     - name: Copying conf-files to service_host
       become: yes
       copy:
