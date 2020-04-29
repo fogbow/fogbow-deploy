@@ -47,6 +47,7 @@
         path: ./conf-files/apache/index.html
         mode: 0644
 - hosts: localhost
+  connection: local
   tasks:
     - name: Removing conf-files from installation host
       file:
