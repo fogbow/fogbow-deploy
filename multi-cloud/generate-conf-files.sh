@@ -154,8 +154,6 @@ AS_PUBLIC_KEY_PATH=$AS_DIR_PATH/"id_rsa.pub"
 AS_RSA_KEY_PATH=$AS_DIR_PATH/"rsa_key.pem"
 ## Creating directory
 mkdir -p $AS_DIR_PATH
-touch $AS_DIR_PATH/$AS_CONF_FILE_NAME
-chmod 600 $AS_DIR_PATH/$AS_CONF_FILE_NAME
 ## Adding properties
 echo "# Authentication plugin specific properties" > $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $SIP_PATTERN=$SIP >> $AS_DIR_PATH/$AS_CONF_FILE_NAME

@@ -1,5 +1,5 @@
 ---
-- hosts: service-host
+- hosts: service_host
   tasks:
-    - name: Starting services in service-host
+    - name: Starting services in service_host
       shell: bash deploy-and-start-services.sh

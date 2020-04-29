@@ -5,7 +5,7 @@ WORK_DIR=$(pwd)
 
 # Read configuration file
 SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
-sudo chmod a+r $SERVICE_CONF_FILE_PATH
+#sudo chmod a+r $SERVICE_CONF_FILE_PATH
 
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -89,7 +89,7 @@ sudo docker run -tdi --name fogbow-gui \
 ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
 APACHE_CONTAINER_NAME="fogbow-apache"
 
-sudo chmod a+r ./conf-files/apache/index.html
+#sudo chmod a+r ./conf-files/apache/index.html
 echo "#!/bin/bash" > $ENABLE_MODULES_SCRIPT
 echo "/usr/sbin/a2enmod ssl_load" >> $ENABLE_MODULES_SCRIPT
 echo "/usr/sbin/a2enmod proxy.load" >> $ENABLE_MODULES_SCRIPT

@@ -1,24 +1,35 @@
-- hosts: service-host
+- hosts: service_host
   vars:
     source_conf: ../conf-files
     target_conf: ./
-    source_yml: ../docker-compose.yml
-    target_yml: ./docker-compose.yml
     source_start: ../deploy-and-start-services.sh
     target_start: ./deploy-and-start-services.sh
   tasks:
-    - name: Copying conf-files to service-host
+    - name: Copying conf-files to service_host
       become: yes
       copy:
         src: "{{ source_conf }}"
         dest: "{{ target_conf }}"
         mode: 0600
-    - name: Copying deploy-and-start-services.sh to service-host
+    - name: Copying deploy-and-start-services.sh to service_host
       become: yes
       copy:
         src: "{{ source_start }}"
         dest: "{{ target_start }}"
-        mode: 0755
+        mode: 0700
+#    - name: Create fogbow-database directory
+#      become: yes
+#      command: mkdir -p data
     - name: Create fogbow-database directory
-      become: yes
-      command: mkdir -p data
+        file:
+          path: ./conf-files/data
+          state: directory
+          mode: 0755
+    - name: Allow read access to service.conf
+      file:
+        path: ./conf-files/service.conf
+        mode: 0644
+    - name: Allow read access to index.html
+      file:
+        path: ./conf-files/apache/index.html
+        mode: 0644

@@ -19,9 +19,9 @@ SERVICE_HOST_PRIVATE_KEY_FILE_PATH=$(grep $SERVICE_HOST_PRIVATE_KEY_FILE_PATH_PA
 echo "[localhost]" > $ANSIBLE_HOSTS_FILE_PATH
 echo "127.0.0.1" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "" >> $ANSIBLE_HOSTS_FILE_PATH
-echo "[service-host]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[service_host]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo $SERVICE_HOST_IP >> $ANSIBLE_HOSTS_FILE_PATH
-echo "[service-host:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
+echo "[service_host:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_ssh_private_key_file=$SERVICE_HOST_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 
