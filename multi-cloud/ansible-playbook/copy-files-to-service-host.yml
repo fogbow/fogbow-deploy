@@ -4,8 +4,8 @@
     target_conf: ./
     source_yml: ../docker-compose.yml
     target_yml: ./docker-compose.yml
-    source_start: ../start-services.sh
-    target_start: ./start-services.sh
+    source_start: ../deploy-and-start-services.sh
+    target_start: ./deploy-and-start-services.sh
   tasks:
     - name: Copying conf-files to service-host
       become: yes
@@ -13,13 +13,7 @@
         src: "{{ source_conf }}"
         dest: "{{ target_conf }}"
         mode: 0600
-    - name: Copying docker-compose.yml to service-host
-      become: yes
-      copy:
-        src: "{{ source_yml }}"
-        dest: "{{ target_yml }}"
-        mode: 0600
-    - name: Copying start-services.sh to service-host
+    - name: Copying deploy-and-start-services.sh to service-host
       become: yes
       copy:
         src: "{{ source_start }}"
