@@ -18,7 +18,6 @@
         dest: "{{ target_start }}"
         mode: 0700
     - name: Removing templates
-        become: yes
         file:
           path: /home/ubuntu/conf-files/templates
           state: absent
