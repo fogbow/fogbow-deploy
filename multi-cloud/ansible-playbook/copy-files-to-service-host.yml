@@ -9,7 +9,7 @@
         src: "{{ source_conf }}/{{ item }}"
         dest: "{{ target_conf }}/{{ item }}"
         mode: 0600
-        with_items:
+      with_items:
           - "apache"
           - "as"
           - "gui"
