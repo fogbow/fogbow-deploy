@@ -4,7 +4,7 @@ BUILD_FILE_NAME="build"
 WORK_DIR=$(pwd)
 
 # Read configuration file
-SERVICE_CONF_FILE_PATH="./multi-cloud.conf"
+SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
 
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)

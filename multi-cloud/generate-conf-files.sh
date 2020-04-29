@@ -14,7 +14,7 @@ PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_TAG="provider_id"
 
 ## Reading data from multi-cloud.conf
-### Service ports configuration
+### Service ports and tags configuration
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 RAS_PORT_PATTERN="Ras_port"
@@ -23,6 +23,36 @@ GUI_PORT_PATTERN="Gui_port"
 GUI_PORT=$(grep $GUI_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PORT_PATTERN="Db_port"
 DB_PORT=$(grep $DB_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+HTTP_PORT_PATTERN="Http_port"
+HTTP_PORT=$(grep $HTTP_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+HTTPS_PORT_PATTERN="Https_port"
+HTTPS_PORT=$(grep $HTTPS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+
+AS_TAG_PATTERN="As_tag"
+AS_TAG=$(grep $AS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${AS_TAG// } ]; then
+	AS_TAG="latest"
+fi
+RAS_TAG_PATTERN="Ras_tag"
+RAS_TAG=$(grep $RAS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${RAS_TAG// } ]; then
+	RAS_TAG="latest"
+fi
+GUI_TAG_PATTERN="Gui_tag"
+GUI_TAG=$(grep $GUI_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${GUI_TAG// } ]; then
+	GUI_TAG="latest"
+fi
+DB_TAG_PATTERN="Db_tag"
+DB_TAG=$(grep $DB_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${DB_TAG// } ]; then
+	DB_TAG="latest"
+fi
+APACHE_TAG_PATTERN="Apache_tag"
+APACHE_TAG=$(grep $APACHE_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${APACHE_TAG// } ]; then
+	APACHE_TAG="latest"
+fi
 ### Apache Shibboleth configuration
 DSP_PATTERN="domain_service_provider"
 DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -64,15 +94,29 @@ AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PASSWORD_PROPERTY="db_password"
 DB_PASSWORD=$(pwgen 10 1)
 
-# Updating docker-compose.yml
-START_SERVICES_FILE="start-services.sh"
+# Updating deploy-and-start-services.sh
+START_SERVICES_FILE="deploy-and-start-services.sh"
 chmod 600 $START_SERVICES_FILE
 sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" $START_SERVICES_FILE
+
+# Ports and tags conf-file generation
+PORTS_TAGS_CONF_FILE_PATH="./conf-files/service.conf"
+echo "$AS_PORT_PATTERN=$AS_PORT" > $PORTS_TAGS_CONF_FILE_PATH
+echo "$RAS_PORT_PATTERN=$RAS_PORT" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$GUI_PORT_PATTERN=$GUI_PORT" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$DB_PORT_PATTERN=$DB_PORT" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$HTTP_PORT_PATTERN=$HTTP_PORT" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$HTTPS_PORT_PATTERN=$HTTPS_PORT" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$AS_TAG_PATTERN=$AS_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$RAS_TAG_PATTERN=$RAS_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$GUI_TAG_PATTERN=$GUI_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$DB_TAG_PATTERN=$DB_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
+echo "$APACHE_TAG_PATTERN=$APACHE_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
 
 # Apache conf-file generation
 ## Setting apache variables
 APACHE_DIR_PATH="./conf-files/apache"
-PORTS_FILE_PATH="ports.conf"
+PORTS_FILE_NAME="ports.conf"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
 CERTIFICATE_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.crt"
@@ -85,7 +129,7 @@ yes | cp -f $CERTIFICATE_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_KEY_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $APACHE_DIR_PATH
 ## Copying ports.conf
-yes | cp -f $TEMPLATES_DIR_PATH/$PORTS_FILE_PATH $APACHE_DIR_PATH
+yes | cp -f $TEMPLATES_DIR_PATH/$PORTS_FILE_NAME $APACHE_DIR_PATH
 ## Generating Virtual Host file
 yes | cp -f $TEMPLATES_DIR_PATH/$APACHE_VHOST_FILE_NAME $APACHE_DIR_PATH
 sed -i "s|$SERVICE_HOST_IP_PATTERN|$SERVICE_HOST_IP|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
