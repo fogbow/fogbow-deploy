@@ -17,9 +17,6 @@
         src: "{{ source_start }}"
         dest: "{{ target_start }}"
         mode: 0700
-#    - name: Create fogbow-database directory
-#      become: yes
-#      command: mkdir -p data
     - name: Create fogbow-database directory
         file:
           path: ./conf-files/data
@@ -33,3 +30,6 @@
       file:
         path: ./conf-files/apache/index.html
         mode: 0644
+#    - name: Create fogbow-database directory
+#      become: yes
+#      command: mkdir -p data
