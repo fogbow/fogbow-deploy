@@ -6,14 +6,14 @@
     - name: Copying conf-files to service_host
       become: yes
       copy:
-        src: "{{ source_conf }}/{{ item }}"
-        dest: "{{ target_conf }}/{{ item }}"
+        src: "{{ source_conf }}"
+        dest: "{{ target_conf }}"
         mode: 0600
-      with_items:
-          - "apache"
-          - "as"
-          - "gui"
-          - "ras"
+#      with_items:
+#          - "apache"
+#          - "as"
+#          - "gui"
+#          - "ras"
     - name: Copying service.conf to service_host
       become: yes
       copy:
@@ -32,3 +32,8 @@
         path: ./data
         state: directory
         mode: 0700
+    - name: Removing templates directory in service_host
+      become: yes
+      file:
+        path: ./conf-files/templates
+        state: absent
