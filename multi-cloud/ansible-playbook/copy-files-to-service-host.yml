@@ -25,5 +25,6 @@
         mode: 0700
     - name: Removing templates
       file:
+        become: yes
         path: ./conf-files/templates
         state: absent
