@@ -17,13 +17,13 @@
         src: "{{ source_start }}"
         dest: "{{ target_start }}"
         mode: 0700
-    - name: Removing templates
-        file:
-          path: /home/ubuntu/conf-files/templates
-          state: absent
     - name: Creating data directory
       become: yes
       file:
         path: /home/ubuntu/data
         state: directory
         mode: 0700
+    - name: Removing templates
+        file:
+          path: /home/ubuntu/conf-files/templates
+          state: absent
