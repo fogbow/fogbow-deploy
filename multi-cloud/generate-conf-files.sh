@@ -90,17 +90,21 @@ AUTH=$(grep $AUTH_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 AT_PATTERN="authentication_type"
 AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 
+# Creating temporary directory
+mkdir -p ../tmp
+
 # Generating secrets
 DB_PASSWORD_PROPERTY="db_password"
 DB_PASSWORD=$(pwgen 10 1)
 
 # Creating database data directory
-mkdir -p ./conf-files/data
+mkdir -p ../tmp/conf-files/data
 
-# Updating deploy-and-start-services.sh
-START_SERVICES_FILE="deploy-and-start-services.sh"
-chmod 600 $START_SERVICES_FILE
-sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" $START_SERVICES_FILE
+# Generating deploy-and-start-services.sh
+DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
+cp $DEPLOY_START_SERVICES_FILE_NAME ../tmp/$DEPLOY_START_SERVICES_FILE_NAME
+chmod 600 ../tmp/$DEPLOY_START_SERVICES_FILE_NAME
+sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" ../tmp/$DEPLOY_START_SERVICES_FILE_NAME
 
 # Ports and tags conf-file generation
 PORTS_TAGS_CONF_FILE_PATH="./conf-files/service.conf"
@@ -118,7 +122,7 @@ echo "$APACHE_TAG_PATTERN=$APACHE_TAG" >> $PORTS_TAGS_CONF_FILE_PATH
 
 # Apache conf-file generation
 ## Setting apache variables
-APACHE_DIR_PATH="./conf-files/apache"
+APACHE_DIR_PATH="../tmp/conf-files/apache"
 PORTS_FILE_NAME="ports.conf"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
@@ -149,7 +153,7 @@ sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 
 # AS conf-file generation
 ## Setting AS variables
-AS_DIR_PATH="./conf-files/as"
+AS_DIR_PATH="../tmp/conf-files/as"
 AS_CONF_FILE_NAME="as.conf"
 AS_CONTAINER_CONF_FILE_DIR_PATH="/root/authentication-service/src/main/resources/private"
 AS_PRIVATE_KEY_PATH=$AS_DIR_PATH/"id_rsa"
@@ -180,7 +184,7 @@ echo "private_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $AS_DI
 
 # RAS conf-file generation
 ## Setting AS variables
-RAS_DIR_PATH="./conf-files/ras"
+RAS_DIR_PATH="../tmp/conf-files/ras"
 RAS_CONF_FILE_NAME="ras.conf"
 CLOUDS_DIR_NAME="clouds"
 APPLICATION_PROPERTIES_FILE_NAME="application.properties"
@@ -235,7 +239,7 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $RAS_DIR_PATH/$APPLICATION_PROPERTIE
 
 # GUI conf-file generation
 ## Setting AS variables
-GUI_DIR_PATH="./conf-files/gui"
+GUI_DIR_PATH="../tmp/conf-files/gui"
 GUI_CONF_FILE_NAME="api.config.js"
 ## Creating directory
 mkdir -p $GUI_DIR_PATH

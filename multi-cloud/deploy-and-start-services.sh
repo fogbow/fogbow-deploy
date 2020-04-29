@@ -2,10 +2,7 @@
 
 BUILD_FILE_NAME="build"
 WORK_DIR=$(pwd)
-
-# Add read permission to some configuration files
 SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
-#sudo chmod a+r ./conf-files/apache/index.html
 
 # Read configuration file
 
@@ -47,6 +44,10 @@ APACHE_TAG=$(grep $APACHE_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${APACHE_TAG// } ]; then
 	APACHE_TAG="latest"
 fi
+
+# Remove containers from earlier installation
+sudo docker stop fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui
+sudo docker rm fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui
 
 # Create containers
 
