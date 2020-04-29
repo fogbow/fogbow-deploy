@@ -8,11 +8,11 @@
       apt:
         name: aptitude
         update_cache: yes
-    - name: "Innstalling misc packages"
+    - name: "Installing misc packages"
       apt:
         name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common']
         update_cache: yes
-    - name: "APT - Add Docker GPG key"
+    - name: "Adding Docker GPG key"
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present

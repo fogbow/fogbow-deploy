@@ -25,5 +25,5 @@
         mode: 0700
     - name: Removing templates
       file:
-        path: /home/ubuntu/conf-files/templates
+        path: ./conf-files/templates
         state: absent
