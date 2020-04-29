@@ -2,4 +2,4 @@
 - hosts: service_host
   tasks:
     - name: Starting services in service_host
-      shell: bash deploy-and-start-services.sh
+      shell: sudo bash deploy-and-start-services.sh
