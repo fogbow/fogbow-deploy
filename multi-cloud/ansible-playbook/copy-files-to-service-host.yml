@@ -9,17 +9,12 @@
         src: "{{ source_conf }}"
         dest: "{{ target_conf }}"
         mode: 0600
-#      with_items:
-#          - "apache"
-#          - "as"
-#          - "gui"
-#          - "ras"
     - name: Copying service.conf to service_host
       become: yes
       copy:
         src: "{{ source_conf }}/service.conf"
         dest: "{{ target_conf }}/service.conf"
-        mode: 0600
+        mode: 0644
     - name: Copying deploy-and-start-services.sh to service_host
       become: yes
       copy:
@@ -37,3 +32,8 @@
       file:
         path: ./conf-files/templates
         state: absent
+    - name: Add read permissions to required files
+      become: yes
+      file:
+        path: ./conf-files/apache/index.html
+        mode: 0644

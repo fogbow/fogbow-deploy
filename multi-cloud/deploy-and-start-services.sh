@@ -5,8 +5,7 @@ WORK_DIR=$(pwd)
 
 # Add read permission to some configuration files
 SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
-sudo chmod a+r $SERVICE_CONF_FILE_PATH
-sudo chmod a+r ./conf-files/apache/index.html
+#sudo chmod a+r ./conf-files/apache/index.html
 
 # Read configuration file
 
