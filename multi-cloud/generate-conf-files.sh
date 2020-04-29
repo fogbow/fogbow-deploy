@@ -94,6 +94,9 @@ AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PASSWORD_PROPERTY="db_password"
 DB_PASSWORD=$(pwgen 10 1)
 
+# Creating database data directory
+mkdir -p ./conf-files/data
+
 # Updating deploy-and-start-services.sh
 START_SERVICES_FILE="deploy-and-start-services.sh"
 chmod 600 $START_SERVICES_FILE

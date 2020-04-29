@@ -23,16 +23,26 @@
         state: present
         filename: docker
 
+    - name: "APT - install aptitude"
+      apt:
+        name: aptitute
+        update_cache: yes
+
     - name: "APT - install misc packages"
       apt:
-        name: "{{ item }}"
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common']
         update_cache: yes
-      with_items:
-        - "aptitude"
-        - "apt-transport-https"
-        - "ca-certificates"
-        - "curl"
-        - "software-properties-common"
+
+#    - name: "APT - install misc packages"
+#      apt:
+#        name: "{{ item }}"
+#        update_cache: yes
+#      with_items:
+#        - "aptitude"
+#        - "apt-transport-https"
+#        - "ca-certificates"
+#        - "curl"
+#        - "software-properties-common"
 
     - name: "APT - install 'docker-ce'"
       apt:

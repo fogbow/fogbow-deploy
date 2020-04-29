@@ -5,11 +5,6 @@
     source_start: ../deploy-and-start-services.sh
     target_start: ./deploy-and-start-services.sh
   tasks:
-#    - name: Create fogbow-database directory
-#        file:
-#          path: ./conf-files/data
-#          state: directory
-#          mode: 0755
     - name: Copying conf-files to service_host
       become: yes
       copy:
@@ -22,18 +17,3 @@
         src: "{{ source_start }}"
         dest: "{{ target_start }}"
         mode: 0700
-    - name: Allow read access to service.conf
-      file:
-        path: ./conf-files/service.conf
-        owner: root
-        group: root
-        mode: 0644
-    - name: Allow read access to index.html
-      file:
-        path: ./conf-files/apache/index.html
-        owner: root
-        group: root
-        mode: 0644
-    - name: Create fogbow-database directory
-      become: yes
-      command: mkdir -p data
