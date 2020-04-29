@@ -91,7 +91,7 @@ AT_PATTERN="authentication_type"
 AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 
 # Creating temporary directory
-mkdir -p ./tmp
+mkdir -p ./tmp/conf-files
 
 # Generating secrets
 DB_PASSWORD_PROPERTY="db_password"
