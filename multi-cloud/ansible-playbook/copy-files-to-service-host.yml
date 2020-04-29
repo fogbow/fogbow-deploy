@@ -26,4 +26,6 @@
     - name: Removing templates
       file:
         path: ./conf-files/templates
+        owner: root
+        group: root
         state: absent
