@@ -22,7 +22,7 @@
       become: yes
       copy:
         src: "{{ source_conf }}/service.conf"
-        dest: "{{ target_conf }}/service.conf"
+        dest: "{{ target_conf }}/conf-files/service.conf"
         mode: 0644
     - name: Copying deploy-and-start-services.sh to service_host
       become: yes
