@@ -20,10 +20,10 @@
     - name: Creating data directory
       become: yes
       file:
-        path: /home/ubuntu/data
+        path: ./data
         state: directory
         mode: 0700
     - name: Removing templates
       file:
-        path: /home/ubuntu/conf-files/templates
+        path: ./conf-files/templates
         state: absent
