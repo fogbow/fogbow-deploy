@@ -5,14 +5,6 @@ SERVICE_CONF_FILE_PATH="./multi-cloud.conf"
 HOST_CONF_FILE_PATH="./host.conf"
 TEMPLATES_DIR_PATH="./conf-files/templates"
 
-# Ports configuration
-AS_PORT_PATTERN="As_port"
-RAS_PORT_PATTERN="Ras_port"
-GUI_PORT_PATTERN="Gui_port"
-AS_PORT="8080"
-RAS_PORT="8082"
-GUI_PORT="8084"
-
 # Reading configuration files
 ## Reading data from host.conf
 SERVICE_HOST_IP_PATTERN="service_host_ip"
@@ -20,7 +12,17 @@ SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $HOST_CONF_FILE_PATH | cut -d"="
 PROVIDER_ID_PATTERN="service_host_DNS"
 PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_TAG="provider_id"
+
 ## Reading data from multi-cloud.conf
+### Service ports configuration
+AS_PORT_PATTERN="As_port"
+AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+RAS_PORT_PATTERN="Ras_port"
+RAS_PORT=$(grep $RAS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+GUI_PORT_PATTERN="Gui_port"
+GUI_PORT=$(grep $GUI_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+DB_PORT_PATTERN="Db_port"
+DB_PORT=$(grep $DB_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ### Apache Shibboleth configuration
 DSP_PATTERN="domain_service_provider"
 DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -63,9 +65,6 @@ DB_PASSWORD_PROPERTY="db_password"
 DB_PASSWORD=$(pwgen 10 1)
 
 # Updating docker-compose.yml
-DOCKER_COMPOSE_FILE="docker-compose.yml"
-chmod 600 $DOCKER_COMPOSE_FILE
-sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" $DOCKER_COMPOSE_FILE
 START_SERVICES_FILE="start-services.sh"
 chmod 600 $START_SERVICES_FILE
 sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" $START_SERVICES_FILE
@@ -177,7 +176,6 @@ yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 ## Editing application.properties
 JDBC_PREFIX="jdbc:postgresql:"
-DB_PORT="5432"
 RAS_DB_ENDPOINT="ras"
 DB_URL_PROPERTY="spring.datasource.url"
 DB_URL=$JDBC_PREFIX"//"$SERVICE_HOST_IP":"$DB_PORT"/"$RAS_DB_ENDPOINT
