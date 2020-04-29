@@ -25,10 +25,14 @@
     - name: Allow read access to service.conf
       file:
         path: ./conf-files/service.conf
+        owner: root
+        group: root
         mode: 0644
     - name: Allow read access to index.html
       file:
         path: ./conf-files/apache/index.html
+        owner: root
+        group: root
         mode: 0644
     - name: Create fogbow-database directory
       become: yes
