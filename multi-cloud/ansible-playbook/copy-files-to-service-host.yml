@@ -2,20 +2,29 @@
   vars:
     source_conf: ../conf-files
     target_conf: ./
-    source_start: ../deploy-and-start-services.sh
-    target_start: ./deploy-and-start-services.sh
   tasks:
     - name: Copying conf-files to service_host
       become: yes
       copy:
-        src: "{{ source_conf }}"
-        dest: "{{ target_conf }}"
+        src: "{{ source_conf }}/{{ item }}"
+        dest: "{{ target_conf }}/{{ item }}"
+        mode: 0600
+        with_items:
+          - "apache"
+          - "as"
+          - "gui"
+          - "ras"
+    - name: Copying service.conf to service_host
+      become: yes
+      copy:
+        src: "{{ source_conf }}/service.conf"
+        dest: "{{ target_conf }}/service.conf"
         mode: 0600
     - name: Copying deploy-and-start-services.sh to service_host
       become: yes
       copy:
-        src: "{{ source_start }}"
-        dest: "{{ target_start }}"
+        src: "../deploy-and-start-services.sh"
+        dest: "./deploy-and-start-services.sh"
         mode: 0700
     - name: Creating data directory
       become: yes
@@ -23,9 +32,3 @@
         path: ./data
         state: directory
         mode: 0700
-    - name: Removing templates
-      file:
-        path: ./conf-files/templates
-        owner: root
-        group: root
-        state: absent
