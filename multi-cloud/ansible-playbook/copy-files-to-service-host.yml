@@ -1,6 +1,6 @@
 - hosts: service_host
   vars:
-    source_conf: ../tmp/conf-files
+    source_conf: ../../tmp/conf-files
     target_conf: ./
   tasks:
     - name: Removing files from earlier installation in service_host
