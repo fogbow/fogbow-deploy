@@ -16,4 +16,4 @@
       copy:
         src: "{{ source_start }}"
         dest: "{{ target_start }}"
-        mode: 0700
+        mode: 0711
