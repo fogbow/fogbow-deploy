@@ -56,10 +56,6 @@ fi
 ### Apache Shibboleth configuration
 DSP_PATTERN="domain_service_provider"
 DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-CSPP_PATTERN="certificate_service_provider_path"
-CSPP=$(grep $CSPP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-KSPP_PATTERN="key_service_provider_path"
-KSPP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DSU_PATTERN="discovery_service_url"
 DSU=$(grep $DSU_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DSMU_PATTERN="discovery_service_metadata_url"
@@ -258,10 +254,12 @@ sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 SHIB_CONF_FILE_NAME="shibboleth.conf"
 SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
 if [ "$AT" == "Shibboleth" ]; then
+  SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.crt"
+  SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.key"
+  yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH $APACHE_DIR_PATH
+  yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH $APACHE_DIR_PATH
   echo "# Shibboleth specific properties" > $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
   echo $DSP_PATTERN=$DSP >> $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
-  echo $CSSP_PATTERN=$CSSP >> $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
-  echo $KSPP_PATTERN=$KSPP >> $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
   echo $DSU_PATTERN=$DSU >> $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
   echo $DSMU_PATTERN=$DSMU >> $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
   ### Fill apache+shibboleth mod
@@ -305,11 +303,6 @@ if [ "$AT" == "Shibboleth" ]; then
   SHIB_AUTH_APP_SERVICE_PROVIDER_MACHINE_IP_PATTERN="service_provider_machine_ip="
   SERVICE_PROVIDER_MACHINE_IP=127.0.0.1
   sed -i "s#$SHIB_AUTH_APP_SERVICE_PROVIDER_MACHINE_IP_PATTERN.*#$SHIB_AUTH_APP_SERVICE_PROVIDER_MACHINE_IP_PATTERN$SERVICE_PROVIDER_MACHINE_IP#" $APACHE_DIR_PATH/$SHIB_AUTHENTICATION_APPLICATION_PROPERTIES_FILE_NAME
-  ### Managing keys and certificates
-  SERVICE_PROVIDER_CERTIFICATE_FILE_NAME="service_provider_certificate.crt"
-  SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME="service_provider_certificate.key"
-  yes | cp -f $CSPP $APACHE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_FILE_NAME
-  yes | cp -f $KSPP $APACHE_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME
   ### Generate shib app key pair
   SHIB_RSA_PEM_FILE_NAME="rsa_key_shibboleth.pem"
   SHIB_PRIVATE_KEY_FILE_NAME="shibboleth-app.pri"
