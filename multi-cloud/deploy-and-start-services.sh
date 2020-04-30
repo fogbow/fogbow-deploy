@@ -88,28 +88,6 @@ sudo docker run -tdi --name fogbow-gui \
       -v $WORK_DIR/conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js \
       fogbow/fogbow-gui:$GUI_TAG
 
-# Start Apache
-ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
-APACHE_CONTAINER_NAME="fogbow-apache"
-
-echo "#!/bin/bash" > $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod ssl_load" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod proxy.load" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod proxy_http.load" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod shib2" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod ssl" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod rewrite" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod headers" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/a2enmod proxy_http" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/service apache2 restart" >> $ENABLE_MODULES_SCRIPT
-echo "/usr/sbin/service shibd restart" >> $ENABLE_MODULES_SCRIPT
-
-sudo chmod +x $ENABLE_MODULES_SCRIPT
-sudo docker cp $ENABLE_MODULES_SCRIPT $APACHE_CONTAINER_NAME:/$ENABLE_MODULES_SCRIPT
-sudo docker exec $APACHE_CONTAINER_NAME /$ENABLE_MODULES_SCRIPT
-sudo docker exec $APACHE_CONTAINER_NAME /bin/bash -c "rm /$ENABLE_MODULES_SCRIPT"
-rm $ENABLE_MODULES_SCRIPT
-
 # Start AS
 AS_CONF_FILE_PATH="src/main/resources/private/as.conf"
 AS_CONTAINER_NAME="fogbow-as"
@@ -123,3 +101,75 @@ RAS_CONTAINER_NAME="fogbow-ras"
 
 sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINER_RAS_CONF_FILE_PATH"
 sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
+
+# Start Apache
+ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
+APACHE_CONTAINER_NAME="fogbow-apache"
+APACHE_CONF_DIR_PATH="./conf-files/apache"
+AT_PATTERN="authentication_type"
+AT=$(grep $AT_PATTERN $WORK_DIR/conf-files/gui/api.config.js | awk -F "'" '{print $2}')
+
+echo "#!/bin/bash" > $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod ssl_load" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod proxy.load" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod proxy_http.load" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod shib2" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod ssl" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod rewrite" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod headers" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/a2enmod proxy_http" >> $ENABLE_MODULES_SCRIPT
+echo "/usr/sbin/service apache2 restart" >> $ENABLE_MODULES_SCRIPT
+
+if [ "$AT" == "Shibboleth" ]; then
+  echo "/usr/sbin/service shibd restart" >> $ENABLE_MODULES_SCRIPT
+
+  CERTS_DIR_PATH="/etc/ssl/certs"
+  SSL_DIR_PATH="/etc/ssl/private"
+  SHIB_CONF_DIR_PATH="/etc/shibboleth"
+  SHIB_AUTH_APP_DIR_PATH="/home/"$REMOTE_USER"/shibboleth-authentication-application"
+  SECURE_INDEX_PATH="/var/www/secure/index.html"
+  VIRTUAL_HOST_SHIB_ENVIRONMENT_80_FILE_NAME="default.conf"
+  VIRTUAL_HOST_SHIB_ENVIRONMENT_443_FILE="shibboleth-sp2.conf"
+  CONF_SHIB_ENV_ATT_MAP_FILE_NAME="attribute-map.xml"
+  CONF_SHIB_ENV_ATT_POLICY_FILE_NAME="attribute-policy.xml"
+  CONF_SHIB_ENV_SHIB_XML_FILE_NAME="shibboleth2.xml"
+  CONF_SHIB_ENV_INDEX_SECURE_FILE_NAME="index-secure.html"
+  SHIB_AUTH_APP_CONF_FILE_NAME="shibboleth-authentication-application.conf"
+  SHIB_AUTH_APP_LOG4J_FILE_NAME="log4j.properties"
+  SHIB_CONF_FILE_NAME="shibboleth.conf"
+  SHIB_PRIVATE_KEY_FILE_NAME="shibboleth-app.pri"
+  AS_CONF_DIR_PATH="./conf-files/as"
+  AS_PUB_KEY_FILE_NAME="id_rsa.pub"
+  SERVICE_PROVIDER_CERTIFICATE_FILE_NAME="service_provider_certificate.crt"
+  SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME="service_provider_certificate.key"
+  SERVICE_PROVIDER_DOMAIN_PATTERN="domain_service_provider"
+  SERVICE_PROVIDER_DOMAIN_NAME=$(grep $SERVICE_PROVIDER_DOMAIN_PATTERN $APACHE_CONF_DIR_PATH/$SHIB_CONF_FILE_NAME | cut -d"=" -f2-)
+  sudo docker cp $APACHE_CONF_DIR_PATH/$VIRTUAL_HOST_SHIB_ENVIRONMENT_80_FILE_NAME $APACHE_CONTAINER_NAME:$VIRTUAL_HOST_DIR_PATH/$VIRTUAL_HOST_SHIB_ENVIRONMENT_80_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$VIRTUAL_HOST_SHIB_ENVIRONMENT_443_FILE $APACHE_CONTAINER_NAME:$VIRTUAL_HOST_DIR_PATH/$VIRTUAL_HOST_SHIB_ENVIRONMENT_443_FILE
+  sudo docker cp $APACHE_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_MAP_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_MAP_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$CONF_SHIB_ENV_SHIB_XML_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_SHIB_XML_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_POLICY_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_CONF_DIR_PATH/$CONF_SHIB_ENV_ATT_POLICY_FILE_NAME
+  sudo docker exec -it $APACHE_CONTAINER_NAME mkdir -p /var/www/secure
+  sudo docker cp $APACHE_CONF_DIR_PATH/$CONF_SHIB_ENV_INDEX_SECURE_FILE_NAME $APACHE_CONTAINER_NAME:$SECURE_INDEX_PATH
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SHIB_AUTH_APP_LOG4J_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_AUTH_APP_LOG4J_FILE_NAME
+  sudo docker exec -it $APACHE_CONTAINER_NAME sed -i "s/^DAEMON_USER=_shibd/DAEMON_USER=root/g" /etc/init.d/shibd
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME
+  sudo docker cp $AS_CONF_DIR_PATH/$AS_PUB_KEY_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$AS_PUB_KEY_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_FILE_NAME $APACHE_CONTAINER_NAME:$CERTS_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.crt
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SERVICE_PROVIDER_CERTIFICATE_KEY_FILE_NAME $APACHE_CONTAINER_NAME:$SSL_DIR_PATH/$SERVICE_PROVIDER_DOMAIN_NAME.key
+  sudo docker exec $APACHE_CONTAINER_NAME a2ensite default.conf
+  sudo docker exec $APACHE_CONTAINER_NAME a2ensite shibboleth-sp2.conf
+  SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN="shib_private_key_path="
+  sed -i "s#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN.*#$SHIB_AUTH_APP_SHIB_PRIVATE_KEY_PATTERN$SHIB_AUTH_APP_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME#" $APACHE_CONF_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
+  SHIB_AUTH_APP_AS_PUBLIC_KEY_PATTERN="as_public_key_path="
+  sed -i "s#$SHIB_AUTH_APP_AS_PUBLIC_KEY_PATTERN.*#$SHIB_AUTH_APP_AS_PUBLIC_KEY_PATTERN$SHIB_AUTH_APP_DIR_PATH/$AS_PUB_KEY_FILE_NAME#" $APACHE_CONF_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
+  sudo docker cp $APACHE_CONF_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME $APACHE_CONTAINER_NAME:$SHIB_AUTH_APP_DIR_PATH/$SHIB_AUTH_APP_CONF_FILE_NAME
+  sudo docker exec $APACHE_CONTAINER_NAME /bin/bash -c "bash $SHIB_AUTH_APP_DIR_PATH/bin/start-shib-app.sh" &
+fi
+
+sudo chmod +x $ENABLE_MODULES_SCRIPT
+sudo docker cp $ENABLE_MODULES_SCRIPT $APACHE_CONTAINER_NAME:/$ENABLE_MODULES_SCRIPT
+sudo docker exec $APACHE_CONTAINER_NAME /$ENABLE_MODULES_SCRIPT
+sudo docker exec $APACHE_CONTAINER_NAME /bin/bash -c "rm /$ENABLE_MODULES_SCRIPT"
+rm $ENABLE_MODULES_SCRIPT
