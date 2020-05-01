@@ -84,7 +84,7 @@ AUTH_PATTERN="authorization_plugin_class"
 AUTH=$(grep $AUTH_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ## GUI configuration
 AT_PATTERN="authentication_type"
-AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | awk -F "'" '{print $2}')
+AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 
 # Creating temporary directory
 mkdir -p ./tmp/conf-files
@@ -216,7 +216,7 @@ sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 ## Setting deployType property
 sed -i "s#.*deployType.*#	deployType: 'basic-site',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 sed -i "s#.*fnsServiceNames.*#	fnsServiceNames: [],#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
-if [ "$AT" == "Shibboleth" ]; then
+if [ "$AT" == "shibboleth" ]; then
   sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$DSP',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 fi
 
@@ -253,7 +253,7 @@ sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 ## Copying Shibboleth configuration (if required)
 SHIB_CONF_FILE_NAME="shibboleth.conf"
 SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
-if [ "$AT" == "Shibboleth" ]; then
+if [ "$AT" == "shibboleth" ]; then
   SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.crt"
   SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.key"
   yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH $APACHE_DIR_PATH
