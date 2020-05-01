@@ -10,7 +10,6 @@
         state: absent
       with_items:
         - "./conf-files"
-        - "./service.conf"
         - "./deploy-and-start-services.sh"
     - name: Copying conf-files to service_host
       become: yes
@@ -41,15 +40,15 @@
       file:
         path: ./conf-files/templates
         state: absent
-    - name: Add read permissions to required files
+    - name: Adding read permissions to required files
       become: yes
       file:
         path: ./conf-files/apache/index.html
         mode: 0644
-#- hosts: localhost
-#  connection: local
-#  tasks:
-#    - name: Removing conf-files from installation host
-#      file:
-#        path: ../tmp
-#        state: absent
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Removing conf-files from installation host
+      file:
+        path: ../tmp
+        state: absent

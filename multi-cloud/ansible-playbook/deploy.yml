@@ -2,4 +2,4 @@
 - import_playbook: install-dependencies.yml
 - import_playbook: generate-conf-files.yml
 - import_playbook: copy-files-to-service-host.yml
-- import_playbook: deploy-and-start-services.yml
+#- import_playbook: deploy-and-start-services.yml
