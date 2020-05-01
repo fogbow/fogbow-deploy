@@ -76,7 +76,6 @@ LB=$(grep $LB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 LET_PATTERN="ldap_encrypt_type"
 LET=$(grep $LET_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 SHIB_PATTERN="shib_public_key_file_path"
-SHIB=$(grep $SHIB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 ## RAS configuration
 CN_PATTERN="cloud_names"
 CN=$(grep $CN_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -138,7 +137,7 @@ echo "" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 ## Creating and adding key pair
 echo "" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
-openssl genrsa -out $AS_RSA_KEY_PATH 2048
+openssl genrsa -out $AS_RSA_KEY_PATH 1024
 openssl pkcs8 -topk8 -in $AS_RSA_KEY_PATH -out $AS_PRIVATE_KEY_PATH -nocrypt
 openssl rsa -in $AS_PRIVATE_KEY_PATH -outform PEM -pubout -out $AS_PUBLIC_KEY_PATH
 chmod 600 $AS_PRIVATE_KEY_PATH
@@ -312,4 +311,8 @@ if [ "$AT" == "shibboleth" ]; then
   openssl rsa -in $APACHE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME -outform PEM -pubout -out $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME
   chmod 600 $APACHE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME
   rm $APACHE_DIR_PATH/$SHIB_RSA_PEM_FILE_NAME
+
+  # AS dependecy required
+  yes | cp -f $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME $AS_DIR_PATH
+  echo $SHIB_PATTERN"="$AS_CONTAINER_CONF_FILE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 fi
