@@ -106,7 +106,7 @@ sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > l
 ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
 APACHE_CONTAINER_NAME="fogbow-apache"
 APACHE_CONF_DIR_PATH="./conf-files/apache"
-AT_PATTERN="authentication_type"
+AT_PATTERN="authenticationPlugin"
 AT=$(grep $AT_PATTERN $WORK_DIR/conf-files/gui/api.config.js | awk -F "'" '{print $2}')
 
 echo "#!/bin/bash" > $ENABLE_MODULES_SCRIPT
