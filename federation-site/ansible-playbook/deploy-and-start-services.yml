@@ -1,0 +1,6 @@
+---
+- hosts: service_host
+  tasks:
+    - name: Deploying and starting services in service_host
+      shell: bash deploy-and-start-services.sh
+      become: yes

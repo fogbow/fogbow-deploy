@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    script_runner: bash generate-conf-files.sh
+    script_path: ../
+  tasks:
+    - name: Generating configuration files in localhost
+      shell: "{{ script_runner }}"
+      args:
+        chdir: "{{ script_path }}"

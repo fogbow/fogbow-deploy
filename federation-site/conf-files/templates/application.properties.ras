@@ -1,0 +1,4 @@
+spring.jpa.database=POSTGRESQL
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
