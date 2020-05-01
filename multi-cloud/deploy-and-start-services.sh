@@ -79,7 +79,7 @@ sudo docker run -tdi --name fogbow-as \
 sudo docker run -tdi --name fogbow-ras \
       -p $RAS_PORT:8080 \
       -v $WORK_DIR/conf-files/ras:/root/resource-allocation-service/src/main/resources/private \
-      -v $WORK_DIR/conf-files/apache/application.properties:/root/resource-allocation-service/application.properties \
+      -v $WORK_DIR/conf-files/ras/application.properties:/root/resource-allocation-service/application.properties \
       -v $WORK_DIR/timestamp-storage/ras.db:/root/resource-allocation-service/ras.db \
       fogbow/resource-allocation-service:$RAS_TAG
 
