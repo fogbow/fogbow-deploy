@@ -1,5 +1,0 @@
-#!/bin/bash
-
-sudo docker build --build-arg RAS_BRANCH=master --build-arg AS_BRANCH=master --build-arg COMMON_BRANCH=master \
- --no-cache -t fogbow/resource-allocation-service:latest -t fogbow/resource-allocation-service:master .
-

@@ -53,6 +53,7 @@ APACHE_TAG=$(grep $APACHE_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${APACHE_TAG// } ]; then
 	APACHE_TAG="latest"
 fi
+
 ### Apache Shibboleth configuration
 DSP_PATTERN="domain_service_provider"
 DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -146,7 +147,7 @@ echo "public_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $AS
 echo "private_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 
 # RAS conf-file generation
-## Setting AS variables
+## Setting RAS variables
 RAS_DIR_PATH="./tmp/conf-files/ras"
 RAS_CONF_FILE_NAME="ras.conf"
 CLOUDS_DIR_NAME="clouds"
@@ -164,7 +165,7 @@ echo "# Comma-separated list of the names of the clouds managed by this RAS" > $
 echo "# Their configuration is stored under the directory clouds/<name>" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "# The default cloud is the first name in the list" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo $CN_PATTERN=$CN >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
-echo $RAS_AUTH_PATTERN=$RAS_AUTH >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
+echo "authorization_plugin_class=$RAS_AUTH" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "xmpp_enabled=false" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
@@ -213,7 +214,7 @@ sed -i "s#.*\<as\>:.*#	as: 'https://$PROVIDER_ID/as',#" $GUI_DIR_PATH/$GUI_CONF_
 sed -i "s#.*ras:.*#	ras: 'https://$PROVIDER_ID/ras',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 ## Setting deployType property
-sed -i "s#.*deployType.*#	deployType: 'basic-site',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
+sed -i "s#.*deployType.*#	deployType: 'multi-cloud',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 sed -i "s#.*fnsServiceNames.*#	fnsServiceNames: [],#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 if [ "$AT" == "shibboleth" ]; then
   sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$DSP',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
@@ -240,15 +241,15 @@ yes | cp -f $TEMPLATES_DIR_PATH/$PORTS_FILE_NAME $APACHE_DIR_PATH
 yes | cp -f $TEMPLATES_DIR_PATH/$APACHE_VHOST_FILE_NAME $APACHE_DIR_PATH
 sed -i "s|$SERVICE_HOST_IP_PATTERN|$SERVICE_HOST_IP|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
 sed -i "s|$PROVIDER_ID_PATTERN|$PROVIDER_ID|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
-sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
 sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
+sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
 sed -i "s|$GUI_PORT_PATTERN|$GUI_PORT|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
 ## Generating index.html
 yes | cp -f $TEMPLATES_DIR_PATH/$ROOT_WWW_FILE_NAME $APACHE_DIR_PATH
 sed -i "s|$SERVICE_HOST_IP_PATTERN|$SERVICE_HOST_IP|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 sed -i "s|$PROVIDER_ID_PATTERN|$PROVIDER_ID|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
-sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 sed -i "s|$AS_PORT_PATTERN|$AS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
+sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 ## Copying Shibboleth configuration (if required)
 SHIB_CONF_FILE_NAME="shibboleth.conf"
 SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
@@ -282,13 +283,13 @@ if [ "$AT" == "shibboleth" ]; then
   SHIB_AUTHENTICATION_APPLICATION_ADDRESS_PATTERN="_ADDRESS_SHIBBOLETH_AUTH_APPLICATION_"
   SHIB_AUTHENTICATION_APPLICATION_ADDRESS_DEFAULT_VALUE="127.0.0.1:9000"
   sed -i "s#$SHIB_AUTHENTICATION_APPLICATION_ADDRESS_PATTERN#$SHIB_AUTHENTICATION_APPLICATION_ADDRESS_DEFAULT_VALUE#" $APACHE_DIR_PATH/$SHIB_VIRTUAL_HOST_443_FILE_NAME
-  ## shibboleth2.xml
+  ### shibboleth2.xml
   sed -i "s#$HOSTNAME_PATTERN#$DSP#" $APACHE_DIR_PATH/$SHIB_XML_FILE_NAME
   DS_META_PATTERN="_DS_META_"
   sed -i "s#$DS_META_PATTERN#$DSMU#" $APACHE_DIR_PATH/$SHIB_XML_FILE_NAME
   DS_PATTERN="_DS_"
   sed -i "s#$DS_PATTERN#$DSU#" $APACHE_DIR_PATH/$SHIB_XML_FILE_NAME
-  ## Fill apache+shibboleth mod
+  ### Fill apache+shibboleth mod
   LOG4J_PROPERTIES_FILE_NAME="log4j.properties"
   yes | cp -f $SHIB_ENV_DIR_PATH/$LOG4J_PROPERTIES_FILE_NAME'.example' $APACHE_DIR_PATH/$LOG4J_PROPERTIES_FILE_NAME
   SHIB_AUTHENTICATION_APPLICATION_PROPERTIES_FILE_NAME="shibboleth-authentication-application.conf"
@@ -311,8 +312,7 @@ if [ "$AT" == "shibboleth" ]; then
   openssl rsa -in $APACHE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME -outform PEM -pubout -out $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME
   chmod 600 $APACHE_DIR_PATH/$SHIB_PRIVATE_KEY_FILE_NAME
   rm $APACHE_DIR_PATH/$SHIB_RSA_PEM_FILE_NAME
-
-  # AS dependecy required
+  ### Copy shib public key to AS conf-files dir
   yes | cp -f $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME $AS_DIR_PATH
   echo $SHIB_PATTERN"="$AS_CONTAINER_CONF_FILE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 fi

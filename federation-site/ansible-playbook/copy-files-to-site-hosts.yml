@@ -1,6 +1,6 @@
 - hosts: service_host
   vars:
-    source_conf: ../tmp/conf-files
+    source_conf_service_host: ../tmp-service-host/conf-files
     target_conf: ./
   tasks:
     - name: Removing files from earlier installation in service_host
@@ -14,19 +14,19 @@
     - name: Copying conf-files to service_host
       become: yes
       copy:
-        src: "{{ source_conf }}"
+        src: "{{ source_conf_service_host }}"
         dest: "{{ target_conf }}"
         mode: 0600
     - name: Copying service.conf to service_host
       become: yes
       copy:
-        src: "{{ source_conf }}/service.conf"
+        src: "{{ source_conf_service_host }}/service.conf"
         dest: "{{ target_conf }}/conf-files/service.conf"
         mode: 0644
-    - name: Copying deploy-and-start-services.sh to service_host
+    - name: Copying service-host-deploy-and-start-services.sh to service_host
       become: yes
       copy:
-        src: "../tmp/deploy-and-start-services.sh"
+        src: "../tmp-service-host/service-host-deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
     - name: Creating data directory
@@ -45,10 +45,40 @@
       file:
         path: ./conf-files/apache/index.html
         mode: 0644
+
+- hosts: dmz_host
+  vars:
+    source_conf_dmz_host: ../tmp-dmz-host/conf-files
+    target_conf: ./
+  tasks:
+    - name: Removing files from earlier installation in service_host
+      become: yes
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "./conf-files"
+        - "./deploy-and-start-services.sh"
+    - name: Copying conf-files to service_host
+      become: yes
+      copy:
+        src: "{{ source_conf_dmz_host }}"
+        dest: "{{ target_conf }}"
+        mode: 0600
+    - name: Copying dmz-host-deploy-and-start-services.sh to dmz_host
+      become: yes
+      copy:
+        src: "../tmp-dmz-host/dmz-host-deploy-and-start-services.sh"
+        dest: "./deploy-and-start-services.sh"
+        mode: 0700
+
 - hosts: localhost
   connection: local
   tasks:
     - name: Removing conf-files from installation host
       file:
-        path: ../tmp
+        path: {{ item }}
         state: absent
+      with_items:
+        - "../tmp-service-host"
+        - "../tmp-dmz-host"
