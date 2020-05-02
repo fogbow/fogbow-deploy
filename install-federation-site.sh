@@ -14,8 +14,8 @@ SERVICE_HOST_IP_PATTERN="service_host_ip"
 SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_NAME | cut -d"=" -f2-)
 SERVICE_HOST_PRIVATE_KEY_FILE_PATH_PATTERN="service_host_ssh_private_key_file"
 SERVICE_HOST_PRIVATE_KEY_FILE_PATH=$(grep $SERVICE_HOST_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_NAME | cut -d"=" -f2-)
-DMZ_HOST_IP_PATTERN="dmz_host_ip"
-DMZ_HOST_IP=$(grep $DMZ_HOST_IP_PATTERN $SITE_CONF_FILE_NAME | cut -d"=" -f2-)
+DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
+DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $SITE_CONF_FILE_NAME | cut -d"=" -f2-)
 DMZ_HOST_PRIVATE_KEY_FILE_PATH_PATTERN="dmz_host_ssh_private_key_file"
 DMZ_HOST_PRIVATE_KEY_FILE_PATH=$(grep $DMZ_HOST_PRIVATE_KEY_FILE_PATH_PATTERN $SITE_CONF_FILE_NAME | cut -d"=" -f2-)
 
@@ -29,7 +29,7 @@ echo "ansible_ssh_private_key_file=$SERVICE_HOST_PRIVATE_KEY_FILE_PATH" >> $ANSI
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[dmz_host]" >> $ANSIBLE_HOSTS_FILE_PATH
-echo $DMZ_HOST_IP >> $ANSIBLE_HOSTS_FILE_PATH
+echo $DMZ_HOST_PRIVATE_IP >> $ANSIBLE_HOSTS_FILE_PATH
 echo "[dmz_host:vars]" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_ssh_private_key_file=$DMZ_HOST_PRIVATE_KEY_FILE_PATH" >> $ANSIBLE_HOSTS_FILE_PATH
 echo "ansible_python_interpreter=/usr/bin/python3" >> $ANSIBLE_HOSTS_FILE_PATH
