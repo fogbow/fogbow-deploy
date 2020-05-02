@@ -1,9 +1,11 @@
 export const env = {
     as: , // Auto-generated value
+    ms: , // Auto-generated value
     ras: , // Auto-generated value
+    fns: , // Auto-generated value
     local: , // Auto-generated value
     serverEndpoint: '',
-    deployType: '',
+    deployType: 'federation-site',
     refreshTime: 5000,
     remoteCredentialsUrl: '',
     authenticationPlugin: 'LDAP',
@@ -17,5 +19,5 @@ export const env = {
             label: 'Password'
         }
     },
-    fnsServiceNames: []
+    fnsServiceNames: ['vanilla']
 };

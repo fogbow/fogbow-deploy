@@ -3,7 +3,7 @@ export const env = {
     ras: , // Auto-generated value
     local: , // Auto-generated value
     serverEndpoint: '',
-    deployType: '',
+    deployType: 'multi-cloud',
     refreshTime: 5000,
     remoteCredentialsUrl: '',
     authenticationPlugin: 'Cloudstack',
