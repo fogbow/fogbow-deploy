@@ -1,5 +1,5 @@
 ---
-- hosts: service_host, dmz_host
+- hosts: service_host dmz_host
   become: true
   vars:
     ansible_python_interpreter: "/usr/bin/env python3"
