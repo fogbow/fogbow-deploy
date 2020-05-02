@@ -1,31 +1,35 @@
 #!/bin/bash
 
-BUILD_FILE_NAME="build"
 WORK_DIR=$(pwd)
-SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
 
-# Remove containers from earlier installation
-sudo docker stop xmpp-server ipsec-server
-sudo docker rm xmpp-server ipsec-server
+# Remove xmpp-server container from earlier installation
+sudo docker stop xmpp-server
+sudo docker rm xmpp-server
 
-# Create containers
+# Create xmpp-server container
+sudo docker run -tdi --name "xmpp-server" \
+	-p 5269:5269 \
+	-p 5347:5347 \
+	-v $WORK_DIR/conf-files/xmpp/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua \
+	fogbow/xmpp-server:latest
 
-#sudo docker run -tdi --name fogbow-apache \
-#      -p $HTTP_PORT:80 \
-#      -p $HTTPS_PORT:443 \
-#      -v $WORK_DIR/conf-files/apache/site.crt:/etc/ssl/certs/site.crt \
-#      -v $WORK_DIR/conf-files/apache/site.key:/etc/ssl/private/site.key \
-#      -v $WORK_DIR/conf-files/apache/site.pem:/etc/ssl/certs/site.pem \
-#      -v $WORK_DIR/conf-files/apache/ports.conf:/etc/apache2/ports.conf \
-#      -v $WORK_DIR/conf-files/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf \
-#      -v $WORK_DIR/conf-files/apache/index.html:/var/www/html/index.html \
-#      fogbow/apache-shibboleth-server:$APACHE_TAG
+#chmod 644 $CURRENT_DIR_PATH/$CONF_FILE_NAME
+#sudo docker cp $CURRENT_DIR_PATH/$CONF_FILE_NAME $CONTAINER_NAME:$CONTAINER_BASE_DIR/$CONF_FILE_NAME
+#chmod 600 $CURRENT_DIR_PATH/$CONF_FILE_NAME
+#sudo docker exec $CONTAINER_NAME /bin/bash -c "service prosody restart"
 
-#sudo docker run -tdi --name fogbow-database \
-#      -p $DB_PORT:5432 \
-#      -e DB_USER="fogbow" \
-#      -e DB_PASS="db_password" \
-#      -e DB_NAME="ras" \
-#      -e DB2_NAME="fns" \
-#      -v $WORK_DIR/data:/var/lib/postgresql/data \
-#      fogbow/database:$DB_TAG
+# Install IPSEC agent
+## Get agent public key
+AGENT_HOST_PUBLIC_KEY=$(cat ./conf-files/ipsec/vanilla-agent-id_rsa.pub)
+AUTHORIZED_KEYS_FILE_PATH=$WORK_DIR/".ssh/authorized_keys"
+## Remove old keys
+ed $AUTHORIZED_KEYS_FILE_PATH <<!
+g/FNS-vanilla-key/d
+w
+q
+!
+## Add new key
+echo "" >> $AUTHORIZED_KEYS_FILE_PATH
+echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
+## Start StrongSwan (IPSEC) service
+sudo bash conf-files/ipsec/ipsec-installation.sh

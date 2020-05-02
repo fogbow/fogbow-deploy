@@ -115,7 +115,6 @@ AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 
 # Generating secrets
 ## Generating XMPP_PASSWORD
-XMPP_PASSWORD_PROPERTY="xmpp_password"
 XMPP_PASSWORD=$(pwgen 10 1)
 ## Generating VPN password
 VPN_PASSWORD_PROPERTY="vpn_password"
@@ -137,10 +136,11 @@ IPSEC_DIR_PATH=./tmp-dmz-host/conf-files/ipsec
 ### Creating IPSEC conf directory
 mkdir -p $IPSEC_DIR_PATH
 ### Copying IPSEC configuration and installation files
-STRONGSWAN_INSTALLATION_SCRIPT_NAME="strongswan-installation"
 IPSEC_INSTALLATION_SCRIPT_NAME="ipsec-installation.sh"
 IPSEC_CONF_FILE_NAME="ipsec.conf"
-cp -f $TEMPLATES_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME $IPSEC_DIR_PATH/$STRONGSWAN_INSTALLATION_SCRIPT
+cp -f $TEMPLATES_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME $IPSEC_DIR_PATH
+chmod 600 $IPSEC_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME
+sed -i "s|$VPN_PASSWORD_PROPERTY|$VPN_PASSWORD|g" $IPSEC_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME
 cp -f $TEMPLATES_DIR_PATH/$IPSEC_CONF_FILE_NAME $IPSEC_DIR_PATH
 ## XMPP configuration
 XMPP_DIR_PATH=./tmp-dmz-host/conf-files/xmpp
@@ -302,8 +302,8 @@ PUBLIC_KEY_FILE_PATH="./vanilla-agent-id_rsa.pub"
 ssh-keygen -f $PRIVATE_KEY_FILE_PATH -t rsa -b 4096 -C "FNS-vanilla-key" -N ""
 chmod 600 $PRIVATE_KEY_FILE_PATH
 ### Moving keys to appropriate directories
-mv $PRIVATE_KEY_FILE_PATH $IPSEC_DIR_PATH
-mv $PUBLIC_KEY_FILE_PATH $FNS_DIR_PATH
+mv $PRIVATE_KEY_FILE_PATH $FNS_DIR_PATH
+mv $PUBLIC_KEY_FILE_PATH $IPSEC_DIR_PATH
 ### Adding properties
 echo "authorization_plugin_class=$FNS_AUTH" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo "services_names=vanilla" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
