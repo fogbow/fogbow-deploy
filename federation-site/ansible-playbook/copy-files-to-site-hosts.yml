@@ -23,10 +23,10 @@
         src: "{{ source_conf_service_host }}/service.conf"
         dest: "{{ target_conf }}/conf-files/service.conf"
         mode: 0644
-    - name: Copying service-host-deploy-and-start-services.sh to service_host
+    - name: Copying deploy-and-start-services.sh to service_host
       become: yes
       copy:
-        src: "../tmp-service-host/service-host-deploy-and-start-services.sh"
+        src: "../tmp-service-host/deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
     - name: Creating data directory
@@ -65,10 +65,10 @@
         src: "{{ source_conf_dmz_host }}"
         dest: "{{ target_conf }}"
         mode: 0600
-    - name: Copying dmz-host-deploy-and-start-services.sh to dmz_host
+    - name: Copying deploy-and-start-services.sh to dmz_host
       become: yes
       copy:
-        src: "../tmp-dmz-host/dmz-host-deploy-and-start-services.sh"
+        src: "../tmp-dmz-host/deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
 
