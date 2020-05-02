@@ -306,7 +306,7 @@ mv $PRIVATE_KEY_FILE_PATH $FNS_DIR_PATH
 mv $PUBLIC_KEY_FILE_PATH $IPSEC_DIR_PATH
 ### Adding properties
 echo "authorization_plugin_class=$FNS_AUTH" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
-echo "services_names=vanilla" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
+echo "service_names=vanilla" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo "" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 PROTOCOL="http://"
