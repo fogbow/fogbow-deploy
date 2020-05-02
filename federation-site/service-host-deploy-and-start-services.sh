@@ -104,7 +104,7 @@ sudo docker run -tdi --name fogbow-gui \
 
 sudo docker run -idt --name "fogbow-ms" \
 	-p $MS_PORT:8080 \
-	-v $WORK_DIR/conf-files/ms:/root/membership-service/conf-files/src/main/resources/private \
+	-v $WORK_DIR/conf-files/ms:/root/membership-service/src/main/resources/private \
 	fogbow/membership-service:$MS_TAG
 
 sudo docker run -idt --name "fogbow-fns" \
@@ -128,7 +128,7 @@ sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONT
 sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
 
 # Start Apache
-ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
+ENABLE_MODULES_SCRIPT="enable-modules"
 APACHE_CONTAINER_NAME="fogbow-apache"
 APACHE_CONF_DIR_PATH="./conf-files/apache"
 AT_PATTERN="authenticationPlugin"
@@ -211,7 +211,7 @@ sudo docker exec $MS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > lo
 
 # Start FNS
 CONTAINER_FNS_CONF_FILE_PATH="src/main/resources/private/fns.conf"
-MS_CONTAINER_NAME="fogbow-fns"
+FNS_CONTAINER_NAME="fogbow-fns"
 
 sudo docker exec $FNS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINER_FNS_CONF_FILE_PATH"
 sudo docker exec $FNS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &

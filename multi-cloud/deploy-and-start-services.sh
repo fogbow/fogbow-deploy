@@ -103,7 +103,7 @@ sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONT
 sudo docker exec $RAS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
 
 # Start Apache
-ENABLE_MODULES_SCRIPT="multi-cloud-enable-modules"
+ENABLE_MODULES_SCRIPT="enable-modules"
 APACHE_CONTAINER_NAME="fogbow-apache"
 APACHE_CONF_DIR_PATH="./conf-files/apache"
 AT_PATTERN="authenticationPlugin"
