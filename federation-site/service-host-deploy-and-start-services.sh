@@ -109,7 +109,7 @@ sudo docker run -idt --name "fogbow-ms" \
 
 sudo docker run -idt --name "fogbow-fns" \
 	-p $FNS_PORT:8080 \
-	-v $WORK_DIR/conf-files/fns:/root/federated-network-service/conf-files/src/main/resources/private \
+	-v $WORK_DIR/conf-files/fns:/root/federated-network-service/src/main/resources/private \
 	-v $WORK_DIR/timestamp-storage/fns.db:/root/federated-network-service/fns.db \
 	fogbow/federated-network-service:$FNS_TAG
 
