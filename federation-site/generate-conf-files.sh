@@ -9,7 +9,7 @@ DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
 # Reading configuration files
 ## Reading data from site.conf
 REMOTE_USER_PATTERN="remote_user"
-REMOTE_USER=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 SERVICE_HOST_IP_PATTERN="service_host_ip"
 SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_PATTERN="service_host_DNS"
