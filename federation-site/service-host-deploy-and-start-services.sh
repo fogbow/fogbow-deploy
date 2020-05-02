@@ -8,8 +8,12 @@ SERVICE_CONF_FILE_PATH="./conf-files/service.conf"
 
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+MS_PORT_PATTERN="Ms_port"
+MS_PORT=$(grep $MS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 RAS_PORT_PATTERN="Ras_port"
 RAS_PORT=$(grep $RAS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+FNS_PORT_PATTERN="Fns_port"
+FNS_PORT=$(grep $FNS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 GUI_PORT_PATTERN="Gui_port"
 GUI_PORT=$(grep $GUI_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PORT_PATTERN="Db_port"
@@ -24,10 +28,20 @@ AS_TAG=$(grep $AS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${AS_TAG// } ]; then
 	AS_TAG="latest"
 fi
+MS_TAG_PATTERN="Ms_tag"
+MS_TAG=$(grep $MS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${MS_TAG// } ]; then
+	MS_TAG="latest"
+fi
 RAS_TAG_PATTERN="Ras_tag"
 RAS_TAG=$(grep $RAS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${RAS_TAG// } ]; then
 	RAS_TAG="latest"
+fi
+FNS_TAG_PATTERN="Fns_tag"
+FNS_TAG=$(grep $FNS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${FNS_TAG// } ]; then
+	FNS_TAG="latest"
 fi
 GUI_TAG_PATTERN="Gui_tag"
 GUI_TAG=$(grep $GUI_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -46,8 +60,8 @@ if [ -z ${APACHE_TAG// } ]; then
 fi
 
 # Remove containers from earlier installation
-sudo docker stop fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui
-sudo docker rm fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui
+sudo docker stop fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui fogbow-fns fogbow-ms
+sudo docker rm fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui fogbow-fns fogbow-ms
 
 # Create containers
 
@@ -87,6 +101,17 @@ sudo docker run -tdi --name fogbow-gui \
       -p $GUI_PORT:3000 \
       -v $WORK_DIR/conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js \
       fogbow/fogbow-gui:$GUI_TAG
+
+sudo docker run -idt --name "fogbow-ms" \
+	-p $MS_PORT:8080 \
+	-v $WORK_DIR/conf-files/ms:/root/membership-service/conf-files/src/main/resources/private \
+	fogbow/membership-service:$MS_TAG
+
+sudo docker run -idt --name "fogbow-fns" \
+	-p $FNS_PORT:8080 \
+	-v $WORK_DIR/conf-files/fns:/root/federated-network-service/conf-files/src/main/resources/private \
+	-v $WORK_DIR/timestamp-storage/fns.db:/root/federated-network-service/fns.db \
+	fogbow/federated-network-service:$FNS_TAG
 
 # Start AS
 AS_CONF_FILE_PATH="src/main/resources/private/as.conf"
@@ -176,3 +201,17 @@ sudo docker cp $ENABLE_MODULES_SCRIPT $APACHE_CONTAINER_NAME:/$ENABLE_MODULES_SC
 sudo docker exec $APACHE_CONTAINER_NAME /$ENABLE_MODULES_SCRIPT
 sudo docker exec $APACHE_CONTAINER_NAME /bin/bash -c "rm /$ENABLE_MODULES_SCRIPT"
 rm $ENABLE_MODULES_SCRIPT
+
+# Start MS
+CONTAINER_MS_CONF_FILE_PATH="src/main/resources/private/ms.conf"
+MS_CONTAINER_NAME="fogbow-ms"
+
+sudo docker exec $MS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINER_MS_CONF_FILE_PATH"
+sudo docker exec $MS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &
+
+# Start FNS
+CONTAINER_FNS_CONF_FILE_PATH="src/main/resources/private/fns.conf"
+MS_CONTAINER_NAME="fogbow-fns"
+
+sudo docker exec $FNS_CONTAINER_NAME /bin/bash -c "cat $BUILD_FILE_NAME >> $CONTAINER_FNS_CONF_FILE_PATH"
+sudo docker exec $FNS_CONTAINER_NAME /bin/bash -c "./mvnw spring-boot:run -X > log.out 2> log.err" &

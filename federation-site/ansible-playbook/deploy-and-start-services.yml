@@ -1,5 +1,5 @@
 ---
-- hosts: service_host
+- hosts: service_host:dmz_host
   tasks:
     - name: Deploying and starting services in service_host
       shell: bash deploy-and-start-services.sh
