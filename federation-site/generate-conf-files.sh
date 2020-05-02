@@ -128,9 +128,9 @@ DB_PASSWORD=$(pwgen 10 1)
 ## Creating temporary directory for dmz-host configuration
 mkdir -p ./tmp-dmz-host/conf-files
 ## Copying and editing deploy-and-start-services.sh
-cp "dmz-host-"$DEPLOY_START_SERVICES_FILE_NAME ./tmp-service-host/$DEPLOY_START_SERVICES_FILE_NAME
-chmod 600 ./tmp-service-host/$DEPLOY_START_SERVICES_FILE_NAME
-sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" ./tmp-service-host/$DEPLOY_START_SERVICES_FILE_NAME
+cp "dmz-host-"$DEPLOY_START_SERVICES_FILE_NAME ./tmp-dmz-host/$DEPLOY_START_SERVICES_FILE_NAME
+chmod 600 ./tmp-dmz-host/$DEPLOY_START_SERVICES_FILE_NAME
+sed -i "s|$DB_PASSWORD_PROPERTY|$DB_PASSWORD|g" ./tmp-dmz-host/$DEPLOY_START_SERVICES_FILE_NAME
 ## IPSEC configuration
 ### Creating vanilla agent key pair
 IPSEC_DIR_PATH=./tmp-dmz-host/conf-files/ipsec
@@ -292,6 +292,10 @@ FNS_DIR_PATH="./tmp-service-host/conf-files/fns"
 FNS_CONF_FILE_NAME="fns.conf"
 APPLICATION_PROPERTIES_FILE_NAME="application.properties"
 FNS_CONTAINER_CONF_FILE_DIR_PATH="/root/federated-network-service/src/main/resources/private"
+### Creating directory
+mkdir -p $FNS_DIR_PATH
+touch $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
+chmod 600 $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 ### Generating IPSEC agent key pair
 PRIVATE_KEY_FILE_PATH="./vanilla-agent-id_rsa"
 PUBLIC_KEY_FILE_PATH="./vanilla-agent-id_rsa.pub"
