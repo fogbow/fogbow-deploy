@@ -35,8 +35,3 @@ echo "" >> $AUTHORIZED_KEYS_FILE_PATH
 echo "$AGENT_HOST_PUBLIC_KEY" >> $AUTHORIZED_KEYS_FILE_PATH
 ## Starting StrongSwan (IPSEC) service
 sudo bash conf-files/ipsec/ipsec-installation.sh
-
-## Creating directory for FNS ephemeral scripts
-## ToDo: fix FNS so that this is no longer required
-mkdir -p fogbow-components/federated-network-agent
-sudo chown -R ubuntu.ubuntu fogbow-components

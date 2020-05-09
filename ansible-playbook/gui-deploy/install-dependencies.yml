@@ -1,8 +1,0 @@
----
-- hosts: basic-site-machine
-  tasks:
-    - name: Installing Docker in basic-site-machine
-      apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
-      become: yes
-      with_items:
-        - docker.io
