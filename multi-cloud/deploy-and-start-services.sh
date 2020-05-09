@@ -67,7 +67,6 @@ sudo docker run -tdi --name fogbow-database \
       -e DB_USER="fogbow" \
       -e DB_PASS="db_password" \
       -e DB_NAME="ras" \
-      -e DB2_NAME="fns" \
       -v $WORK_DIR/data:/var/lib/postgresql/data \
       fogbow/database:$DB_TAG
 
