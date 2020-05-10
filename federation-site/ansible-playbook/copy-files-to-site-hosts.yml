@@ -1,6 +1,6 @@
 - hosts: service_host
   vars:
-    source_conf_service_host: ../tmp-service-host/conf-files
+    source_conf_service_host: ../scripts/tmp-service-host/conf-files
     target_conf: ./
   tasks:
     - name: Removing files from earlier installation in service_host
@@ -22,7 +22,7 @@
         mode: 0644
     - name: Copying deploy-and-start-services.sh to service_host
       copy:
-        src: "../tmp-service-host/deploy-and-start-services.sh"
+        src: "../scripts/tmp-service-host/deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
     - name: Creating data directory
@@ -37,7 +37,7 @@
 
 - hosts: dmz_host
   vars:
-    source_conf_dmz_host: ../tmp-dmz-host/conf-files
+    source_conf_dmz_host: ../scripts/tmp-dmz-host/conf-files
     target_conf: ./
   tasks:
     - name: Removing files from earlier installation in service_host
@@ -54,7 +54,7 @@
         mode: 0600
     - name: Copying deploy-and-start-services.sh to dmz_host
       copy:
-        src: "../tmp-dmz-host/deploy-and-start-services.sh"
+        src: "../scripts/tmp-dmz-host/deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
 
@@ -66,5 +66,5 @@
         path: "{{ item }}"
         state: absent
       with_items:
-        - "../tmp-service-host"
-        - "../tmp-dmz-host"
+        - "../scripts/tmp-service-host"
+        - "../scripts/tmp-dmz-host"
