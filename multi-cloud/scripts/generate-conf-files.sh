@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Source configuration files
-SERVICE_CONF_FILE_PATH="./multi-cloud.conf"
-HOST_CONF_FILE_PATH="./host.conf"
-TEMPLATES_DIR_PATH="./conf-files/templates"
+CONF_FILES_DIR_PATH="../conf-files"
+SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"multi-cloud.conf"
+HOST_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"host.conf"
+TEMPLATES_DIR_PATH="../templates"
 
 # Reading configuration files
 ## Reading data from host.conf
@@ -184,7 +185,7 @@ rm $RAS_RSA_KEY_PATH
 echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Copying clouds directory
-yes | cp -fr $TEMPLATES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
+yes | cp -fr $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
 ## Copying application.properties file
 yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
@@ -226,9 +227,9 @@ APACHE_DIR_PATH="./tmp/conf-files/apache"
 PORTS_FILE_NAME="ports.conf"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
-CERTIFICATE_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.crt"
-CERTIFICATE_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.key"
-CERTIFICATE_CHAIN_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.pem"
+CERTIFICATE_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.crt"
+CERTIFICATE_KEY_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.key"
+CERTIFICATE_CHAIN_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.pem"
 ## Creating directory
 mkdir -p $APACHE_DIR_PATH
 ## Copying certificate files

@@ -1,6 +1,6 @@
 - hosts: service_host
   vars:
-    source_conf: ../tmp/conf-files
+    source_conf: ../scripts/tmp/conf-files
     target_conf: ./
   tasks:
     - name: Removing files from earlier installation in service_host
@@ -22,7 +22,7 @@
         mode: 0644
     - name: Copying deploy-and-start-services.sh to service_host
       copy:
-        src: "../tmp/deploy-and-start-services.sh"
+        src: "../scripts/tmp/deploy-and-start-services.sh"
         dest: "./deploy-and-start-services.sh"
         mode: 0700
     - name: Creating data directory
@@ -30,10 +30,6 @@
         path: ./data
         state: directory
         mode: 0700
-    - name: Removing templates directory in service_host
-      file:
-        path: ./conf-files/templates
-        state: absent
     - name: Adding read permissions to required files
       file:
         path: ./conf-files/apache/index.html
@@ -43,5 +39,5 @@
   tasks:
     - name: Removing conf-files from installation host
       file:
-        path: ../tmp
+        path: ../scripts/tmp
         state: absent

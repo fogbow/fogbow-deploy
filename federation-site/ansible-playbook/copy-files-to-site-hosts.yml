@@ -40,14 +40,14 @@
     source_conf_dmz_host: ../scripts/tmp-dmz-host/conf-files
     target_conf: ./
   tasks:
-    - name: Removing files from earlier installation in service_host
+    - name: Removing files from earlier installation in dmz_host
       file:
         path: "{{ item }}"
         state: absent
       with_items:
         - "./conf-files"
         - "./deploy-and-start-services.sh"
-    - name: Copying conf-files to service_host
+    - name: Copying conf-files to dmz_host
       copy:
         src: "{{ source_conf_dmz_host }}"
         dest: "{{ target_conf }}"

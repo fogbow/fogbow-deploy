@@ -3,7 +3,7 @@
   connection: local
   vars:
     script_runner: bash generate-conf-files.sh
-    script_path: ../
+    script_path: ../scripts
   tasks:
     - name: Generating configuration files in localhost
       shell: "{{ script_runner }}"
