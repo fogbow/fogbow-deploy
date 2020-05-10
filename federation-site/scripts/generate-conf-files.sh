@@ -273,7 +273,7 @@ echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_
 ### Copying clouds directory
 yes | cp -fr $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
 ### Copying application.properties file
-yes | cp -f $CONF_FILES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
+yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 ### Editing application.properties
 JDBC_PREFIX="jdbc:postgresql:"
@@ -291,7 +291,6 @@ echo "$DB_PASSWORD_PATTERN=$DB_PASSWORD" >> $RAS_DIR_PATH/$APPLICATION_PROPERTIE
 ## FNS conf-file generation
 FNS_DIR_PATH="./tmp-service-host/conf-files/fns"
 FNS_CONF_FILE_NAME="fns.conf"
-APPLICATION_PROPERTIES_FILE_NAME="application.properties"
 FNS_CONTAINER_CONF_FILE_DIR_PATH="/root/federated-network-service/src/main/resources/private"
 ### Creating directory
 mkdir -p $FNS_DIR_PATH
