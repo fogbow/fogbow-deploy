@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Source configuration files
-SERVICE_CONF_FILE_PATH="./federation-site.conf"
-SITE_CONF_FILE_PATH="./site.conf"
-TEMPLATES_DIR_PATH="./conf-files/templates"
+CONF_FILES_DIR_PATH="../conf-files"
+SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"federation-site.conf"
+SITE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"site.conf"
+TEMPLATES_DIR_PATH="../templates"
 DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
 
 # Reading configuration files
@@ -138,7 +139,7 @@ mkdir -p $IPSEC_DIR_PATH
 ### Copying IPSEC configuration and installation files
 IPSEC_INSTALLATION_SCRIPT_NAME="ipsec-installation.sh"
 IPSEC_CONF_FILE_NAME="ipsec.conf"
-cp -f $TEMPLATES_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME $IPSEC_DIR_PATH
+cp -f $IPSEC_INSTALLATION_SCRIPT_NAME $IPSEC_DIR_PATH
 chmod 600 $IPSEC_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME
 sed -i "s|$VPN_PASSWORD_PROPERTY|$VPN_PASSWORD|g" $IPSEC_DIR_PATH/$IPSEC_INSTALLATION_SCRIPT_NAME
 cp -f $TEMPLATES_DIR_PATH/$IPSEC_CONF_FILE_NAME $IPSEC_DIR_PATH
@@ -270,9 +271,9 @@ rm $RAS_RSA_KEY_PATH
 echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ### Copying clouds directory
-yes | cp -fr $TEMPLATES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
+yes | cp -fr $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
 ### Copying application.properties file
-yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
+yes | cp -f $CONF_FILES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 ### Editing application.properties
 JDBC_PREFIX="jdbc:postgresql:"
@@ -379,9 +380,9 @@ APACHE_DIR_PATH="./tmp-service-host/conf-files/apache"
 PORTS_FILE_NAME="ports.conf"
 APACHE_VHOST_FILE_NAME="000-default.conf"
 ROOT_WWW_FILE_NAME="index.html"
-CERTIFICATE_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.crt"
-CERTIFICATE_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.key"
-CERTIFICATE_CHAIN_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/site.pem"
+CERTIFICATE_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.crt"
+CERTIFICATE_KEY_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.key"
+CERTIFICATE_CHAIN_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/site.pem"
 ### Creating directory
 mkdir -p $APACHE_DIR_PATH
 ### Copying certificate files

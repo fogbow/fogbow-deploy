@@ -30,10 +30,6 @@
         path: ./data
         state: directory
         mode: 0700
-    - name: Removing templates directory in service_host
-      file:
-        path: ./conf-files/templates
-        state: absent
     - name: Adding read permissions to required files
       file:
         path: ./conf-files/apache/index.html
