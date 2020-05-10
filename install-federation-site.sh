@@ -3,7 +3,7 @@
 
 # Set path variables
 
-SITE_CONF_FILE_NAME="./federation-site/site.conf"
+SITE_CONF_FILE_NAME="./federation-site/conf-files/site.conf"
 ANSIBLE_FILES_DIR_PATH="./federation-site/ansible-playbook"
 ANSIBLE_HOSTS_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"hosts"
 ANSIBLE_CFG_FILE_PATH=$ANSIBLE_FILES_DIR_PATH/"ansible.cfg"
