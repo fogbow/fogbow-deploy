@@ -1,115 +1,3 @@
-# Installing a Fogbow instance
-
-This tutorial provides an easy way to deploy a Fogbow instance to manage resources over multiple cloud providers.
-
-The installation has three main steps: **infrastructure setup**, where the *installation machine* and the
-*deployment machines* are configured; **configuration customization**, where several configuration files
-are edited to reflect the particularities of the Fogbow instance's deployment; and the
-actual **software installation**, which is automated through bash scripts and Ansible recipes.
-
-## Infrastructure setup
-
-### Installation machine setup
-
-The *installation machine* is a machine running any Unix-like operating system, on which Git and
-Ansible can be installed. Additionally, it needs to have ssh access to the *deployment machines*.
-
-Log in the *installation machine* and perform the following steps:
-
-1. If not already installed, install [Git](https://help.github.com/articles/set-up-git/).
-
-2. If not already installed, install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
-
-3. If not already, installed, install pwgen:
-
-```bash
-# DEBIAN/UBUNTU
-$ apt-get install -y pwgen
-# FEDORA
-$ dnf install -y pwgen
-# CENTOS
-$ yum install -y pwgen
-# MacOS
-$ brew install pwgen
-```
-
-4. Download the *fogbow-deploy* project:
-
-```bash
-$ git clone https://github.com/fogbow/fogbow-deploy.git
-```
-
-5. Checkout the appropriate branch (the latest version is in branch copacabana):
-
-```bash
-$ cd fogbow-deploy
-$ git checkout copacabana
-```
-
-### Deployment machines setup
-
-There are two basic ways to use Fogbow. You can use a single Fog
-
-The main purpose here is to configure the connectivity between the *installation machine* and
-the *deployment machines*, between the two *deployment machines*, and between the *deployment machines*
-and external machines.
-
-The deployment machines can be either physical or virtual machines running Linux. In this guide
-we assume that these are virtual machines deployed at the same cloud that is going to be federated
-with Fogbow. Below we describe how these virtual machines should be created, and configured, for
-the different technologies supported.
-
-- [Openstack cloud](2.1-openstack-deployment-machines-setup.md)
-
-### Cloud setup
-
-Before installing Fogbow, it is necessary to setup a few things in the underlying cloud that is
-going to be federated. More precisely, it is necessary to ask the cloud administrator to define
-resource quotas that will define which and how much resources will be made available
-to the federation. The particularities of this step depend on the technology used in the underlying
-cloud. Below we provide detailed descriptions for the supported cloud technologies.
-
-- [Openstack setup](2.2-openstack-configuration.md) 
-
-### DNS configuration
-
-Now that the infrastructure has been created, you need to have the DNS configured, so to enable the **dmz-host**
-to receive XMPP messages, and the services running in the **internal-host** to address each other. 
-
-A DNS entry is needed for the prefix of the **XMPP ID** a.k.a **member-site-id** of the Fogbow installation
-(the full name will have the domain of the organization appended). This configuration associates the public
-IP of the **dmz-host** to its **XMPP ID** prefix, as indicated below (assuming that
-**100.30.1.1** is the public IP of the **dmz-host**):
-
-**federation_name**             IN  A   **100.30.1.1**
-
-A similar entry is also needed in the DNS zone for the private IPs (assuming that **10.11.4.2**
-is the private IP of the **dmz-host**):
-
-**federation_name**             IN  A   **10.11.4.2**
-
-Finally, you also need to create DNS entries to allow users to access the **fogbow-gui**, and for the services
-running in the **internal-host** to find each other. Assuming that **10.11.4.3** is the private IP of the 
-**internal-host**, these entries would be:
-
-**dashboard-federation_name**   IN  A   **10.11.4.3**
-
-**fns-federation_name**         CNAME   **dashboard-federation_name**
-
-**ras-federation_name**         CNAME   **dashboard-federation_name**
-
-**as-federation_name**          CNAME   **dashboard-federation_name**
-
-**ms-federation_name**          CNAME   **dashboard-federation_name**
-
-### Service certificate
-
-Fogbow offers a RESTful API, and uses XMPP to allow the communication between services running at
-different sites of the federation. These communications are encrypted, and the involved servers
-need to authenticate each other. For that, they need to use certificates issued by some trustworthy
-certification authority. Three files are needed to define such certificates: i) the certificate,
-ii) the key, and iii) the certificate chain.
-
 ## Configuration customization
 
 Go to the directory *conf-files* inside *fogbow-deploy* directory.
@@ -444,3 +332,13 @@ log in using the appropriate credentials, and you are ready to manager resources
 It is a good idea to save a copy of the conf-files directory. This will be useful when updating you site
 installation, since most of (if not all) )the information in the configuration files are typically preserved
 between successive deployments of a Fogbow site.
+
+### Cloud setup
+
+Before installing Fogbow, it is necessary to setup a few things in the underlying cloud that is
+going to be federated. More precisely, it is necessary to ask the cloud administrator to define
+resource quotas that will define which and how much resources will be made available
+to the federation. The particularities of this step depend on the technology used in the underlying
+cloud. Below we provide detailed descriptions for the supported cloud technologies.
+
+- [Openstack setup](2.2-openstack-configuration.md) 
