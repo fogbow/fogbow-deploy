@@ -2,7 +2,7 @@
 
 # Source configuration files
 CONF_FILES_DIR_PATH="../conf-files"
-SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"federation-site.conf"
+SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"federation.conf"
 SITE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"site.conf"
 TEMPLATES_DIR_PATH="../templates"
 DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
@@ -21,7 +21,7 @@ DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $SITE_CONF_FILE_PATH | c
 DMZ_HOST_PUBLIC_IP_PATTERN="dmz_host_public_ip"
 DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 
-## Reading data from federation-site.conf
+## Reading data from federation.conf
 ### Service ports and tags configuration
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -367,7 +367,7 @@ sed -i "s#.*ras:.*#	ras: 'https://$PROVIDER_ID/ras',#" $GUI_DIR_PATH/$GUI_CONF_F
 sed -i "s#.*fns:.*#	fns: 'https://$PROVIDER_ID/fns',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 sed -i "s#.*local:.*#	local: '$PROVIDER_ID',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 ### Setting deployType property
-sed -i "s#.*deployType.*#	deployType: 'federation-site',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
+sed -i "s#.*deployType.*#	deployType: 'federation',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 sed -i "s#.*fnsServiceNames.*#	fnsServiceNames: ['vanilla'],#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME
 if [ "$AT" == "shibboleth" ]; then
   sed -i "s#.*\<remoteCredentialsUrl\>:.*#remoteCredentialsUrl: 'https://$DSP',#" $GUI_DIR_PATH/$GUI_CONF_FILE_NAME

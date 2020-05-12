@@ -13,7 +13,7 @@ For federation site mode run:
 
 ```bash
 $ cd ..
-$ bash install-federation-site.sh
+$ bash install-federation.sh
 ```
 
 Your Fogbow site should be up now. Open a browser and point it to **service-host-name.mydomain**,

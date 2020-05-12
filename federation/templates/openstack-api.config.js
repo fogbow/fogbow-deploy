@@ -5,7 +5,7 @@ export const env = {
     fns: , // Auto-generated value
     local: , // Auto-generated value
     serverEndpoint: '',
-    deployType: 'federation-site',
+    deployType: 'federation',
     refreshTime: 5000,
     remoteCredentialsUrl: '',
     authenticationPlugin: 'KeystoneV3',
