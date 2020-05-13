@@ -77,7 +77,6 @@ LB_PATTERN="ldap_base"
 LB=$(grep $LB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 LET_PATTERN="ldap_encrypt_type"
 LET=$(grep $LET_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-SHIB_PATTERN="shib_public_key_file_path"
 ## RAS configuration
 CN_PATTERN="cloud_names"
 CN=$(grep $CN_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -134,7 +133,6 @@ echo $ONE_PATTERN=$ONE >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $LEP_PATTERN=$LEP >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $LB_PATTERN=$LB >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $LET_PATTERN=$LET >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
-echo $SHIB_PATTERN=$SHIB >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo "" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 ## Creating and adding key pair
@@ -255,8 +253,8 @@ sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 SHIB_CONF_FILE_NAME="shibboleth.conf"
 SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
 if [ "$AT" == "shibboleth" ]; then
-  SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.crt"
-  SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.key"
+  SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.crt"
+  SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.key"
   yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH $APACHE_DIR_PATH
   yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH $APACHE_DIR_PATH
   echo "# Shibboleth specific properties" > $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
@@ -315,5 +313,5 @@ if [ "$AT" == "shibboleth" ]; then
   rm $APACHE_DIR_PATH/$SHIB_RSA_PEM_FILE_NAME
   ### Copy shib public key to AS conf-files dir
   yes | cp -f $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME $AS_DIR_PATH
-  echo $SHIB_PATTERN"="$AS_CONTAINER_CONF_FILE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
+  echo "shib_public_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 fi

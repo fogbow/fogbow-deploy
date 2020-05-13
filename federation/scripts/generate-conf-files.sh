@@ -409,8 +409,8 @@ sed -i "s|$FNS_PORT_PATTERN|$FNS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 SHIB_CONF_FILE_NAME="shibboleth.conf"
 SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
 if [ "$AT" == "shibboleth" ]; then
-  SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.crt"
-  SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$TEMPLATES_DIR_PATH/"certs/shibboleth_service_provider.key"
+  SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.crt"
+  SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.key"
   yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH $APACHE_DIR_PATH
   yes | cp -f $SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH $APACHE_DIR_PATH
   echo "# Shibboleth specific properties" > $APACHE_DIR_PATH/$SHIB_CONF_FILE_NAME
@@ -469,7 +469,5 @@ if [ "$AT" == "shibboleth" ]; then
   rm $APACHE_DIR_PATH/$SHIB_RSA_PEM_FILE_NAME
   #### Copy shib public key to AS conf-files dir
   yes | cp -f $APACHE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME $AS_DIR_PATH
-  echo "#### Shibboleth plugin configuration" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
-  echo "##### The path for the file that stores the public key of the shib-app" >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
   echo "shib_public_key_file_path="$AS_CONTAINER_CONF_FILE_DIR_PATH/$SHIB_PUBLIC_KEY_FILE_NAME >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 fi
