@@ -53,7 +53,7 @@ fi
 ## Reading data from host.conf
 SERVICE_HOST_IP_PATTERN="service_host_ip"
 SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
-PROVIDER_ID_PATTERN="service_host_DNS"
+PROVIDER_ID_PATTERN="service_host_FQDN"
 PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $HOST_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_TAG="provider_id"
 

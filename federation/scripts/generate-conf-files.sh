@@ -15,8 +15,12 @@ DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
 ### Service ports configuration
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+MS_PORT_PATTERN="Ms_port"
+MS_PORT=$(grep $MS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 RAS_PORT_PATTERN="Ras_port"
 RAS_PORT=$(grep $RAS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+FNS_PORT_PATTERN="Fns_port"
+FNS_PORT=$(grep $FNS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 GUI_PORT_PATTERN="Gui_port"
 GUI_PORT=$(grep $GUI_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PORT_PATTERN="Db_port"
@@ -31,10 +35,20 @@ AS_TAG=$(grep $AS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${AS_TAG// } ]; then
 	AS_TAG="latest"
 fi
+MS_TAG_PATTERN="Ms_tag"
+MS_TAG=$(grep $MS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${MS_TAG// } ]; then
+	MS_TAG="latest"
+fi
 RAS_TAG_PATTERN="Ras_tag"
 RAS_TAG=$(grep $RAS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${RAS_TAG// } ]; then
 	RAS_TAG="latest"
+fi
+FNS_TAG_PATTERN="Fns_tag"
+FNS_TAG=$(grep $FNS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+if [ -z ${FNS_TAG// } ]; then
+	FNS_TAG="latest"
 fi
 GUI_TAG_PATTERN="Gui_tag"
 GUI_TAG=$(grep $GUI_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -57,7 +71,7 @@ REMOTE_USER_PATTERN="remote_user"
 REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 SERVICE_HOST_IP_PATTERN="service_host_ip"
 SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
-PROVIDER_ID_PATTERN="service_host_DNS"
+PROVIDER_ID_PATTERN="service_host_FQDN"
 PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 PROVIDER_ID_TAG="provider_id"
 DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
