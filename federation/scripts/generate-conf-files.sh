@@ -7,6 +7,8 @@ MS_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"ms.conf"
 SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"service.conf"
 SITE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"site.conf"
 TEMPLATES_DIR_PATH="../templates"
+COMMON_TEMPLATES_DIR_PATH="../../common/templates"
+COMMON_SCRIPTS_DIR_PATH="../../common/scripts"
 DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
 
 # Reading configuration files
@@ -210,8 +212,8 @@ case $AT in
     SIP="cloud.fogbow.as.core.systemidp.plugins.opennebula.OpenNebulaSystemIdentityProviderPlugin"
     ;;
   *)
-    echo "Fatal error: invalid authentication type: $AT"
-    exit
+    echo "Fatal error: invalid authentication type: [$AT]"
+    exit 1
     ;;
 esac
 echo $SIP_PATTERN=$SIP >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
@@ -292,10 +294,14 @@ echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_
 ## Generating cloud configuration files
 for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME` $RAS_DIR_PATH
 do
-  bash ../../scripts/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH
+  bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH
+  retVal=$?
+  if [ $retVal -ne 0 ]; then
+      exit $retVal
+  fi
 done
 ### Copying application.properties file
-yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
+yes | cp -f $COMMON_TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 ### Editing application.properties
 JDBC_PREFIX="jdbc:postgresql:"
@@ -411,7 +417,7 @@ yes | cp -f $CERTIFICATE_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_KEY_FILE_PATH $APACHE_DIR_PATH
 yes | cp -f $CERTIFICATE_CHAIN_FILE_PATH $APACHE_DIR_PATH
 ### Copying ports.conf
-yes | cp -f $TEMPLATES_DIR_PATH/$PORTS_FILE_NAME $APACHE_DIR_PATH
+yes | cp -f $COMMON_TEMPLATES_DIR_PATH/$PORTS_FILE_NAME $APACHE_DIR_PATH
 ### Generating Virtual Host file
 yes | cp -f $TEMPLATES_DIR_PATH/$APACHE_VHOST_FILE_NAME $APACHE_DIR_PATH
 sed -i "s|$SERVICE_HOST_IP_PATTERN|$SERVICE_HOST_IP|g" $APACHE_DIR_PATH/$APACHE_VHOST_FILE_NAME
@@ -431,7 +437,7 @@ sed -i "s|$RAS_PORT_PATTERN|$RAS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 sed -i "s|$FNS_PORT_PATTERN|$FNS_PORT|g" $APACHE_DIR_PATH/$ROOT_WWW_FILE_NAME
 ### Copying Shibboleth configuration (if required)
 SHIB_CONF_FILE_NAME="shibboleth.conf"
-SHIB_ENV_DIR_PATH=$TEMPLATES_DIR_PATH/"shibboleth-environment"
+SHIB_ENV_DIR_PATH=$COMMON_TEMPLATES_DIR_PATH/"shibboleth-environment"
 if [ "$AT" == "shibboleth" ]; then
   SHIBBOLETH_SERVICE_PROVIDER_CRT_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.crt"
   SHIBBOLETH_SERVICE_PROVIDER_KEY_FILE_PATH=$CONF_FILES_DIR_PATH/"certs/shibboleth_service_provider.key"

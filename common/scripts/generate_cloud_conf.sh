@@ -106,8 +106,6 @@ ONEPASS_PATTERN=cloud_user_credentials_password
 ONEPASS=""
 ONEUN_PATTERN=cloud_user_credentials_username
 ONEUN=""
-ONECD_PATTERN=cloud_user_credentials_domain
-ONECD=""
 ONECIPU_PATTERN=cloud_identity_provider_url
 ONECIPU=""
 
@@ -296,7 +294,6 @@ read_opennebula() {
   # Reading mapper properties
   ONEPASS=$(grep $ONEPASS_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   ONEUN=$(grep $ONEUN_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
-  ONECD=$(grep $ONECD_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   ONECIPU=$(grep $ONECIPU_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
 }
 
@@ -314,7 +311,6 @@ write_opennebula() {
   touch $MAPPER_CONF_FILE_PATH
   echo $ONEPASS_PATTERN=$ONEPASS > $MAPPER_CONF_FILE_PATH
   echo $ONEUN_PATTERN=$ONEUN >> $MAPPER_CONF_FILE_PATH
-  echo $ONECD_PATTERN=$ONECD >> $MAPPER_CONF_FILE_PATH
   echo $ONECIPU_PATTERN=$ONECIPU >> $MAPPER_CONF_FILE_PATH
   # writting plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
@@ -347,14 +343,14 @@ case $CLOUD_TYPE in
     ;;
   "cloudstack")
     read_cloudstack
-    write_cloud_stack
+    write_cloudstack
     ;;
   "opennebula")
     read_opennebula
     write_opennebula
     ;;
   *)
-    echo "Fatal error: invalid cloud type: $CLOUD_TYPE"
-    exit
+    echo "Fatal error: invalid cloud type: [$CLOUD_TYPE]"
+    exit 1
     ;;
 esac
