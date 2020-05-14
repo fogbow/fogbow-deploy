@@ -1,4 +1,4 @@
-Installation of a Fogbow site
+Installation of a Fogbow node
 ==========
 
-A detailed guide on how to install a Fogbow site is available [here](documentation/2.0-install-fogbow-site.md).
+A detailed guide on how to install a Fogbow node is available [here](documentation/main.md).

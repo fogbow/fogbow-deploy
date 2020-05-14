@@ -1,0 +1,21 @@
+## Configuring an AWS cloud
+
+aws_region_selection_key=sa-east-1
+aws_availability_zone_key=sa-east-1a
+aws_default_vpc_id_key=vpc-0a933a209a9c4c4c0
+aws_default_subnet_id_key=subnet-045038cd60e372274
+aws_default_security_group_id_key=sg-00bb52aad68c8dadb
+aws_storage_quota_key=300
+aws_elastic_ip_addresses_quota_key=5
+aws_subnets_quota_key=200
+
+cloud_user_credentials_access_key=AKIAJBC2WGRDMW4J6UCQ
+cloud_user_credentials_secret_access_key=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
+
+####[Back to multi-cloud customization page](multi-cloud.md)
+
+####[Back to federation customization page](federation.md)
+
+####[Back to node configuration customization page](node-configuration.md)
+
+####[Back to main installation page](main.md)

@@ -2,35 +2,21 @@
 
 # Source configuration files
 CONF_FILES_DIR_PATH="../conf-files"
-SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"federation.conf"
+AS_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"as.conf"
+MS_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"ms.conf"
+SERVICE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"service.conf"
 SITE_CONF_FILE_PATH=$CONF_FILES_DIR_PATH/"site.conf"
 TEMPLATES_DIR_PATH="../templates"
 DEPLOY_START_SERVICES_FILE_NAME="deploy-and-start-services.sh"
 
 # Reading configuration files
-## Reading data from site.conf
-REMOTE_USER_PATTERN="remote_user"
-REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
-SERVICE_HOST_IP_PATTERN="service_host_ip"
-SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
-PROVIDER_ID_PATTERN="service_host_DNS"
-PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
-PROVIDER_ID_TAG="provider_id"
-DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
-DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
-DMZ_HOST_PUBLIC_IP_PATTERN="dmz_host_public_ip"
-DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
 
-## Reading data from federation.conf
-### Service ports and tags configuration
+## Reading data from service.conf
+### Service ports configuration
 AS_PORT_PATTERN="As_port"
 AS_PORT=$(grep $AS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-MS_PORT_PATTERN="Ms_port"
-MS_PORT=$(grep $MS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 RAS_PORT_PATTERN="Ras_port"
 RAS_PORT=$(grep $RAS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-FNS_PORT_PATTERN="Fns_port"
-FNS_PORT=$(grep $FNS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 GUI_PORT_PATTERN="Gui_port"
 GUI_PORT=$(grep $GUI_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 DB_PORT_PATTERN="Db_port"
@@ -39,26 +25,16 @@ HTTP_PORT_PATTERN="Http_port"
 HTTP_PORT=$(grep $HTTP_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 HTTPS_PORT_PATTERN="Https_port"
 HTTPS_PORT=$(grep $HTTPS_PORT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-
+### Service tags configuration
 AS_TAG_PATTERN="As_tag"
 AS_TAG=$(grep $AS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${AS_TAG// } ]; then
 	AS_TAG="latest"
 fi
-MS_TAG_PATTERN="Ms_tag"
-MS_TAG=$(grep $MS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-if [ -z ${MS_TAG// } ]; then
-	MS_TAG="latest"
-fi
 RAS_TAG_PATTERN="Ras_tag"
 RAS_TAG=$(grep $RAS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
 if [ -z ${RAS_TAG// } ]; then
 	RAS_TAG="latest"
-fi
-FNS_TAG_PATTERN="Fns_tag"
-FNS_TAG=$(grep $FNS_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-if [ -z ${FNS_TAG// } ]; then
-	FNS_TAG="latest"
 fi
 GUI_TAG_PATTERN="Gui_tag"
 GUI_TAG=$(grep $GUI_TAG_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
@@ -76,42 +52,44 @@ if [ -z ${APACHE_TAG// } ]; then
 	APACHE_TAG="latest"
 fi
 
-### Apache Shibboleth configuration
-DSP_PATTERN="domain_service_provider"
-DSP=$(grep $DSP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-DSU_PATTERN="discovery_service_url"
-DSU=$(grep $DSU_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-DSMU_PATTERN="discovery_service_metadata_url"
-DSMU=$(grep $DSMU_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-### AS configuration
-SIP_PATTERN="system_identity_provider_plugin_class"
-SIP=$(grep $SIP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-OS_PATTERN="openstack_keystone_v3_url"
-OS=$(grep $OS_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-CS_PATTERN="cloudstack_url"
-CS=$(grep $CS_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-ONE_PATTERN="opennebula_url"
-ONE=$(grep $ONE_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-LEP_PATTERN="ldap_endpoint"
-LEP=$(grep $LEP_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-LB_PATTERN="ldap_base"
-LB=$(grep $LB_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-LET_PATTERN="ldap_encrypt_type"
-LET=$(grep $LET_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-## MS configuration
-MEMBERS_PATTERN="members_list"
-MEMBERS=$(grep $MEMBERS_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-## RAS configuration
-CN_PATTERN="cloud_names"
-CN=$(grep $CN_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-RAS_AUTH_PATTERN="ras_authorization_plugin_class"
-RAS_AUTH=$(grep $RAS_AUTH_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-## FNS configuration
-FNS_AUTH_PATTERN="fns_authorization_plugin_class"
-FNS_AUTH=$(grep $FNS_AUTH_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
-## GUI configuration
+## Reading data from site.conf
+REMOTE_USER_PATTERN="remote_user"
+REMOTE_USER=$(grep $REMOTE_USER_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+SERVICE_HOST_IP_PATTERN="service_host_ip"
+SERVICE_HOST_IP=$(grep $SERVICE_HOST_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+PROVIDER_ID_PATTERN="service_host_DNS"
+PROVIDER_ID=$(grep $PROVIDER_ID_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+PROVIDER_ID_TAG="provider_id"
+DMZ_HOST_PRIVATE_IP_PATTERN="dmz_host_private_ip"
+DMZ_HOST_PRIVATE_IP=$(grep $DMZ_HOST_PRIVATE_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+DMZ_HOST_PUBLIC_IP_PATTERN="dmz_host_public_ip"
+DMZ_HOST_PUBLIC_IP=$(grep $DMZ_HOST_PUBLIC_IP_PATTERN $SITE_CONF_FILE_PATH | cut -d"=" -f2-)
+
+## Reading data from as.conf
 AT_PATTERN="authentication_type"
-AT=$(grep $AT_PATTERN $SERVICE_CONF_FILE_PATH | cut -d"=" -f2-)
+AT=$(grep $AT_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+OS_PATTERN="openstack_keystone_v3_url"
+OS=$(grep $OS_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+CS_PATTERN="cloudstack_url"
+CS=$(grep $CS_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+ONE_PATTERN="opennebula_url"
+ONE=$(grep $ONE_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+LEP_PATTERN="ldap_url"
+LEP=$(grep $LEP_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+LB_PATTERN="ldap_base"
+LB=$(grep $LB_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+LET_PATTERN="ldap_encrypt_type"
+LET=$(grep $LET_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+DSP_PATTERN="domain_service_provider"
+DSP=$(grep $DSP_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+DSU_PATTERN="discovery_service_url"
+DSU=$(grep $DSU_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+DSMU_PATTERN="discovery_service_metadata_url"
+DSMU=$(grep $DSMU_PATTERN $AS_CONF_FILE_PATH | cut -d"=" -f2-)
+
+## Reading data from ms.conf
+MEMBERS_PATTERN="members_list"
+MEMBERS=$(grep $MEMBERS_PATTERN $MS_CONF_FILE_PATH | cut -d"=" -f2-)
 
 # Generating secrets
 ## Generating XMPP_PASSWORD
@@ -200,6 +178,28 @@ AS_RSA_KEY_PATH=$AS_DIR_PATH/"rsa_key.pem"
 mkdir -p $AS_DIR_PATH
 ### Adding properties
 echo "# Authentication plugin specific properties" > $AS_DIR_PATH/$AS_CONF_FILE_NAME
+SIP_PATTERN="system_identity_provider_plugin_class"
+case $AT in
+  "ldap")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.ldap.LdapSystemIdentityProviderPlugin"
+    ;;
+  "shibboleth")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.shibboleth.ShibbolethSystemIdentityProviderPlugin"
+    ;;
+  "openstack")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.openstack.v3.OpenStackSystemIdentityProviderPlugin"
+    ;;
+  "cloudstack")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.cloudstack.CloudStackSystemIdentityProviderPlugin"
+    ;;
+  "opennebula")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.opennebula.OpenNebulaSystemIdentityProviderPlugin"
+    ;;
+  *)
+    echo "Fatal error: invalid authentication type: $AT"
+    exit
+    ;;
+esac
 echo $SIP_PATTERN=$SIP >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $OS_PATTERN=$OS >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
 echo $CS_PATTERN=$CS >> $AS_DIR_PATH/$AS_CONF_FILE_NAME
@@ -243,11 +243,18 @@ mkdir -p $RAS_DIR_PATH
 touch $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ### Adding properties
+CN_PATTERN="cloud_names"
+CN=""
+for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
+do
+  CN=$CN`basename $i .conf`","
+done
+CN=`echo $CN | sed 's/.$//'`
 echo "# Comma-separated list of the names of the clouds managed by this RAS" > $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "# Their configuration is stored under the directory clouds/<name>" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "# The default cloud is the first name in the list" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo $CN_PATTERN=$CN >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
-echo "authorization_plugin_class=$RAS_AUTH" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
+echo "authorization_plugin_class=cloud.fogbow.ras.core.plugins.authorization.DefaultAuthorizationPlugin" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "xmpp_enabled=true" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
@@ -268,8 +275,11 @@ chmod 600 $RAS_PRIVATE_KEY_PATH
 rm $RAS_RSA_KEY_PATH
 echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
-### Copying clouds directory
-yes | cp -fr $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME $RAS_DIR_PATH
+## Generating cloud configuration files
+for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME` $RAS_DIR_PATH
+do
+  bash ../../scripts/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH
+done
 ### Copying application.properties file
 yes | cp -f $TEMPLATES_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME".ras" $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
 chmod 600 $RAS_DIR_PATH/$APPLICATION_PROPERTIES_FILE_NAME
@@ -303,7 +313,7 @@ chmod 600 $PRIVATE_KEY_FILE_PATH
 mv $PRIVATE_KEY_FILE_PATH $FNS_DIR_PATH
 mv $PUBLIC_KEY_FILE_PATH $IPSEC_DIR_PATH
 ### Adding properties
-echo "authorization_plugin_class=$FNS_AUTH" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
+echo "authorization_plugin_class=cloud.fogbow.fns.core.authorization.DefaultAuthorizationPlugin" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo "service_names=vanilla" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo "" >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
 echo $PROVIDER_ID_TAG=$PROVIDER_ID >> $FNS_DIR_PATH/$FNS_CONF_FILE_NAME
