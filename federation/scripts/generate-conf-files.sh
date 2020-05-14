@@ -292,7 +292,7 @@ rm $RAS_RSA_KEY_PATH
 echo "public_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa.pub" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Generating cloud configuration files
-for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME` $RAS_DIR_PATH
+for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
 do
   bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH
   retVal=$?
