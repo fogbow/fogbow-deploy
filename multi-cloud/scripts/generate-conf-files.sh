@@ -209,7 +209,7 @@ echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_
 ## Generating cloud configuration files
 for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
 do
-  bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH
+  bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH $COMMON_TEMPLATES_DIR_PATH
   retVal=$?
   if [ $retVal -ne 0 ]; then
       exit $retVal

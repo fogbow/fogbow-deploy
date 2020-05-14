@@ -2,6 +2,7 @@
 
 CONF_FILE_PATH=$1
 CLOUDS_DIR_PATH=$2/"clouds"
+COMMON_TEMPLATES=$3
 CLOUD_NAME=`basename $1 .conf`
 CLOUD_CONF_FILE_PATH=$CLOUDS_DIR_PATH/$CLOUD_NAME/"cloud.conf"
 MAPPER_CONF_FILE_PATH=$CLOUDS_DIR_PATH/$CLOUD_NAME/"mapper.conf"
@@ -137,7 +138,7 @@ write_aws() {
   echo $EIP_PATTERN=$EIP >> $CLOUD_CONF_FILE_PATH
   echo $SUBQ_PATTERN=$SUBQ >> $CLOUD_CONF_FILE_PATH
   echo "aws_flavors_types_file_path_key=src/main/resources/private/clouds/aws/flavors.csv" >> $CLOUD_CONF_FILE_PATH
-  yes | cp -f ../templates/aws/flavors.csv $CLOUDS_DIR_PATH/$CLOUD_NAME
+  yes | cp -f $COMMON_TEMPLATES/aws/flavors.csv $CLOUDS_DIR_PATH/$CLOUD_NAME
   # writting mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $CUCA_PATTERN=$CUCA > $MAPPER_CONF_FILE_PATH
