@@ -94,6 +94,17 @@ the installation and the service hosts is ubuntu (for example), you should edit 
 file /home/ubuntu/.ssh/authorized_keys in the service host and add to it the content
 of the file /home/ubuntu/.ssh/fogbow-deploy.pub in the installation host.
 
+S8. Enable the user that will run the installation scripts at the service host to run
+sudo without the need to enter a password. Open the /etc/sudoers file (as root, of course!) by running:
+                                           
+```
+$ sudo visudo
+```
+                                           
+ At the end of the /etc/sudoers file add this line (where username is name of the user, eg. ubuntu):
+                                           
+ username     ALL=(ALL) NOPASSWD:ALL
+
 #### DMZ host setup
 
 The DMZ host is only required in federation mode. It also runs Linux, and must have
@@ -107,7 +118,7 @@ requires only configuring the firewall (or security groups) to allow access to t
 and IPSEC servers, and copy the ssh public key to allow the installation scripts that
 run in the installation host to access the DMZ host.
 
-S8. The following rules must be added to the firewall (security groups)
+S9. The following rules must be added to the firewall (security groups)
 
 * **Ingress, Port 22 (SSH), from the IP address of the installation host.**
 * **Ingress, Port 5347 (XMPP C2C), from the IP address of the service host.**
@@ -116,10 +127,21 @@ S8. The following rules must be added to the firewall (security groups)
 * **Ingress, Port 1701 (IPSEC), from the IP addresses of the DMZ hosts of the other federation members.**
 * **Ingress, Port 4500 (IPSEC), from the IP addresses of the DMZ hosts of the other federation members.**
 
-S11. Copy the public ssh key in the service host authorized_keys file; considering the
+S10. Copy the public ssh key in the service host authorized_keys file; considering the
 keys generated in step S5, and assuming that the user running the installation in both
 the installation and the service hosts is ubuntu (for example), you should edit the
 file /home/ubuntu/.ssh/authorized_keys in the DMZ host and add to it the content
 of the file /home/ubuntu/.ssh/fogbow-deploy.pub in the installation host.
+
+S11. Enable the user that will run the installation scripts at the service host to run sudo without the
+need to enter a password. Open the /etc/sudoers file (as root, of course!) by running:
+
+```
+$ sudo visudo
+```
+
+At the end of the /etc/sudoers file add this line (where username is name of the user, eg. ubuntu):
+
+username     ALL=(ALL) NOPASSWD:ALL
 
 ####[Back to main installation page](main.md)
