@@ -25,7 +25,3 @@
       apt:
         name: "docker-ce"
         update_cache: yes
-    - name: "Installing OpenSSL"
-      package:
-        name: "{{ openssl_packages }}"
-        state: present
