@@ -10,11 +10,11 @@ direct access (federation mode).
 
 In the multi-cloud mode you need just one deployment host, called the service host,
 while in the federation mode you need an extra host, called the DMZ (demilitarized
-zone) host. The DMZ host must have a public IP and a DNS name that resolves to this
-IP. The service host need a public IP only if you want users outside your organization
-to access your Fogbow node. Otherwise, the service host requires only a private IP.
-Whether the service host uses public or private IP, you will also need to have a DNS
-entry that resolves to this IP:
+zone) host. The DMZ host must have a public IP and a FQDN (Fully Qualified Domain Name)
+that resolves to this IP. The service host need a public IP, only if you want users outside
+your organization to access your Fogbow node. Otherwise, the service host requires only a
+private IP. Whether the service host uses public or private IP, you will also need to have
+a DNS entry that resolves to this IP. For example:
 
 * **<service-host-name>**          IN  A   **10.11.1.1**
 * **<dmz-host-name>**              IN  A   **100.30.1.1**
@@ -29,8 +29,8 @@ Additionally, if deploying in federation mode, then you need to create a CNAME e
 
 ### Installation host setup
 
-The installation host is a machine running any Unix-like operating system, on which Git and
-Ansible can be installed. Additionally, it needs to have ssh access to the deployment hosts.
+The installation host is a machine running any Unix-like operating system.
+Additionally, it needs to have ssh access to the deployment hosts.
 
 Log in the installation machine and perform the following steps:
 
@@ -101,7 +101,7 @@ sudo without the need to enter a password. Open the /etc/sudoers file (as root, 
 $ sudo visudo
 ```
                                            
- At the end of the /etc/sudoers file add this line (where username is name of the user, eg. ubuntu):
+ At the end of the /etc/sudoers file add this line (where username is the name of the user, eg. ubuntu):
                                            
  username     ALL=(ALL) NOPASSWD:ALL
 
@@ -140,7 +140,7 @@ need to enter a password. Open the /etc/sudoers file (as root, of course!) by ru
 $ sudo visudo
 ```
 
-At the end of the /etc/sudoers file add this line (where username is name of the user, eg. ubuntu):
+At the end of the /etc/sudoers file add this line (where username is the name of the user, eg. ubuntu):
 
 username     ALL=(ALL) NOPASSWD:ALL
 

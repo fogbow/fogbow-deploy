@@ -1,4 +1,5 @@
 ## Configuring an OpenNebula cloud
+cloud_type=opennebula
 
 opennebula_rpc_endpoint=http://mycloud.mydomain:2633/RPC2
 default_datastore_id=1

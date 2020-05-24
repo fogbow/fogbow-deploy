@@ -20,7 +20,7 @@ After the installation successfully completes, your Fogbow node should be up. Op
 it to your Fogbow node FQDN (for example, **https://fogbow-node.mydomain/**). Then, log in using the
 appropriate credentials, and you should be ready to manager resources in the clouds accessible through
 your Fogbow node. Fogbow has also a Command Line Interface (CLI) and a RESTful API. You can download and
-install the CLI from **http://github.com/fogbow/fogbow-cli.git** (see documentation in this repository).
+install the CLI from **http://github.com/fogbow/fogbow-cli.git** (see documentation in that repository).
 Documentation of the RESTful API is accessible online from the Fogbow node service that you have just
 deployed. Simply access the "/doc" endpoint (for example, **https://fogbow-node.mydomain/doc**).
 

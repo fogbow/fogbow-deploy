@@ -159,8 +159,9 @@ going to be managed by your Fogbow node. For each cloud that you want to manage 
 inside the directory **conf-files/clouds** with the properties that customizes it. Say you want to manage
 two clouds, and you decide to name them **private-cloud** and **public-cloud**. Then, you need to create
 files **private-cloud.conf** and **public-cloud.conf** under **conf-files/clouds**. The contents of these
-files depend on the technology used by the corresponding clouds. Follow the links below for instructions
-on how to customize the different cloud orchestration technologies supported.
+files depend on the technology used by the corresponding clouds. You can find templates for these files,
+for the different technologies available, in the directory "../../../common/templates/clouds". Follow the
+links below for instructions on how to customize the different cloud orchestration technologies supported.
 
 - [OpenStack](openstack.md) 
 - [CloudStack](cloudstack.md) 
