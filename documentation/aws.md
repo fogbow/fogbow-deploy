@@ -2,7 +2,7 @@
 
 Ask the cloud administrator to create an Identity and Access Management User, called **IAM user** with administrator permissions, providing the **access key** ID and the **secret access key** and put these values in the respective properties **cloud_user_credentials_access_key** and **cloud_user_credentials_secret_access_key**.
 
-Also request the region and availability zone of the user account created, For example, **aws_region_selection_key**=*sa-east-1* and **aws_availability_zone_key**=*sa-east-1a*.
+Also request the **region** and **availability zone** of the user account created, For example, **aws_region_selection_key**=*sa-east-1* and **aws_availability_zone_key**=*sa-east-1a*.
 
 Along with that, include the quota values for the following resources properties, related to the selected region:
 * **Storage quota** - The maximum aggregate amount of storage that can be provisioned in this Region. For example, **aws_storage_quota_key**=*300*;
