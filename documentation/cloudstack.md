@@ -1,6 +1,6 @@
 ## Configuring a CloudStack cloud
 
-Ask your cloud administrator to make a user account available, giving the URL to access the CloudStack Client API (For example, https://compute.mydomain/client/api), so you can set the values in the properties **cloudstack_api_url** and **cloud_identity_provider_url**, as well as the account **username**, **password** and a resource management **domain**, to respectively define them in the properties **cloud_user_credentials_username** , **cloud_user_credentials_password** and **cloud_user_credentials_domain**.
+Ask your cloud administrator to make a user account available, giving the URL to access the CloudStack Client API (For example, https://compute.mydomain/client/api), so you can set the values in the properties **cloudstack_api_url** and **cloud_identity_provider_url**, as also the account user **name**, **password** and resource management **domain**, to respectively define them in the properties **cloud_user_credentials_username** , **cloud_user_credentials_password** and **cloud_user_credentials_domain**.
 
 Along with this, also ask for the following values:
 * **Zone ID** - The geographic zone ID corresponding to the datacenter responsible for providing the resources. Set its value in the **zone_id** property.
