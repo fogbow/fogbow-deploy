@@ -1,4 +1,17 @@
 ## Configuring a CloudStack cloud
+
+Ask your cloud administrator to make a user account available, giving the URL to access the CloudStack Client API (For example, https://compute.mydomain/client/api), so you can set the values in the properties **cloudstack_api_url** and **cloud_identity_provider_url**, as also the account user **name**, **password** and resource management **domain**, to respectively define them in the properties **cloud_user_credentials_username** , **cloud_user_credentials_password** and **cloud_user_credentials_domain**.
+
+Along with this, also ask for the following values:
+* **Zone ID** - The geographic zone ID corresponding to the datacenter responsible for providing the resources. Set its value in the **zone_id** property.
+
+* **Default Network ID** - The default network ID for creating private networks. Set its value in the **default_network_id** property.
+
+* **Network Offering ID** - The network offer ID of the available resources defined by the cloud administrator for end users. Set its value in the **network_offering_id** property.
+
+Considering the data obtained above, give a **name** to the OpenNebula cloud that you want to make available through Fogbow, and create a **cloudName**.conf file in the conf-files/clouds directory with the following content:
+```
+$ cat clouds/cloudName.conf
 cloud_type=cloudstack
 
 cloudstack_api_url=https://compute.mydomain/client/api
@@ -10,6 +23,7 @@ cloud_user_credentials_username=username
 cloud_user_credentials_password=password
 cloud_user_credentials_domain=domain
 cloud_identity_provider_url=https://compute.mydomain/client/api
+```
 
 ####[Back to multi-cloud customization page](multi-cloud.md)
 
