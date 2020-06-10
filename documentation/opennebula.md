@@ -6,9 +6,9 @@ Along with this, also ask for the following values:
 * **Default Datastore ID** - The default resource ID for creating virtual machine images and additional files such as volumes and snapshots. Set its value in the **default_datastore_id** property.
 
 * **Default Network ID** - The default resource ID for creating private networks. Set its value in the **default_network_id** property.
-``
-Note: Optional property used only for users with administrator permission.
-``
+```
+  Note: Optional property used only for users with administrator permission.
+```
 * **Default Public Network ID** - The default resource ID for creating public networks, to provide public IP addresses. Set its value in the **default_public_network_id** property.
 
 * **Default Reservation Network ID** - The default resource ID for creating private network address reservations. Set its value in the **default_reservations_network_id** property.
@@ -22,8 +22,8 @@ cloud_type=opennebula
 opennebula_rpc_endpoint=http://mycloud.mydomain:2633/RPC2
 default_datastore_id=1
 default_network_id=0
-default_public_network_id=0
-default_reservations_network_id=8
+default_public_network_id=1
+default_reservations_network_id=2
 default_security_group_id=0
 
 cloud_user_credentials_username=username
