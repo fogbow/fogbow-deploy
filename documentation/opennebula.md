@@ -17,6 +17,7 @@ Along with this, also ask for the following values:
 
 Considering the data obtained above, give a **name** to the OpenNebula cloud that you want to make available through Fogbow, and create a **cloudName**.conf file in the conf-files/clouds directory with the following content:
 ```
+$ cat clouds/cloudName.conf
 cloud_type=opennebula
 
 opennebula_rpc_endpoint=http://mycloud.mydomain:2633/RPC2
