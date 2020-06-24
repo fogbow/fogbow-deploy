@@ -1,19 +1,34 @@
 ## Configuring an AWS cloud
 
-Ask the cloud administrator to create an Identity and Access Management User, called **IAM user** with administrator permissions, providing the **access key** ID and the **secret access key** and put these values in the respective properties **cloud_user_credentials_access_key** and **cloud_user_credentials_secret_access_key**.
+Firstly, you need to define which resources in the AWS cloud you will make available
+through Fogbow. It is necessary to create an Identity and Access Management User, called 
+**IAM user** with administrator permissions. Associated to this user there will be an
+**access key** ID and a **secret access key**. These values should be assigned, respectively,
+to the properties **cloud_user_credentials_access_key** and
+**cloud_user_credentials_secret_access_key**.
 
-Also request the **region** and **availability zone** of the user account created, For example, **aws_region_selection_key**=*sa-east-1* and **aws_availability_zone_key**=*sa-east-1a*.
+You must also set the **region** and **availability zone** for the user account created.
+For example, **aws_region_selection_key**=*sa-east-1* and
+**aws_availability_zone_key**=*sa-east-1a*.
 
-Along with that, include the quota values for the following resources properties, related to the selected region:
-* **Storage quota** - The maximum aggregate amount of storage that can be provisioned in this Region. For example, **aws_storage_quota_key**=*300*;
-* **Elastic IP Addresses quota** - The number of Elastic IP addresses for use with a VPC. For example, **aws_elastic_ip_addresses_quota_key**=*5*;
-* **Virtual Private Cloud quota** - The total number of VPCs by Region, For example, **aws_vpc_quota_key**=*5*;
+Additionally, include the quota values for the following resource properties, related to
+the selected region:
 
-Will need to create and configure a **VPC** with a default subnet that provides access to a shared private network and a default security group for that network, as the following [tutorial](vpc-configuration.md).
+* **Storage quota**: the maximum aggregate amount of storage that can be provisioned in this
+Region. For example, **aws_storage_quota_key**=*300*;
+* **Elastic IP Addresses quota**: the number of Elastic IP addresses to use with a VPC.
+For example, **aws_elastic_ip_addresses_quota_key**=*5*;
+* **Virtual Private Cloud quota**: the total number of VPCs by Region.
+For example, **aws_vpc_quota_key**=*5*;
 
-After creation, make available the **default subnet ID** and the **default security group ID** for their respective properties **aws_default_subnet_id_key** and **aws_default_security_group_id_key**.
+You will need to create and configure a **VPC** with a default subnet that provides access
+to a shared private network and a default security group for that network, as
+explained in this [tutorial](vpc-configuration.md).
 
-Considering the data obtained above, give a **name** to the AWS cloud that you want to make available through Fogbow, and create a **cloudName**.conf file in the conf-files/clouds directory with the following content:
+After creating the VPC, use its **default subnet ID** and its **default security group ID**
+to define, respectively, properties **aws_default_subnet_id_key** and **aws_default_security_group_id_key**.
+
+The conf-files/clouds/**cloudName**.conf will look like this:
 
 ```
 $ cat clouds/cloudName.conf
@@ -27,8 +42,8 @@ aws_storage_quota_key=300
 aws_elastic_ip_addresses_quota_key=5
 aws_vpc_quota_key=5
 
-cloud_user_credentials_access_key=aws-iam-user-access-key
-cloud_user_credentials_secret_access_key=aws-iam-user-secret-access-key
+cloud_user_credentials_access_key=AJIAHJY672RDMW7P6UCW 
+cloud_user_credentials_secret_access_key=aBVS5Wdrk76pfccJkr/kMlpraNkB6d9GUAWEdjyH 
 ```
 
 ####[Back to multi-cloud customization page](multi-cloud.md)

@@ -130,13 +130,23 @@ opennebula_url=
 
 ### Clouds customization
 
-A Fogbow node is able to manage multiple clouds. For that, you need to assign a name for each cloud that is
-going to be managed by your Fogbow node. For each cloud that you want to manage you need to create a file
-inside the directory **conf-files/clouds** with the properties that customizes it. Say you want to manage
-two clouds, and you decide to name them **private-cloud** and **public-cloud**. Then, you need to create
-files **private-cloud.conf** and **public-cloud.conf** under **conf-files/clouds**. The contents of these
-files depend on the technology used by the corresponding clouds. Follow the links below for instructions
-on how to customize the different cloud orchestration technologies supported.
+A Fogbow node is able to manage multiple clouds. Naturally, you can restrict the resources from the cloud
+that will be made available through Fogbow. Thus, we will use the term "cloud view" to refer to the resources
+of a particular cloud that you make available through Fogbow. Note that you can even provide multiple views
+for the same cloud. By developing suitable authorization plugins, you can allow different users to
+access different cloud views.
+
+For each cloud view that is going to be managed by your Fogbow node, you need to provide a configuration file,
+containing the properties that customizes it. These files are hosted inside the directory **conf-files/clouds**.
+Say you want to manage two cloud views, and you decide to name them **private-cloud** and **public-cloud**.
+Then, you need to create files **private-cloud.conf** and **public-cloud.conf** under **conf-files/clouds**.
+
+There is a property, called **cloud_type**, which is present in all files and specifies what is the technology
+used by the cloud. The values for the supported technologies are: aws, azure, cloudstack, opennebula, and
+openstack. The other properties depend on the technology used by the corresponding clouds. You can find
+templates for the files, for the different technologies available, in the directory
+"../../../common/templates/clouds". Follow the links below for instructions on how to customize the
+different cloud orchestration technologies supported.
 
 - [OpenStack](openstack.md) 
 - [CloudStack](cloudstack.md) 

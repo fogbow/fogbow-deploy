@@ -13,8 +13,6 @@ RS_PATTERN=aws_region_selection_key
 RS=""
 AZ_PATTERN=aws_availability_zone_key
 AZ=""
-DV_PATTERN=aws_default_vpc_id_key
-DV=""
 DSUB_PATTERN=aws_default_subnet_id_key
 DSUB=""
 DSEC_PATTERN=aws_default_security_group_id_key
@@ -23,8 +21,8 @@ STGQ_PATTERN=aws_storage_quota_key
 STGQ=""
 EIP_PATTERN=aws_elastic_ip_addresses_quota_key
 EIP=""
-SUBQ_PATTERN=aws_subnets_quota_key
-SUBQ=""
+VPCQ_PATTERN=aws_vpc_quota_key
+VPCQ=""
 CUCA_PATTERN=cloud_user_credentials_access_key
 CUCA=""
 CUCSA_PATTERN=cloud_user_credentials_secret_access_key
@@ -114,12 +112,11 @@ read_aws() {
   # Reading cloud properties
   RS=$(grep $RS_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   AZ=$(grep $AZ_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
-  DV=$(grep $DV_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   DSUB=$(grep $DSUB_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   DSEC=$(grep $DSEC_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   STGQ=$(grep $STGQ_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   EIP=$(grep $EIP_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
-  SUBQ=$(grep $SUBQ_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+  VPCQ=$(grep $VPCQ_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   # Reading mapper properties
   CUCA=$(grep $CUCA_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
   CUCSA=$(grep $CUCSA_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
@@ -131,12 +128,11 @@ write_aws() {
   touch $CLOUD_CONF_FILE_PATH
   echo $RS_PATTERN=$RS > $CLOUD_CONF_FILE_PATH
   echo $AZ_PATTERN=$AZ >> $CLOUD_CONF_FILE_PATH
-  echo $DV_PATTERN=$DV >> $CLOUD_CONF_FILE_PATH
   echo $DSUB_PATTERN=$DSUB >> $CLOUD_CONF_FILE_PATH
   echo $DSEC_PATTERN=$DSEC >> $CLOUD_CONF_FILE_PATH
   echo $STGQ_PATTERN=$STGQ >> $CLOUD_CONF_FILE_PATH
   echo $EIP_PATTERN=$EIP >> $CLOUD_CONF_FILE_PATH
-  echo $SUBQ_PATTERN=$SUBQ >> $CLOUD_CONF_FILE_PATH
+  echo $VPCQ_PATTERN=$VPCQ >> $CLOUD_CONF_FILE_PATH
   echo "aws_flavors_types_file_path_key=src/main/resources/private/clouds/aws/flavors.csv" >> $CLOUD_CONF_FILE_PATH
   yes | cp -f $COMMON_TEMPLATES/aws/flavors.csv $CLOUDS_DIR_PATH/$CLOUD_NAME
   # writting mapper.conf
