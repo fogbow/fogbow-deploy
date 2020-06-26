@@ -8,6 +8,8 @@ sudo docker rm xmpp-server
 
 # Installing XMPP Server (prosody)
 ## Creating xmpp-server container
+
+sudo docker pull fogbow/xmpp-server:latest
 sudo docker run -tdi --name "xmpp-server" \
 	-p 5269:5269 \
 	-p 5347:5347 \

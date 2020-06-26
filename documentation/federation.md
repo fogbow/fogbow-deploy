@@ -186,7 +186,7 @@ contain, respectively, the SSL certificate and the SSL certificate private key f
 service provider running alongside your Fogbow node.
 
 More information on how to configure authentication using Shibboleth-based IdP federations is provided
-by the federations themselves. For example, the RNP, the Brazilian National Research and Education Network,
+by the federations themselves. For example, RNP, the Brazilian National Research and Education Network,
 supports the [CAFe federation](CAFe-configuration.md).
 
 ####[Back to node configuration customization page](node-configuration.md)

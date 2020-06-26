@@ -65,6 +65,7 @@ sudo docker rm fogbow-apache fogbow-database fogbow-as fogbow-ras fogbow-gui fog
 
 # Create containers
 
+sudo docker pull fogbow/apache-shibboleth-server:$APACHE_TAG
 sudo docker run -tdi --name fogbow-apache \
       -p $HTTP_PORT:80 \
       -p $HTTPS_PORT:443 \
@@ -76,6 +77,7 @@ sudo docker run -tdi --name fogbow-apache \
       -v $WORK_DIR/conf-files/apache/index.html:/var/www/html/index.html \
       fogbow/apache-shibboleth-server:$APACHE_TAG
 
+sudo docker pull fogbow/database:$DB_TAG
 sudo docker run -tdi --name fogbow-database \
       -p $DB_PORT:5432 \
       -e DB_USER="fogbow" \
@@ -85,11 +87,13 @@ sudo docker run -tdi --name fogbow-database \
       -v $WORK_DIR/data:/var/lib/postgresql/data \
       fogbow/database:$DB_TAG
 
+sudo docker pull fogbow/authentication-service:$AS_TAG
 sudo docker run -tdi --name fogbow-as \
       -p $AS_PORT:8080 \
       -v $WORK_DIR/conf-files/as:/root/authentication-service/src/main/resources/private \
       fogbow/authentication-service:$AS_TAG
 
+sudo docker pull fogbow/resource-allocation-service:$RAS_TAG
 sudo docker run -tdi --name fogbow-ras \
       -p $RAS_PORT:8080 \
       -v $WORK_DIR/conf-files/ras:/root/resource-allocation-service/src/main/resources/private \
@@ -97,16 +101,19 @@ sudo docker run -tdi --name fogbow-ras \
       -v $WORK_DIR/timestamp-storage/ras.db:/root/resource-allocation-service/ras.db \
       fogbow/resource-allocation-service:$RAS_TAG
 
+sudo docker pull fogbow/fogbow-gui:$GUI_TAG
 sudo docker run -tdi --name fogbow-gui \
       -p $GUI_PORT:3000 \
       -v $WORK_DIR/conf-files/gui/api.config.js:/root/fogbow-gui/src/defaults/api.config.js \
       fogbow/fogbow-gui:$GUI_TAG
 
+sudo docker pull fogbow/membership-service:$MS_TAG
 sudo docker run -idt --name "fogbow-ms" \
 	-p $MS_PORT:8080 \
 	-v $WORK_DIR/conf-files/ms:/root/membership-service/src/main/resources/private \
 	fogbow/membership-service:$MS_TAG
 
+sudo docker pull fogbow/federated-network-service:$FNS_TAG
 sudo docker run -idt --name "fogbow-fns" \
 	-p $FNS_PORT:8080 \
 	-v $WORK_DIR/conf-files/fns:/root/federated-network-service/src/main/resources/private \
