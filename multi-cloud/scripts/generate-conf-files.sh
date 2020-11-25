@@ -138,6 +138,9 @@ case $AT in
   "opennebula")
     SIP="cloud.fogbow.as.core.systemidp.plugins.opennebula.OpenNebulaSystemIdentityProviderPlugin"
     ;;
+  "googlecloud")
+    SIP="cloud.fogbow.as.core.systemidp.plugins.googlecloud.GoogleCloudSystemIdentityProviderPlugin"
+    ;;
   *)
     echo "Fatal error: invalid authentication type: [$AT]"
     exit 1

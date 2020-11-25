@@ -7,6 +7,7 @@ export const env = {
     serverEndpoint: '',
     deployType: 'multi-cloud',
     refreshTime: 5000,
+    timeout: 10000,
     remoteCredentialsUrl: ,
     authenticationPlugin: 'Shibboleth',
     credentialFields: { },

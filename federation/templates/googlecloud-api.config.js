@@ -9,20 +9,20 @@ export const env = {
     refreshTime: 5000,
     timeout: 10000,
     remoteCredentialsUrl: '',
-    authenticationPlugin: 'KeystoneV3',
+    authenticationPlugin: 'GoogleCloud',
     credentialFields: {
-        username: {
+        email: {
             type: 'text',
-            label: 'User Name'
+            label: 'E-mail'
         },
-        password: {
-            type: 'password',
-            label: 'Password'
-        },
-        domain: {
+        project_id: {
             type: 'text',
-            label: 'Domain'
-        }
+            label: 'Project ID'
+        },
+        private_key: {
+            type: 'text',
+            label: 'Private Key'
+        },
     },
     fnsServiceNames: ['vanilla']
 };

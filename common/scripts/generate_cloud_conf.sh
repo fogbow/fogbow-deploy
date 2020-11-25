@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONF_FILE_PATH=$1
+CONF_FILE_DIR_PATH=`dirname $1`
 CLOUDS_DIR_PATH=$2/"clouds"
 COMMON_TEMPLATES=$3
 CLOUD_NAME=`basename $1 .conf`
@@ -108,6 +109,18 @@ ONEUN=""
 ONECIPU_PATTERN=cloud_identity_provider_url
 ONECIPU=""
 
+# GoogleCloud properties
+GOCZONE_PATTERN=zone
+GOCZONE=""
+GOCEMAIL_PATTERN=cloud_user_credentials_email
+GOCEMAIL=""
+GOCPID_PATTERN=cloud_user_credentials_project_id
+GOCPID=""
+GOCPRIVKEY_PATTERN=cloud_user_credentials_private_key_path
+GOCPRIVKEY=""
+GOCCIPU_PATTERN=cloud_identity_provider_url
+GOCCIPU=""
+
 read_aws() {
   # Reading cloud properties
   RS=$(grep $RS_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
@@ -123,7 +136,7 @@ read_aws() {
 }
 
 write_aws() {
-  # writting cloud.conf
+  # Writing cloud.conf
   mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
   touch $CLOUD_CONF_FILE_PATH
   echo $RS_PATTERN=$RS > $CLOUD_CONF_FILE_PATH
@@ -135,12 +148,12 @@ write_aws() {
   echo $VPCQ_PATTERN=$VPCQ >> $CLOUD_CONF_FILE_PATH
   echo "aws_flavors_types_file_path_key=src/main/resources/private/clouds/aws/flavors.csv" >> $CLOUD_CONF_FILE_PATH
   yes | cp -f $COMMON_TEMPLATES/aws/flavors.csv $CLOUDS_DIR_PATH/$CLOUD_NAME
-  # writting mapper.conf
+  # Writing mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $CUCA_PATTERN=$CUCA > $MAPPER_CONF_FILE_PATH
   echo $CUCSA_PATTERN=$CUCSA >> $MAPPER_CONF_FILE_PATH
   echo "cloud_identity_provider_url=" >> $MAPPER_CONF_FILE_PATH
-  # writting plugins.conf
+  # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.AwsV2AllToOneMapper" > $PLUGINS_CONF_FILE_PATH
   echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.aws.compute.v2.AwsComputePlugin" >> $PLUGINS_CONF_FILE_PATH
@@ -167,21 +180,21 @@ read_azure() {
 }
 
 write_azure() {
-  # writting cloud.conf
+  # Writing cloud.conf
   mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
   touch $CLOUD_CONF_FILE_PATH
   echo $VN_PATTERN=$VN > $CLOUD_CONF_FILE_PATH
   echo $RG_PATTERN=$RG >> $CLOUD_CONF_FILE_PATH
   echo $RN_PATTERN=$RN >> $CLOUD_CONF_FILE_PATH
   echo $VMP_PATTERN=$VMP >> $CLOUD_CONF_FILE_PATH
-  # writting mapper.conf
+  # Writing mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $CS_PATTERN=$CS > $MAPPER_CONF_FILE_PATH
   echo $CC_PATTERN=$CC >> $MAPPER_CONF_FILE_PATH
   echo $CCK_PATTERN=$CCK >> $MAPPER_CONF_FILE_PATH
   echo $CTI_PATTERN=$CTI >> $MAPPER_CONF_FILE_PATH
   echo "cloud_identity_provider_url=" >> $MAPPER_CONF_FILE_PATH
-  # writting plugins.conf
+  # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.AzureAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
   echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.azure.compute.AzureComputePlugin" >> $PLUGINS_CONF_FILE_PATH
@@ -211,7 +224,7 @@ read_openstack() {
 }
 
 write_openstack() {
-  # writting cloud.conf
+  # Writing cloud.conf
   mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
   touch $CLOUD_CONF_FILE_PATH
   echo $NOVA_PATTERN=$NOVA > $CLOUD_CONF_FILE_PATH
@@ -220,14 +233,17 @@ write_openstack() {
   echo $EG_PATTERN=$EG >> $CLOUD_CONF_FILE_PATH
   echo $CINDER_PATTERN=$CINDER >> $CLOUD_CONF_FILE_PATH
   echo $GLANCE_PATTERN=$GLANCE >> $CLOUD_CONF_FILE_PATH
-  # writting mapper.conf
+  # Writing mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $OSPN_PATTERN=$OSPN > $MAPPER_CONF_FILE_PATH
   echo $OSPASS_PATTERN=$OSPASS >> $MAPPER_CONF_FILE_PATH
   echo $OSUN_PATTERN=$OSUN >> $MAPPER_CONF_FILE_PATH
   echo $OSCD_PATTERN=$OSCD >> $MAPPER_CONF_FILE_PATH
   echo $OSCIPU_PATTERN=$OSCIPU >> $MAPPER_CONF_FILE_PATH
-  # writting plugins.conf
+  # Copying PrivateKey of mapper user
+  yes | cp -f $CONF_FILE_DIR_PATH/$CLOUD_NAME/private.key $CLOUDS_DIR_PATH/$CLOUD_NAME
+
+  # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.OpenStackAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
   echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.openstack.compute.v2.OpenStackComputePlugin" >> $PLUGINS_CONF_FILE_PATH
@@ -254,20 +270,20 @@ read_cloudstack() {
 }
 
 write_cloudstack() {
-  # writting cloud.conf
+  # Writing cloud.conf
   mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
   touch $CLOUD_CONF_FILE_PATH
   echo $CSAPI_PATTERN=$CSAPI > $CLOUD_CONF_FILE_PATH
   echo $ZONE_PATTERN=$ZONE >> $CLOUD_CONF_FILE_PATH
   echo $CSDN_PATTERN=$CSDN >> $CLOUD_CONF_FILE_PATH
   echo $NO_PATTERN=$NO>> $CLOUD_CONF_FILE_PATH
-  # writting mapper.conf
+  # Writing mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $CSPASS_PATTERN=$CSPASS > $MAPPER_CONF_FILE_PATH
   echo $CSUN_PATTERN=$CSUN >> $MAPPER_CONF_FILE_PATH
   echo $CSCD_PATTERN=$CSCD >> $MAPPER_CONF_FILE_PATH
   echo $CSCIPU_PATTERN=$CSCIPU >> $MAPPER_CONF_FILE_PATH
-  # writting plugins.conf
+  # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.CloudStackAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
   echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.cloudstack.compute.v4_9.CloudStackComputePlugin" >> $PLUGINS_CONF_FILE_PATH
@@ -295,7 +311,7 @@ read_opennebula() {
 }
 
 write_opennebula() {
-  # writting cloud.conf
+  # Writing cloud.conf
   mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
   touch $CLOUD_CONF_FILE_PATH
   echo $ONERPC_PATTERN=$ONERPC > $CLOUD_CONF_FILE_PATH
@@ -304,12 +320,12 @@ write_opennebula() {
   echo $ONEPN_PATTERN=$ONEPN >> $CLOUD_CONF_FILE_PATH
   echo $ONEDRN_PATTERN=$ONEDRN >> $CLOUD_CONF_FILE_PATH
   echo $ONEDSG_PATTERN=$ONEDSG >> $CLOUD_CONF_FILE_PATH
-  # writting mapper.conf
+  # Writing mapper.conf
   touch $MAPPER_CONF_FILE_PATH
   echo $ONEPASS_PATTERN=$ONEPASS > $MAPPER_CONF_FILE_PATH
   echo $ONEUN_PATTERN=$ONEUN >> $MAPPER_CONF_FILE_PATH
   echo $ONECIPU_PATTERN=$ONECIPU >> $MAPPER_CONF_FILE_PATH
-  # writting plugins.conf
+  # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.OpenNebulaAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
   echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.opennebula.compute.v5_4.OpenNebulaComputePlugin" >> $PLUGINS_CONF_FILE_PATH
@@ -320,6 +336,40 @@ write_opennebula() {
   echo "public_ip_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.opennebula.publicip.v5_4.OpenNebulaPublicIpPlugin" >> $PLUGINS_CONF_FILE_PATH
   echo "security_rule_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.opennebula.securityrule.v5_4.OpenNebulaSecurityRulePlugin" >> $PLUGINS_CONF_FILE_PATH
   echo "quota_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.opennebula.quota.v5_4.OpenNebulaQuotaPlugin" >> $PLUGINS_CONF_FILE_PATH
+}
+
+read_googlecloud() {
+  # Reading cloud properties
+  GOCZONE=$(grep $GOCZONE_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+  # Reading mapper properties
+  GOCEMAIL=$(grep $GOCEMAIL_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+  GOCPID=$(grep $GOCPID_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+  GOCPRIVKEY=$(grep $GOCPRIVKEY_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+  GOCCIPU=$(grep $GOCCIPU_PATTERN $CONF_FILE_PATH | cut -d"=" -f2-)
+}
+
+write_googlecloud() {
+  # Writing cloud.conf
+  mkdir -p $CLOUDS_DIR_PATH/$CLOUD_NAME
+  touch $CLOUD_CONF_FILE_PATH
+  echo $GOCZONE_PATTERN=$GOCZONE >> $CLOUD_CONF_FILE_PATH
+  # Writing mapper.conf
+  touch $MAPPER_CONF_FILE_PATH
+  echo $GOCEMAIL_PATTERN=$GOCEMAIL > $MAPPER_CONF_FILE_PATH
+  echo $GOCPID_PATTERN=$GOCPID >> $MAPPER_CONF_FILE_PATH
+  echo $GOCPRIVKEY_PATTERN=$GOCPRIVKEY >> $MAPPER_CONF_FILE_PATH
+  echo $GOCCIPU_PATTERN=$GOCCIPU >> $MAPPER_CONF_FILE_PATH
+  # Writing plugins.conf
+  touch $PLUGINS_CONF_FILE_PATH
+  echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.GoogleCloudAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
+  echo "compute_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.compute.v1.GoogleCloudComputePlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "volume_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.volume.v1.GoogleCloudVolumePlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "network_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.network.v1.GoogleCloudNetworkPlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "attachment_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.attachment.v1.GoogleCloudAttachmentPlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "image_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.image.v1.GoogleCloudImagePlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "public_ip_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.publicip.v1.GoogleCloudPublicIpPlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "security_rule_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.securityrule.v1.GoogleCloudSecurityRulePlugin" >> $PLUGINS_CONF_FILE_PATH
+  echo "quota_plugin_class=cloud.fogbow.ras.core.plugins.interoperability.googlecloud.quota.v1.GoogleCloudQuotaPlugin" >> $PLUGINS_CONF_FILE_PATH
 }
 
 CLOUD_TYPE_PATTERN="cloud_type"
@@ -345,6 +395,10 @@ case $CLOUD_TYPE in
   "opennebula")
     read_opennebula
     write_opennebula
+    ;;
+  "googlecloud")
+    read_googlecloud
+    write_googlecloud
     ;;
   *)
     echo "Fatal error: invalid cloud type: [$CLOUD_TYPE]"

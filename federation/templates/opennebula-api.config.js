@@ -7,6 +7,7 @@ export const env = {
     serverEndpoint: '',
     deployType: 'federation',
     refreshTime: 5000,
+    timeout: 10000,
     remoteCredentialsUrl: '',
     authenticationPlugin: 'ONe',
     credentialFields: {
