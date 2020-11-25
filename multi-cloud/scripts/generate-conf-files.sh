@@ -182,9 +182,11 @@ chmod 600 $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Adding properties
 CN_PATTERN="cloud_names"
 CN=""
-for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/*.conf`
+for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
 do
-  CN=$CN`basename $i .conf`","
+  if [ -f "$i" ]; then
+    CN=$CN`basename $i .conf`","
+  fi
 done
 CN=`echo $CN | sed 's/.$//'`
 echo "# Comma-separated list of the names of the clouds managed by this RAS" > $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
@@ -212,10 +214,12 @@ echo "private_key_file_path="$RAS_CONTAINER_CONF_FILE_DIR_PATH/"id_rsa" >> $RAS_
 ## Generating cloud configuration files
 for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
 do
-  bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH $COMMON_TEMPLATES_DIR_PATH
-  retVal=$?
-  if [ $retVal -ne 0 ]; then
-      exit $retVal
+  if [ -f "$i" ]; then
+    bash $COMMON_SCRIPTS_DIR_PATH/generate_cloud_conf.sh $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/$i $RAS_DIR_PATH $COMMON_TEMPLATES_DIR_PATH
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        exit $retVal
+    fi
   fi
 done
 ## Copying application.properties file
