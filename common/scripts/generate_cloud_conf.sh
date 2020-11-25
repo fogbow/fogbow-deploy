@@ -240,9 +240,6 @@ write_openstack() {
   echo $OSUN_PATTERN=$OSUN >> $MAPPER_CONF_FILE_PATH
   echo $OSCD_PATTERN=$OSCD >> $MAPPER_CONF_FILE_PATH
   echo $OSCIPU_PATTERN=$OSCIPU >> $MAPPER_CONF_FILE_PATH
-  # Copying PrivateKey of mapper user
-  yes | cp -f $CONF_FILE_DIR_PATH/$CLOUD_NAME/private.key $CLOUDS_DIR_PATH/$CLOUD_NAME
-
   # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.OpenStackAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
@@ -359,6 +356,8 @@ write_googlecloud() {
   echo $GOCPID_PATTERN=$GOCPID >> $MAPPER_CONF_FILE_PATH
   echo $GOCPRIVKEY_PATTERN=$GOCPRIVKEY >> $MAPPER_CONF_FILE_PATH
   echo $GOCCIPU_PATTERN=$GOCCIPU >> $MAPPER_CONF_FILE_PATH
+  # Copying PrivateKey of mapper user
+  yes | cp -f $CONF_FILE_DIR_PATH/$CLOUD_NAME/private.key $CLOUDS_DIR_PATH/$CLOUD_NAME
   # Writing plugins.conf
   touch $PLUGINS_CONF_FILE_PATH
   echo "system_to_cloud_mapper_plugin_class=cloud.fogbow.ras.core.plugins.mapper.all2one.GoogleCloudAllToOneMapper" > $PLUGINS_CONF_FILE_PATH
