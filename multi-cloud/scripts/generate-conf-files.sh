@@ -182,7 +182,7 @@ chmod 600 $RAS_DIR_PATH/$RAS_CONF_FILE_NAME
 ## Adding properties
 CN_PATTERN="cloud_names"
 CN=""
-for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME`
+for i in `ls $CONF_FILES_DIR_PATH/$CLOUDS_DIR_NAME/*.conf`
 do
   CN=$CN`basename $i .conf`","
 done
